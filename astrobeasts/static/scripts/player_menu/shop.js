@@ -1,0 +1,1 @@
+// export class (classnamehere) extends Phaser.Scene
