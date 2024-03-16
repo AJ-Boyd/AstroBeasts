@@ -10,6 +10,9 @@ const config = {
     height: 600,
     parent: 'gameContainer',
     scene: [MainMenuScene, NewGameScene, LoadGameScene, OptionsScene],
+    dom: {
+        createContainer: true
+    },
     physics: {
         default: 'arcade',
         arcade: {
