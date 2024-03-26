@@ -76,6 +76,8 @@ preload() {
         { frameWidth: 64, frameHeight: 80 }
     );
 
+
+
     this.load.spritesheet('Tarkeel',
     '../static/assets/Sprites/Tarkeel.png',
     { frameWidth: 64, frameHeight: 80 }
@@ -96,7 +98,28 @@ preload() {
 
 create() {
 
-   this.scene.start('CombatScene');
+   
+
+   this.anims.create({
+    key: 'idleStrike',
+    frames: this.anims.generateFrameNumbers('Strikoh',  { start: 0, end: 2} ),
+    frameRate: 3,
+    repeat: -1
+});
+
+
+
+
+this.anims.create({
+    key: 'idleIce',
+    frames: this.anims.generateFrameNumbers('Icell',  { start: 0, end: 2} ),
+    frameRate: 3,
+    repeat: -1
+});
+
+
+this.scene.start('CombatScene');
+
 
 }
 

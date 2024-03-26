@@ -13,6 +13,8 @@ export class CombatScene extends Phaser.Scene {
 
 create() {
 
+
+
     //background
     console.log('create');
 
@@ -23,14 +25,26 @@ create() {
 
 //create enemy alien
 
- this.add.sprite(600, 370, 'Icell').setScale(3);
+ this.enemy = this.add.sprite(600, 370, 'Icell').setScale(3);
 
 //create our alien
 
- this.add.sprite(200, 370, 'Tyboar').setScale(4);
+ this.player = this.add.sprite(200, 370, 'Strikoh').setScale(4);
+
+
+//Enemy Name
+this.add.text(30,20,"Icell");
+
+ //Player Name
+ this.add.text(30,20,"Strikoh");
 
 
 
+this.add.container(556, 318, []);
+
+//idle animations for both
+this.player.anims.play("idleStrike", true)
+this.enemy.anims.play("idleIce", true)
 
 }
 
@@ -38,6 +52,9 @@ create() {
 update() {
 
 console.log('update');
+
+
+
 
 
 
