@@ -19,7 +19,7 @@ export class NewGameScene extends Phaser.Scene {
         const left = this.cameras.main.height / 2;
         const textX = 3 * this.cameras.main.width / 4; 
 
-        this.add.text(textX, 200, 'What is your name?', { fill: '#0f0',  align: 'center' }).setOrigin(0.5, 0);
+        this.add.text(textX, 200, 'What is your name?', { color: '#0f0',  align: 'center' }).setOrigin(0.5, 0);
         
          // create form for user to input info
          // will need to make it look pretty with bootstrap!
@@ -41,7 +41,7 @@ export class NewGameScene extends Phaser.Scene {
                     console.log(inputText.value);
                     this.scene.start('Options', { playerName: inputText.value }); // change to 'pick a starter' scene
                 } else {
-                    this.add.text(textX, 400, 'Please input a name!', { fill: '#0f0', align: 'center' }).setOrigin(0.5, 0);
+                    this.add.text(textX, 400, 'Please input a name!', { color: '#0f0', align: 'center' }).setOrigin(0.5, 0);
                 }
             }
         });
