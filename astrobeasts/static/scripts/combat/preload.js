@@ -1,9 +1,7 @@
 export class Preload extends Phaser.Scene {
     constructor() {
         super({
-            key:Preload.name,
-            active: true,
-           
+            key:Preload.name,         
 
         });
         console.log(Preload.name);
@@ -26,7 +24,32 @@ preload() {
         '../static/assets/Backgrounds/bCombat3.jpg'
     );
 
+//Music
+
+//this.load.audio(
+//    'fight1',
+//    '../static/assets/Music/OrbitalColossus.mp3'
+//);
+
+
+//random assets
+
+
+
+
+this.load.image('leftkey', '../static/assets/Objects/leftkey.png');
+this.load.image('rightkey', '../static/assets/Objects/rightkey.png');
+this.load.image('upkey', '../static/assets/Objects/upkey.png');
+this.load.image('downkey', '../static/assets/Objects/downkey.png');
+
 //Spritesheets
+
+//Items
+this.load.spritesheet('item', 
+    '../static/assets/Objects/Item.png',
+    { frameWidth: 24.5, frameHeight: 24.5 }
+    );
+
 
    this.load.spritesheet('Aesun',
         '../static/assets/Sprites/Aesun.png',
@@ -114,6 +137,18 @@ create() {
 console.log('create - preload');  
 
 // Animations
+
+//Items:
+
+this.anims.create({
+    key: 'blueitem',
+    frames: this.anims.generateFrameNumbers('item',  { frames: [ 3,4,5,6,12,13,14,15] } ),
+    frameRate: 7,
+    repeat: 1,
+    hideOnComplete: true
+});
+
+
 
 //TO DO: All Wrath, Aesun, Malgrun,Ragnex,Ruinn,Tyboar
 
