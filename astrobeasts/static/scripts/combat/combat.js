@@ -7,10 +7,6 @@ export class CombatScene extends Phaser.Scene {
         console.log(CombatScene.name);
     }
 
-
-
-
-
 create() {
    
     console.log('create - Combat');
