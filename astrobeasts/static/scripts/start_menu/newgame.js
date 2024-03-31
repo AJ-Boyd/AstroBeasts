@@ -5,17 +5,61 @@ export class NewGameScene extends Phaser.Scene {
     }
 
     preload() {
+        this.load.image('sky', 'static/assets/Backgrounds/bPlanets.jpg');
+    }
 
+    create() {
+        // need to scale background image properly
+        this.add.image(0, 0, 'sky').setOrigin(0, 0);
+        const introText = "a long time ago in a galaxy far, far away....";
+        const displayText = this.add.text(100, 100, '', { font: '16px Arial', color: '#ffffff', align: 'center' });
+
+        // add typing effect event
+        let index = 0;
+        this.time.addEvent({
+            delay: 120, // how fast text is typed
+            callback: () => {
+                displayText.text += introText[index++]; // display letters one by one
+            },
+            repeat: introText.length - 1
+        });
+
+        const nextButtonX = this.cameras.main.width - 100; 
+        const nextButtonY = this.cameras.main.height - 50;
+        // next button to go to tutorial
+        const nextButton = this.add.text(nextButtonX, nextButtonY, 'Next >', { color: '#0f0' })
+            .setInteractive({ useHandCursor: true }) 
+            .setOrigin(0.5, 0.5); 
+
+        nextButton.on('pointerdown', () => {
+            this.scene.start('NameInput'); 
+        });
+        
+        nextButton.on('pointerover', () => {
+            nextButton.setStyle({ fill: '#fff'}); // when you hover, changes to white
+        });
+
+        nextButton.on('pointerout', () => {
+            nextButton.setStyle({ fill: '#0f0'}); 
+        });
+    }
+}
+
+export class NameInputScene extends Phaser.Scene {
+    constructor() {
+        super('NameInput')
+    }
+    
+    preload() {
         this.load.image('sky', 'static/assets/Backgrounds/bPlanets.jpg');
         this.load.image('dude','static/assets/Objects/astronaut.png'); // just used a random placeholder image for our player
-        
     }
 
     create() {
         // need to scale background image properly
         this.add.image(0, 0, 'sky').setOrigin(0, 0);
 
-       // calculated left side of screen and right side of screen (stackoverflow'ed)
+       // calculated left side of screen and right side of screen
         const left = this.cameras.main.height / 2;
         const textX = 3 * this.cameras.main.width / 4; 
 
@@ -31,7 +75,6 @@ export class NewGameScene extends Phaser.Scene {
         // create the form, using dom module (which gives the ability to interact with HTML objects on our phaser canvas)
         let element = this.add.dom(textX, 300).createFromHTML(formHtml).setOrigin(0.5);
  
-         
         element.addListener('click');
         element.on('click', (event) => {
             if (event.target.name === 'playButton') {
@@ -45,7 +88,6 @@ export class NewGameScene extends Phaser.Scene {
                 }
             }
         });
-
         let player = this.add.image(200, left, 'dude').setOrigin(0.5, 0.5);
     }
 }
@@ -58,7 +100,6 @@ export class PickYourStarterScene extends Phaser.Scene {
         this.load.image('sky', 'static/assets/Backgrounds/bPlanets.jpg');
         this.load.image('skol', 'static/assets/Objects/skol.png');
         this.load.image('tarkeel', 'static/assets/Objects/tarkeel.png');
-        
     }
     create() {
         // below is the "here are your starters" screen
@@ -92,7 +133,6 @@ export class PickYourStarterScene extends Phaser.Scene {
             .setInteractive({ useHandCursor: true }) 
             .setOrigin(0.5, 0.5); 
 
-        
         nextButton.on('pointerdown', () => {
             this.scene.start('Tutorial'); 
         });
@@ -104,8 +144,6 @@ export class PickYourStarterScene extends Phaser.Scene {
         nextButton.on('pointerout', () => {
             nextButton.setStyle({ fill: '#0f0'}); 
         });
-
-
     }
 }
 
@@ -141,7 +179,6 @@ export class TutorialScene extends Phaser.Scene {
            
         });
 
-       
         const noButton = this.add.text(centerX + 100, centerY + 50, 'No', { color: '#0f0' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5);
@@ -151,7 +188,6 @@ export class TutorialScene extends Phaser.Scene {
             this.scene.start('LoadGame');
         });
 
-        
         [yesButton, noButton].forEach(button => {
             button.on('pointerover', () => {
                 button.setStyle({ fill: '#fff' });

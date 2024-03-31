@@ -1,5 +1,5 @@
 import { MainMenuScene } from './start_menu/mainmenu.js';
-import { NewGameScene, PickYourStarterScene, TutorialScene } from './start_menu/newgame.js';
+import { NewGameScene, NameInputScene, PickYourStarterScene, TutorialScene } from './start_menu/newgame.js';
 import { LoadGameScene } from './start_menu/loadgame.js';
 import { OptionsScene } from './start_menu/options.js';
 import { Preload } from './combat/preload.js';
@@ -17,7 +17,7 @@ const config = {
     width: 800,
     height: 600,
     parent: 'gameContainer',
-    scene: [MainMenuScene, NewGameScene, PickYourStarterScene, TutorialScene, LoadGameScene, OptionsScene, 
+    scene: [MainMenuScene, NewGameScene, NameInputScene, PickYourStarterScene, TutorialScene, LoadGameScene, OptionsScene, 
             HubScene, InventoryScene, DojoScene, ShopScene, TourneyScene, FleeScene],
     dom: {
         createContainer: true
