@@ -14,7 +14,7 @@ export class MainMenuScene extends Phaser.Scene {
 
         let startGameText= this.add.text(100, 175, 'Start New Game', {font: '24px', color: '#0f0' })
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('NewGame'));
+            .on('pointerdown', () =>  this.scene.start('NewGame'));
         
         let loadGameText = this.add.text(100, 275, 'Load Game', {font: '24px', color: '#0f0' })
             .setInteractive({ useHandCursor: true })

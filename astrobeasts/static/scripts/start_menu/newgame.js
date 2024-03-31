@@ -4,6 +4,14 @@ export class NewGameScene extends Phaser.Scene {
         super('NewGame');
     }
 
+    // WHERE GLOBAL REGISTERY IS CREATED
+    // creates any global variable that has to be accessed in multiple scenes
+    init() {
+        this.registry.set('inventory', []);
+        this.registry.set('playerName', '');
+
+    }
+
     preload() {
         this.load.image('sky', 'static/assets/Backgrounds/bPlanets.jpg');
     }
@@ -81,8 +89,8 @@ export class NameInputScene extends Phaser.Scene {
                 let inputText = document.querySelector('input[name="nameField"]'); // player name
  
                 if (inputText instanceof HTMLInputElement && inputText.value !== '') {
-                    console.log(inputText.value);
-                    this.scene.start('PickYourStarter', { playerName: inputText.value }); // change to 'pick a starter' scene
+                    this.registry.set('playerName', inputText.value);
+                    this.scene.start('PickYourStarter');
                 } else {
                     this.add.text(textX, 400, 'Please input a name!', { color: '#0f0', align: 'center' }).setOrigin(0.5, 0);
                 }
@@ -105,13 +113,17 @@ export class PickYourStarterScene extends Phaser.Scene {
         // below is the "here are your starters" screen
         this.add.image(0, 0, 'sky').setOrigin(0, 0);
 
+        // player name from registery
+        const playerName = this.registry.get('playerName');
+
         const centerX = this.cameras.main.width / 2;
         const left = centerX / 2;
         const right = 3 * centerX / 2;
         const imageY = 250; 
         const textYOffset = 100; // bottom of the image and top of the text margin
 
-        this.add.text(centerX, 50, "Here are your starter AstroBeasts!", {font: '30px', color: '#0f0', align: 'center'}).setOrigin(0.5, 0);
+
+        this.add.text(centerX, 50, `Here are your starter AstroBeasts, ${playerName}!`, {font: '30px', color: '#0f0', align: 'center'}).setOrigin(0.5, 0);
 
         // skol
         const skolX = this.cameras.main.width / 4;
