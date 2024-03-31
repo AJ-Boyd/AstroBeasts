@@ -1,5 +1,5 @@
 import { MainMenuScene } from './start_menu/mainmenu.js';
-import { NewGameScene } from './start_menu/newgame.js';
+import { NewGameScene, PickYourStarterScene, TutorialScene } from './start_menu/newgame.js';
 import { LoadGameScene } from './start_menu/loadgame.js';
 import { OptionsScene } from './start_menu/options.js';
 
@@ -9,7 +9,7 @@ const config = {
     width: 800,
     height: 600,
     parent: 'gameContainer',
-    scene: [MainMenuScene, NewGameScene, LoadGameScene, OptionsScene],
+    scene: [MainMenuScene, NewGameScene, PickYourStarterScene, TutorialScene, LoadGameScene, OptionsScene],
     dom: {
         createContainer: true
     },
