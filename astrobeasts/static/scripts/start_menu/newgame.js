@@ -58,6 +58,7 @@ export class PickYourStarterScene extends Phaser.Scene {
         this.load.image('sky', 'static/assets/Backgrounds/bPlanets.jpg');
         this.load.image('skol', 'static/assets/Objects/skol.png');
         this.load.image('tarkeel', 'static/assets/Objects/tarkeel.png');
+        
     }
     create() {
         // below is the "here are your starters" screen
@@ -113,8 +114,53 @@ export class TutorialScene extends Phaser.Scene {
         super('Tutorial');
     }
 
-    preload() {}
+    preload() {
+        this.load.image('sky', 'static/assets/Backgrounds/bPlanets.jpg');
+        this.tutorialStep = 0;
+    }
 
-    create() {}
+    create() {
+        this.askForTutorial();
+    }
+
+    askForTutorial() {
+        // asks the user if they want a tutorial or not. if not, proceed to loadgame.js
+        const centerX = this.cameras.main.width / 2;
+        const centerY = this.cameras.main.height / 2;
+        this.add.text(centerX, centerY - 50, 'Would you like a tutorial of the game?', { color: '#0f0', align: 'center' })
+            .setOrigin(0.5, 0.5);
+
+        
+        const yesButton = this.add.text(centerX - 100, centerY + 50, 'Yes', { color: '#0f0' })
+            .setInteractive({ useHandCursor: true })
+            .setOrigin(0.5, 0.5);
+
+        yesButton.on('pointerdown', () => {
+            // if yes, start tutorial
+            // currently leaving empty until more of the gameplay is completed in order to have accurate tutorial
+           
+        });
+
+       
+        const noButton = this.add.text(centerX + 100, centerY + 50, 'No', { color: '#0f0' })
+            .setInteractive({ useHandCursor: true })
+            .setOrigin(0.5, 0.5);
+
+        noButton.on('pointerdown', () => {
+            // if no, load game
+            this.scene.start('LoadGame');
+        });
+
+        
+        [yesButton, noButton].forEach(button => {
+            button.on('pointerover', () => {
+                button.setStyle({ fill: '#fff' });
+            });
+
+            button.on('pointerout', () => {
+                button.setStyle({ fill: '#0f0' });
+            });
+        });
+    }
 
 }
