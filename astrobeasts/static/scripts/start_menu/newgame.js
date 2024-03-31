@@ -7,7 +7,8 @@ export class NewGameScene extends Phaser.Scene {
     // WHERE GLOBAL REGISTERY IS CREATED
     // creates any global variable that has to be accessed in multiple scenes
     init() {
-        this.registry.set('inventory', []);
+        this.registry.set('inventory', []); // should be list of dicts with the item name and its key that cooresponds to it's png path
+        this.registry.set('astrobeasts', [{key: 'skoll', name: 'Skoll'}, {key: 'tarkeel', name: 'Tarkeel'}]); // similar as above. showing starter astrobeasts
         this.registry.set('playerName', '');
 
     }
