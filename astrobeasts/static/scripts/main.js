@@ -13,17 +13,13 @@ import { FleeScene } from './combat_menu/flee.js';
 
 // game configs
 const config = {
-    type: Phaser.CANVAS,
-    pixelArt: true,
-    scale: {     
-        width: 800,
-        height: 600,
-        mode: Phaser.Scale.FIT
-    },
-     parent: 'gameContainer',
+    type: Phaser.AUTO,    
+    width: 800,
+    height: 600,
+    parent: 'gameContainer',
     scene: [MainMenuScene, NewGameScene, PickYourStarterScene, TutorialScene, LoadGameScene, OptionsScene, 
-            HubScene, InventoryScene, DojoScene, ShopScene, TourneyScene, FleeScene],       //Preload,CombatScene 
-       dom: {
+            HubScene, InventoryScene, DojoScene, ShopScene, TourneyScene, FleeScene],
+    dom: {
         createContainer: true
     },
     physics: {

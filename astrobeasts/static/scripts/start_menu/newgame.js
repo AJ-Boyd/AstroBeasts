@@ -30,14 +30,14 @@ export class NewGameScene extends Phaser.Scene {
 
         // create the form, using dom module (which gives the ability to interact with HTML objects on our phaser canvas)
         let element = this.add.dom(textX, 300).createFromHTML(formHtml).setOrigin(0.5);
-
+ 
          
         element.addListener('click');
         element.on('click', (event) => {
             if (event.target.name === 'playButton') {
-                let inputText = element.getChildByName('nameField'); // player name
+                let inputText = document.querySelector('input[name="nameField"]'); // player name
  
-                if (inputText.value !== '') {
+                if (inputText instanceof HTMLInputElement && inputText.value !== '') {
                     console.log(inputText.value);
                     this.scene.start('PickYourStarter', { playerName: inputText.value }); // change to 'pick a starter' scene
                 } else {
@@ -46,9 +46,7 @@ export class NewGameScene extends Phaser.Scene {
             }
         });
 
-        
-
-        player = this.add.image(200, left, 'dude').setOrigin(0.5, 0.5);
+        let player = this.add.image(200, left, 'dude').setOrigin(0.5, 0.5);
     }
 }
 
@@ -71,25 +69,25 @@ export class PickYourStarterScene extends Phaser.Scene {
         const imageY = 250; 
         const textYOffset = 100; // bottom of the image and top of the text margin
 
-        this.add.text(centerX, 50, "Here are your starter AstroBeasts!", {font: '30px', fill: '#0f0', align: 'center'}).setOrigin(0.5, 0);
+        this.add.text(centerX, 50, "Here are your starter AstroBeasts!", {font: '30px', color: '#0f0', align: 'center'}).setOrigin(0.5, 0);
 
         // skol
         const skolX = this.cameras.main.width / 4;
-        this.add.text(left, 150, "Skol", {fill: '#0f0', align: 'center'}).setOrigin(0.5, 0.5);
+        this.add.text(left, 150, "Skol", {color: '#0f0', align: 'center'}).setOrigin(0.5, 0.5);
         this.add.image(skolX, imageY, 'skol').setOrigin(0.5, 0.5).setScale(0.5);;
-        this.add.text(skolX, imageY + textYOffset, "Level 1\nRarity: Common\nClass: Balanced\nATK: 300\nDEF: 250\nDEX: 300\nSPD: 300\nLUK: 250", { fill: '#0f0', align: 'center' }).setOrigin(0.5, 0);
+        this.add.text(skolX, imageY + textYOffset, "Level 1\nRarity: Common\nClass: Balanced\nATK: 300\nDEF: 250\nDEX: 300\nSPD: 300\nLUK: 250", { color: '#0f0', align: 'center' }).setOrigin(0.5, 0);
 
         // tarkeel
         const tarkeelX = 3 * this.cameras.main.width / 4; 
-        this.add.text(right, 150, "Tarkeel", {fill: '#0f0', align: 'center'}).setOrigin(0.5, 0.5);
+        this.add.text(right, 150, "Tarkeel", {color: '#0f0', align: 'center'}).setOrigin(0.5, 0.5);
         this.add.image(tarkeelX, imageY, 'tarkeel').setOrigin(0.5, 0.5).setScale(0.5);;
-        this.add.text(tarkeelX, imageY + textYOffset, "Level 1\nRarity: Common\nClass: Assassin\nATK: 194\nDEF: 128\nDEX: 448\nSPD: 500\nLUK: 130", { fill: '#0f0', align: 'center' }).setOrigin(0.5, 0);
+        this.add.text(tarkeelX, imageY + textYOffset, "Level 1\nRarity: Common\nClass: Assassin\nATK: 194\nDEF: 128\nDEX: 448\nSPD: 500\nLUK: 130", { color: '#0f0', align: 'center' }).setOrigin(0.5, 0);
 
         const nextButtonX = this.cameras.main.width - 100; 
         const nextButtonY = this.cameras.main.height - 50;
 
        // next button to go to tutorial
-        const nextButton = this.add.text(nextButtonX, nextButtonY, 'Next >', { fill: '#0f0' })
+        const nextButton = this.add.text(nextButtonX, nextButtonY, 'Next >', { color: '#0f0' })
             .setInteractive({ useHandCursor: true }) 
             .setOrigin(0.5, 0.5); 
 
