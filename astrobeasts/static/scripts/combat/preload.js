@@ -18,12 +18,17 @@ preload() {
     
     console.log('preload - preload');       
 
-//Background Image
+//Background Images
     this.load.image(
-        'background',
+        'fire',
         '../static/assets/Backgrounds/bCombat3.jpg'
     );
 
+
+    this.load.image(
+        'forest',
+        '../static/assets/Backgrounds/bCombat1.jpg'
+    );
 //Music
 
 //this.load.audio(

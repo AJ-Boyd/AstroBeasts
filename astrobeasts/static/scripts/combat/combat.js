@@ -1,10 +1,13 @@
 import { CombatMenu } from './combatmenu.js';
+import { healthBar } from './healthbar.js';
+import { RenderBackground } from './renderbackground.js';
 
 var cursors;
 var STATUS_STATE = 'default'
 
 export class CombatScene extends Phaser.Scene {
     #combatMenu;
+    
 
     constructor() {
         super({
@@ -35,16 +38,15 @@ create() {
  //accept keyboard input
     cursors = this.input.keyboard.createCursorKeys();
     
+    
 
- //music for battle scene, slowed down and lower volume than raw file. 
-    var music = this.sound.add('fight1', {loop:true, volume:0.8, rate:0.8});
-    music.play();
-
+ 
 
 //background
-    this.add.image(this.scale.width/2,
-        (this.scale.height/1.95 - 75), 
-        'background');
+  const background = new RenderBackground(this);
+  background.showFire();
+
+
 
 //create enemy alien and idle
 
@@ -82,7 +84,7 @@ create() {
         .image(0, 0,"healthback")
         .setOrigin(0),
         playerAlien,
-        this.#HPBar(10,22),
+        new healthBar(this, 10, 22).container,       
 
    this.add.text (175, 5,'25/25', {
         color:'red',
@@ -98,8 +100,8 @@ create() {
         .image(0, 0,"healthback")
         .setOrigin(0),
         enemyAlien,
-        this.#HPBar(20,22),
-
+        new healthBar(this, 20, 22).container,
+       
     ]);
 
 
@@ -110,7 +112,9 @@ create() {
 //Create box on the bottom
 this.#combatMenu = new CombatMenu(this);
 this.#combatMenu.battleOptionsOn()
-this.#combatMenu.battlePromptOn();
+
+
+
 
 }
 
@@ -121,45 +125,67 @@ update() {
     //console.log(JSON.parse(JSON.stringify(STATUS_STATE)));
 
    if(STATUS_STATE == 'fight'){
-       console.log("YOU ARE HERE")
-        if(Phaser.Input.Keyboard.JustDown(cursors.up)){
-            console.log('In Fight Up Is Down')
-            this.#combatMenu.playerFightInputSelect('slash')
-            //this.#combatMenu.managedInBattleScene();
-            STATUS_STATE = 'rest'
-
+      
+        if(Phaser.Input.Keyboard.JustDown(cursors.up)){ //Option Up
+           this.#combatMenu.playerFightInputSelect("SLASH");
+            STATUS_STATE = 'rest';
             return;
+
+        }
+        else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ //Option Down
+
+    
+            this.#combatMenu.playerFightInputSelect("TACKLE");
+            STATUS_STATE = 'rest'
+            return;
+
+        }
+        else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //Option Left
+
+            this.#combatMenu.playerFightInputSelect("CROSS SLASH");
+            STATUS_STATE = 'rest'
+            return;
+
+        }
+        else if(Phaser.Input.Keyboard.JustDown(cursors.right)){  ////Option Right
+
+            this.#combatMenu.playerFightInputSelect("BITE")
+            STATUS_STATE = 'rest'
+            return;
+
+        }
+        else {
+            //Nothing here for now.
         }
     }
     else{
 
-        if(Phaser.Input.Keyboard.JustDown(cursors.up)){
+        if(Phaser.Input.Keyboard.JustDown(cursors.up)){ //FIGHT
             console.log('Up Is Down')
             this.#combatMenu.playerInput('FIGHT')
             STATUS_STATE = 'fight';
             return;
            
         }
-        else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
+        else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ //SCAN. TO DO
             console.log('down Is Down')
             this.#combatMenu.playerInput('SCAN')
         }
-        else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
+        else if(Phaser.Input.Keyboard.JustDown(cursors.right)){ //ITEM
             console.log('Right Is Down')
                     
             this.#combatMenu.playerInput('ITEM')                            
             
             return;
         }
-        else if((Phaser.Input.Keyboard.JustDown(cursors.left))){
+        else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //FLEE. TO DO...
             console.log('Left Is Down')
             this.#combatMenu.playerInput('FLEE')
             return;
         } 
         else
         {
-            //this.#combatMenu.itemPromptOff();
-            //this.#combatMenu.managedInBattleScene();
+        //Nothing here for now. 
         }
     }
     
@@ -189,26 +215,5 @@ update() {
 
 
 
-
-    /**
-     * @param {number} x
-     * @param {number} y
-     */
-    #HPBar(x , y) {
     
-        const leftCap = this.add
-            .image(x , y, 'leftcap')
-            .setOrigin(0,0.5);
-        const middle = this.add
-            .image(leftCap.x +leftCap.width, y, 'midhealth')
-            .setOrigin(0,0.5);
-            //Adjust for health bar
-            middle.displayWidth = 25
-        const rightCap = this.add
-            .image(middle.x + middle.displayWidth, y, 'rightcap')
-            .setOrigin(0,0.5);
-        return this.add.container(x,y, [leftCap, middle, rightCap ])
-    } 
-    
-   
 }

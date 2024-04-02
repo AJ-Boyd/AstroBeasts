@@ -18,14 +18,37 @@ const PLAYER_OPTIONS = Object.freeze({
 });
 
 
+
+const MessageTextStyle = {
+
+    color:'Blue',
+    fontSize: '22px',
+    fontStyle: 'bold',
+}
+
+
+const MenuOptionsTextStyle = {
+
+    color: 'red',
+    fontSize: '20px',
+    fontStyle: 'bold',
+}
+
 export class CombatMenu {
     #scene;
     #battleOpt;
     #fightOpt;
-    #battlePrompt; 
-    #fightPrompt;
-    #itemPrompt;
+
+    #BattleText;
+    #FightText;
+
+   
     #fightSlash;
+    #fightMessage;
+
+    #RenderMessage
+
+    
 
     
     constructor(scene) {    
@@ -33,12 +56,10 @@ export class CombatMenu {
         this.#createDialog();
         this.#createBattleOptions();
         this.#createFightOptions();
-        this.#promptBattleOption();
-        this.#promptFightOption();
+ 
         this.#promptItem();
         this.#Slashfight();
     }
-
 
 
 
@@ -61,44 +82,21 @@ export class CombatMenu {
  
  }
  
-
  //Create Run/Fight/Scan options. 
- 
  #createBattleOptions()
  {
-     this.#battleOpt = this.#scene.add.container(0,500, [
+    this.#BattleText = this.#scene.add.text(400, 540, "Your Orders, Sir?", MessageTextStyle);
+     
+    this.#battleOpt = this.#scene.add.container(0,500, [
      this.#scene.add.image(40,52, 'leftkey').setScale(0.5),
      this.#scene.add.image(245,52, 'rightkey').setScale(0.5),
      this.#scene.add.image(110,20,'upkey').setScale(0.5),
      this.#scene.add.image(110,80,'downkey').setScale(0.5),
-     this.#scene.add.text(
-             125,15,
-             PLAYER_OPTIONS.FIGHT, {
-             color: 'red',
-             fontSize: '20px',
-             fontStyle: 'bold',
-         }),
-         this.#scene.add.text(
-             55,43,
-             PLAYER_OPTIONS.FLEE,{
-             color:'red',
-             fontSize: '20px',
-             fontStyle: 'bold',
-         }),
-         this.#scene.add.text(
-             180,43,
-             PLAYER_OPTIONS.ITEM,{
-             color:'red',
-             fontSize: '20px',
-             fontStyle: 'bold',
-         }),
-         this.#scene.add.text(
-            125,70, 
-             PLAYER_OPTIONS.SCAN,{
-             color:'red',
-             fontSize: '20px',
-             fontStyle: 'bold',
-         }),
+
+     this.#scene.add.text(125,15, PLAYER_OPTIONS.FIGHT, MenuOptionsTextStyle),
+     this.#scene.add.text(55,43,PLAYER_OPTIONS.FLEE,MenuOptionsTextStyle),
+     this.#scene.add.text(180,43,PLAYER_OPTIONS.ITEM, MenuOptionsTextStyle),
+     this.#scene.add.text(125,70, PLAYER_OPTIONS.SCAN,MenuOptionsTextStyle),
      ]);
 
      this.battleOptionsOff();
@@ -108,85 +106,30 @@ export class CombatMenu {
  //Create options for Player Moves
  #createFightOptions()
  {
+  this.#FightText = this.#scene.add.text(55,540,'What Do You Want To Do?', MessageTextStyle)
+
   this.#fightOpt =  this.#scene.add.container(400,500, [
-    this.#scene.add.text(55,22,ATTACK_LIST.MOVE_1, {
-         color: 'black',
-         fontSize: '18px',
-         fontStyle: 'bold',
-          }),
-          this.#scene.add.text(55,55,ATTACK_LIST.MOVE_2,{
-                color:'black',
-                fontSize: '18px',
-                fontStyle: 'bold',
-            }),
-            this.#scene.add.text(200,22,ATTACK_LIST.MOVE_3,{
-                color:'black',
-                fontSize: '18px',
-                fontStyle: 'bold',
-            }),
-            this.#scene.add.text(200,55,ATTACK_LIST.MOVE_4,{
-                color:'black',
-                fontSize: '18px',
-                fontStyle: 'bold',
-            }),
-     ])
+  this.#scene.add.image(40,52, 'leftkey').setScale(0.5),
+  this.#scene.add.image(285,52, 'rightkey').setScale(0.5),
+  this.#scene.add.image(150,20,'upkey').setScale(0.5),
+  this.#scene.add.image(150,80,'downkey').setScale(0.5),
 
-     this.fightOptionsOff();
- 
- }
- 
- //Prompt for Run/Fight/Item
- 
- #promptFightOption()
- {
-  this.#fightPrompt =  this.#scene.add.container(0,500, [
-    this.#scene.add.text(
-         55,
-         22,
-         'What Do You Want To Do?',{
-             color:'Blue',
-             fontSize: '18px',
-             fontStyle: 'bold',
-         }),
-     ])
+  this.#scene.add.text(170,15, ATTACK_LIST.MOVE_1, MenuOptionsTextStyle),
+  this.#scene.add.text(55,43, ATTACK_LIST.MOVE_2,  MenuOptionsTextStyle),
+  this.#scene.add.text(220,43, ATTACK_LIST.MOVE_3, MenuOptionsTextStyle),
+  this.#scene.add.text(170,70, ATTACK_LIST.MOVE_4,MenuOptionsTextStyle),
+  ]);
 
-     this.fightPromptOff();
-}
- 
- 
- //Prompt for Battle Move
- 
- #promptBattleOption()
- {
-  this.#battlePrompt= this.#scene.add.container(400,500, [
-    this.#scene.add.text(
-         70,
-         40,
-         'Your Orders, Sir?',{
-             color:'Blue',
-             fontSize: '25px',
-             fontStyle: 'bold',
-         }),
-     ])
-
-     this.battlePromptOff();
+   this.fightOptionsOff();
  
  }
 
+//Show Item Used Text
  #promptItem()
  {    
-    this.#itemPrompt = this.#scene.add.container(400,500, [
-        this.#scene.add.text(
-             70,
-             40,
-             'You Used an Item',{
-                 color:'Blue',
-                 fontSize: '30px',
-                 fontStyle: 'bold',
-             }),
-         ])
 
-         this.itemPromptOff();
+    this.#RenderMessage = this.#scene.add.text(400, 540, "blank", MessageTextStyle);
+    this.RenderMessageOff();
 
 }
 
@@ -194,70 +137,54 @@ battleOptionsOn()
 {
      //Add MenuOptions - Player Options container
          this.#battleOpt.setAlpha(1); 
+         this.#BattleText.setAlpha(1);
 }
 battleOptionsOff()
 {
      //Add MenuOptions - Player Options container
          this.#battleOpt.setAlpha(0);
+         this.#BattleText.setAlpha(0);
 }
 
-battlePromptOn()
-{
-    this.#battlePrompt.setAlpha(1);  
-}
-
-battlePromptOff()
-{
-    this.#battlePrompt.setAlpha(0);  
-}
 
 fightOptionsOn()
 {
  this.#fightOpt.setAlpha(1);
+ this.#FightText.setAlpha(1);
 
 }
 fightOptionsOff()
 {
  this.#fightOpt.setAlpha(0);
-
-}
-fightPromptOn()
-{
-    this.#fightPrompt.setAlpha(1);
+ this.#FightText.setAlpha(0);
 
 }
 
-fightPromptOff()
-{
-    this.#fightPrompt.setAlpha(0);
-
-}
 
 managedInFightScene()
 {
     this.battleOptionsOff();
-    this.battlePromptOff();
 
     this.fightOptionsOn();
-    this.fightPromptOn();  
+
 }
 
 managedInBattleScene()
 {
     this.battleOptionsOn();
     this.fightOptionsOff();
-    this.battlePromptOn();
-    this.fightPromptOff();  
+
+
 }
 
-itemPromptOff()
+RenderMessageOff()
 {
-    this.#itemPrompt.setAlpha(0);
+    this.#RenderMessage.setAlpha(0);
 }
 
-itemPromptOn()
+RenderMessageOn()
 {
-    this.#itemPrompt.setAlpha(1);
+    this.#RenderMessage.setAlpha(1);
 }
 
 playerInput(entry)
@@ -266,11 +193,14 @@ playerInput(entry)
     {
         this.managedInFightScene();
         return;
-        
     }
     if (entry == 'FLEE')
     {
         console.log("YOU are FLEEING")
+        //Return to main battle menu?
+        this.#scene.start("Highscore")
+        return;
+        
     }
     if (entry == 'SCAN')
     {
@@ -279,16 +209,13 @@ playerInput(entry)
     if (entry == 'ITEM')
     {
         console.log("ITEM")
-       
-        this.battlePromptOff();
-        this.battleOptionsOff();
-        this.itemPromptOn();
         
-
-        this.#scene.time.delayedCall(3000, this.battleOptionsOn, null, this )
-        this.#scene.time.delayedCall(3000, this.battlePromptOn, null, this)
-        this.#scene.time.delayedCall(3000, this.itemPromptOff, null, this)
-
+        this.battleOptionsOff();
+        this.#RenderMessage.setText(`You Used An Item`)
+        this.RenderMessageOn();
+        
+        this.#scene.time.delayedCall(2500, this.battleOptionsOn, null, this )
+        this.#scene.time.delayedCall(2500, this.RenderMessageOff, null, this)
 
         this.item = this.#scene.add.sprite(615, 200, 'blueitem').setScale(3);
         this.item.anims.play('blueitem',true)
@@ -304,41 +231,59 @@ playerInput(entry)
 playerFightInputSelect(entry)
 {
 
-    if(entry == 'slash'){
+  //Player Attacks
+   
+        this.fightOptionsOff(),
 
-        this.fightOptionsOff();
-        this.fightPromptOff();
-        this.slashOn();
+        this.#RenderMessage.setText(`You Used ${entry}`); 
+        this.RenderMessageOn();
+        this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this )
+    
+        //Reduce Enemy Life
 
-        this.#scene.time.delayedCall(1000, this.slashOff, null, this)
-        this.#scene.time.delayedCall(1000, this.battleOptionsOn, null, this )
-        this.#scene.time.delayedCall(1000, this.battlePromptOn, null, this)
+    //     this.#RenderMessage.setText(`Your Enemy Loses HP`); 
+    //     this.RenderMessageOn();      
+    //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
+     
 
-            
-        return; 
-     }
-   else
-    {
-        return;
-     }
+    //     //Check Enemy is still alive
 
+    //     //Enemy Attacks
+
+    //     var attack = "WHOMP"
+    //     this.#RenderMessage.setText(`Your Enemy Uses ${attack}`); 
+    //     this.RenderMessageOn();      
+    //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
+
+    //     //Reduce Player Life
+
+    //     this.#RenderMessage.setText(`You have lost HP`); 
+    //     this.RenderMessageOn();      
+    //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
+        
+    //     //Check Player is still alive
+
+    // //Return
+    this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
+    // return;
     
 }
 
 
 #Slashfight()
 {
-    this.#fightSlash = this.#scene.add.text(
+    var A = "slash"
+        this.#fightSlash = this.#scene.add.text(
         200,
         300,
-        'SLlllllllllllllASH',{
+        "Slash",
+        {
             color:'Red',
             fontSize: '40px',
             fontStyle: 'bold italic',
         }),
-    console.log("SLLLLLAAAASSSHHHH")
 
-    this.slashOff();
+   this.slashOff();
 }
 
 slashOff()
@@ -349,5 +294,7 @@ slashOn()
 {
     this.#fightSlash.setAlpha(1);
 }
+
+
 
 }
