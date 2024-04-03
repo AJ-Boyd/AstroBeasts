@@ -9,6 +9,9 @@ import { InventoryScene } from './hub_menu/inventory.js';
 import { DojoScene } from './hub_menu/dojo.js';
 import { ShopScene } from './hub_menu/shop.js';
 import { TourneyScene } from './hub_menu/tourney.js';
+import { SaveScene} from './hub_menu/save.js';
+import { HighScoreScene} from './start_menu/highscore.js';
+
 import { FleeScene } from './combat_menu/flee.js';
 
 // game configs
@@ -18,7 +21,7 @@ const config = {
     height: 600,
     parent: 'gameContainer',
     scene: [MainMenuScene, NewGameScene, NameInputScene, PickYourStarterScene, TutorialScene, LoadGameScene, OptionsScene, 
-            HubScene, InventoryScene, DojoScene, ShopScene, TourneyScene, FleeScene],
+            HubScene, InventoryScene, DojoScene, ShopScene, TourneyScene, SaveScene, HighScoreScene, FleeScene],
     dom: {
         createContainer: true
     },
