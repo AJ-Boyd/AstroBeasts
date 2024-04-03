@@ -90,7 +90,7 @@ class AlienAttributesLink(Base):
     attributes = relationship('AlienAttributes')
 
 # Initialize the database connection (SQLite in-memory database)
-engine = create_engine('sqlite:///:memory:')
+engine = create_engine('sqlite:///mydatabase.db')
 Base.metadata.create_all(engine)
 
 # Create a session to interact with the database
