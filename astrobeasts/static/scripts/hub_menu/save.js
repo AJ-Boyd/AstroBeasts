@@ -4,10 +4,49 @@ export class SaveScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.text(100, 100, 'Game saved.');  
-        // add load game functionality here
-        let GoBackText = this.add.text(100, 300, '< Back', { color: 'white' })
+    
+        const centerX = this.cameras.main.width / 2;
+        this.add.text(centerX, 50, 'Choose your Save Slot', {font: '32px', color: 'orange', align: 'center'}).setOrigin(0.5, 0);
+
+
+        this.createSaveButton(centerX, 140, 'Save Slot 1', 1);
+        this.createSaveButton(centerX, 220, 'Save Slot 2', 2);
+        this.createSaveButton(centerX, 300, 'Save Slot 3', 3);
+
+
+        this.add.text(100, 350, '< Back', { font: '24px', color: 'white' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('LoadHub'));
+    }
+
+    createSaveButton(x, y, text, slot) {
+        this.add.text(x, y, text, { font: '24px', color: 'cyan' })
+            .setInteractive({ useHandCursor: true })
+            .setOrigin(0.5, 0) // Center the button text
+            .on('pointerdown', () => this.saveGame(slot));
+    }
+
+    async saveGame(slot) {
+        try {
+            const response = await fetch('/save_game', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ slot: slot.toString() }),
+            });
+            const data = await response.json();
+            if (data.status === 'success') {
+                console.log('Game saved:', data.message);
+                // Update to show feedback in a consistent and visible location
+                this.add.text(this.cameras.main.width / 2, 380, 'Save successful!', { font: '24px', color: 'green' }).setOrigin(0.5, 0);
+            } else {
+                console.error('Save failed:', data.message);
+                this.add.text(this.cameras.main.width / 2, 380, 'Save failed!', { font: '24px', color: 'red' }).setOrigin(0.5, 0);
+            }
+        } catch (error) {
+            console.error('Error saving game:', error);
+            this.add.text(this.cameras.main.width / 2, 380, 'Error saving game.', { font: '24px', color: 'red' }).setOrigin(0.5, 0);
+        }
     }
 }
