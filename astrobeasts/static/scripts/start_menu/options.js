@@ -5,18 +5,18 @@ export class OptionsScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.text(100, 100, 'OPTIONS STUFF HERE', { color: 'white' });
+        this.add.text(100, 90, 'Options', {font: '34px', color: 'white', stroke: 'white', strokeThickness: 1 });
         // add options functionality here
         
-        let HighScore = this.add.text(100, 200, 'High Scores', { color: 'magenta' })
+        let HighScore = this.add.text(100, 150, 'High Scores', {font: '24px', color: 'deeppink' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('HighScore'));
 
-        let smthn = this.add.text(100, 300, 'option 2', { color: 'magenta' })
+        let smthn = this.add.text(100, 200, 'Credits', {font: '24px', color: 'deeppink' })
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('HighScore'));
+            .on('pointerdown', () => this.scene.start('RollCredits'));
 
-        let smelse = this.add.text(100, 400, 'option 3', { color: 'deeppink' })
+        let smelse = this.add.text(100, 250, 'Option 3', {font: '24px', color: 'deeppink' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('HighScore'));
 
