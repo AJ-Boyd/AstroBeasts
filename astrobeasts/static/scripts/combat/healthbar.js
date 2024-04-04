@@ -1,25 +1,36 @@
 
-export class healthBar {
-    #scene;
-   #healthbarcontainer;
+export class HPBar {
+   #scene;
+   #HPcontainer;
    #fullhealth;
    #scaleY;
    #middle;
    #leftCap;
    #rightCap;
 
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @param {this} scene
+     */
     constructor(scene,x,y)
     {
         this.#scene = scene;
         this.#fullhealth = 150;
         this.#scaleY = 0.7;
-        this.#healthbarcontainer = this.#scene.add.container(x,y, [])
+        this.#HPcontainer = this.#scene.add.container(x,y, [])
         this.#HPBarImage(x,y)
-        this.#setHP(0.1);
+        this.#setHP(1);
+        
     }
 
 
 
+
+    /**
+     * @param {any} x
+     * @param {any} y
+     */
 
 #HPBarImage(x , y) {
     
@@ -36,15 +47,15 @@ export class healthBar {
         .setOrigin(0,0.5)
         .setScale(1,this.#scaleY);
 
-        this.#healthbarcontainer.add([this.#leftCap, this.#middle, this.#rightCap ]); 
+        this.#HPcontainer.add([this.#leftCap, this.#middle, this.#rightCap ]); 
 
 }
 
 get container() {
-    return this.#healthbarcontainer
+    return this.#HPcontainer
 }
 
-#setHP(percent = 1) {
+#setHP(percent) {
     const width = this.#fullhealth*percent;
 
     this.#middle.displayWidth = width;
@@ -53,24 +64,21 @@ get container() {
 }
 
 
-animateHP(percent, input)
+    /**
+     * @param {number} percent
+     */
+
+
+animateHP(percent)
 {
 
-    const width = this.#fullhealth*percent;
+    const displayWidth = this.#fullhealth*percent;
 
     this.#scene.tweens.add({
         targets:this.#middle,
-        displayWidth: width,
-        duration: 1000,
-        ease:  Phaser.Math.Easing.Sine.Out,
-        onUpdate: () => {
-            this.#rightCap.x = this.#middle.x + this.#middle.displayWidth;
-            const isVisible = this.#middle.displayWidth >0;
-            this.#leftCap = isVisible;
-            this.#middle = isVisible;
-            this.#rightCap = isVisible;
-        },
-        onComplete: options?.callback,
+        displayWidth,
+        duration: 2000,
+        ease:  'Power1',
     });
 
 

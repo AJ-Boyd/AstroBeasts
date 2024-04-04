@@ -198,7 +198,7 @@ playerInput(entry)
     {
         console.log("YOU are FLEEING")
         //Return to main battle menu?
-        this.#scene.start("Highscore")
+        this.scene.start("MainMenu")
         return;
         
     }
@@ -228,10 +228,10 @@ playerInput(entry)
 }
 
 
-playerFightInputSelect(entry)
+playerFightInputSelect(entry)  //THIS IS WHERE I was thinkign comabt logic goes
 {
 
-  //Player Attacks
+  //Step 1: Player Attacks
    
         this.fightOptionsOff(),
 
@@ -239,37 +239,37 @@ playerFightInputSelect(entry)
         this.RenderMessageOn();
         this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this )
     
-        //Reduce Enemy Life
+        //Step 2: Reduce Enemy Life
 
     //     this.#RenderMessage.setText(`Your Enemy Loses HP`); 
     //     this.RenderMessageOn();      
     //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
      
 
-    //     //Check Enemy is still alive
+    //     // Step 3: Check Enemy is still alive
 
-    //     //Enemy Attacks
+    //     // Step 4: Enemy Attacks
 
     //     var attack = "WHOMP"
     //     this.#RenderMessage.setText(`Your Enemy Uses ${attack}`); 
     //     this.RenderMessageOn();      
     //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
 
-    //     //Reduce Player Life
+    //     //Step 5: Reduce Player Life
 
     //     this.#RenderMessage.setText(`You have lost HP`); 
     //     this.RenderMessageOn();      
     //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
         
-    //     //Check Player is still alive
+    //     //Step6: Check Player is still alive
 
-    // //Return
+    // // Step 7Return
     this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
     // return;
     
 }
 
-
+///Casey thinks all below this like may be old, redundant after I refactored - 4/4/24
 #Slashfight()
 {
     var A = "slash"

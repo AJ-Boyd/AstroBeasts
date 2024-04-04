@@ -1,4 +1,5 @@
 //Base class for alienz!
+import { HPBar } from "./healthbar.js";
 
 /**
  * @typedef AlienConfig
@@ -40,8 +41,10 @@ export class Aliens {
     _alienDetails;
      /** @protected @type {Phaser.GameObjects.Image} */ 
     _AlienGuy;
-     /** @protected @type {healthBar} */ 
-    _healthBar
+    /**
+     * @type {any}
+     */
+    _HPBar;
 
     /**
      * @param {AlienConfig} config
@@ -52,7 +55,7 @@ export class Aliens {
         this._scene = config.scene;
         this._alienDetails = config.AlienDetails;
 
-        this._healthBar = new this._scene,34,34)
+        this._HPBar= new HPBar(this._scene,10,22);
 
         this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(3);
         this.AlienGuy.anims.play(this._alienDetails.assetAnim)
@@ -64,5 +67,5 @@ export class Aliens {
 
 //create our alien and idle
 
-    this.player = this.add.sprite(200, 310, 'Strikoh').setScale(4);
-    this.player.anims.play("idle_Strikoh", true)
+    //this.player = this.add.sprite(200, 310, 'Strikoh').setScale(4);
+   // this.player.anims.play("idle_Strikoh", true)

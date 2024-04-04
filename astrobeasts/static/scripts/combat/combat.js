@@ -1,5 +1,6 @@
+import { Aliens } from './aliens.js';
 import { CombatMenu } from './combatmenu.js';
-import { healthBar } from './healthbar.js';
+import { HPBar } from './healthbar.js';
 import { RenderBackground } from './renderbackground.js';
 
 var cursors;
@@ -7,7 +8,8 @@ var STATUS_STATE = 'default'
 
 export class CombatScene extends Phaser.Scene {
     #combatMenu;
-    
+    #EnemyAlien;
+    #PlayerAlien;
 
     constructor() {
         super({
@@ -49,17 +51,50 @@ create() {
 
 
 //create enemy alien and idle
+ this.#EnemyAlien = new Aliens({
+    scene:this,
+    AlienDetails: {
+        name: "Tarkeel",
+        assets: 'Tarkeel',
+        assetAnim: "idle_Tarkeel",
+        maxHp: 25,
+        currentHp: 25,
+        baseAttack: 2,
+        attackOptions: []
+    }
+    
+ }, {x: 600, y: 310})
 
-    this.enemy = this.add.sprite(600, 310, 'Tarkeel').setScale(3);
-    this.enemy.anims.play("idle_Tarkeel", true)
+ //OLD CODE - creating a single instance
+    // this.enemy = this.add.sprite(600, 310, 'Tarkeel').setScale(3);
+    // this.enemy.anims.play("idle_Tarkeel", true)
+
+
 
 //create our alien and idle
+this.#PlayerAlien = new Aliens({
+    scene:this,
+    AlienDetails: {
+        name: "Strikoh",
+        assets: 'Strikoh',
+        assetAnim: "idle_Strikoh",
+        maxHp: 25,
+        currentHp: 25,
+        baseAttack: 2,
+        attackOptions: []
+    }
+    
+ }, {x: 200, y: 310})
+ 
+ 
+ //
+ 
+ //OLD CODE - creating a single instance
+ //this.player = this.add.sprite(200, 310, 'Strikoh').setScale(4);
+    //this.player.anims.play("idle_Strikoh", true)
 
-    this.player = this.add.sprite(200, 310, 'Strikoh').setScale(4);
-    this.player.anims.play("idle_Strikoh", true)
 
-
-//Enemy Name formatting. TO DO to make this change based on alien
+//Enemy Name formatting. TO DO to make this change based on  and Move into HP container, below
     const enemyAlien = this.add.text(40,0, "TARKEEL", 
             {
             color: '#31b1e0',
@@ -68,7 +103,7 @@ create() {
             }
     );
 
- //Player Name formatting. TO DO to make this change based on alien
+ //Player Name formatting. TO DO to make this change based on alien. Move into HP container, below
     const playerAlien = this.add.text(40,0,"STRIKOH", 
         {
             color: '#045eda',
@@ -79,12 +114,12 @@ create() {
 
 //Create container for Player health bar
 
-    this.add.container(550, 425, [
+    this.add.container(550, 400, [
       this.add
         .image(0, 0,"healthback")
         .setOrigin(0),
         playerAlien,
-        new healthBar(this, 10, 22).container,       
+        new HPBar(this, 10, 22).container,       
 
    this.add.text (175, 5,'25/25', {
         color:'red',
@@ -95,12 +130,12 @@ create() {
 ]);
 
 //Create container for Enemy health bar
-    this.add.container(1, 20, [
+    this.add.container(1,400, [
         this.add
         .image(0, 0,"healthback")
         .setOrigin(0),
         enemyAlien,
-        new healthBar(this, 20, 22).container,
+        new HPBar(this, 10, 22).container,
        
     ]);
 
