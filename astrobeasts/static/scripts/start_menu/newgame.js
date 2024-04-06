@@ -7,10 +7,25 @@ export class NewGameScene extends Phaser.Scene {
     // WHERE GLOBAL REGISTERY IS CREATED
     // creates any global variable that has to be accessed in multiple scenes
     init() {
-        this.registry.set('inventory', []); // should be list of dicts with the item name and its key that cooresponds to it's png path
-        this.registry.set('astrobeasts', [{key: 'skoll', name: 'Skoll'}, {key: 'tarkeel', name: 'Tarkeel'}]); // similar as above. showing starter astrobeasts
+
+         // inventory contains dictionary items, where each dictionary represents an item. it has the following variables:
+        // 1. key (image name), 2. name (item's name), 3. description, 4. quantity, 5. isEquipped (has the player equipped this item for battle?)
+        this.registry.set('inventory', [{ key: 'atk_potion', name: 'ATK Potion', description: 'Increases ATK by 10', quantity: 5, isEquipped: false },
+        { key: 'cookies', name: 'cookies', description: 'Restores 20 HP', quantity: 1, isEquipped: false }]); // should be list of dicts with the item name and its key that cooresponds to it's png path
+        
+        // astrobeasts contain dictionaries, where each dictionary represents an astrobeast. it has the following variables:
+        // 1. key (image name), 2. name (astrobeast name), 3. description (it's affinity), 4. quantity (always 1), 5. isEquipped (has the player equipped this beast for battle?)
+        this.registry.set('astrobeasts', [{ key: 'skol', name: 'Skol', description: 'Fire AstroBeast', quantity: 1, isEquipped: false },
+        { key: 'tarkeel', name: 'Tarkeel', description: 'Water AstroBeast', quantity: 1, isEquipped: false }]); // similar as above. showing starter astrobeasts
         this.registry.set('playerName', '');
 
+        // caps for equipped items/astrobeasts/moves
+        this.registry.set('maxItemsEquipped', 5);
+        this.registry.set('maxAstrobeastsEquipped', 4);
+        this.registry.set('maxMovesEquipped', 5);
+        this.registry.set('currentItemsEquipped', 0);
+        this.registry.set('currentAstrobeastsEquipped', 0);
+        this.registry.set('currentMovesEquipped', 0);    
     }
 
     preload() {
