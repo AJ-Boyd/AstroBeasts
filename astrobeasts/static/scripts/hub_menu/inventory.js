@@ -24,6 +24,7 @@ export class InventoryScene extends Phaser.Scene {
         
         itemsText.setInteractive();
         beastsText.setInteractive();
+        movesText.setInteractive();
 
         const margin = 10; 
         const xPosition = margin;
@@ -39,6 +40,10 @@ export class InventoryScene extends Phaser.Scene {
     
         beastsText.on('pointerdown', () => {
             this.updateInventoryDisplay('astrobeasts');
+        });
+
+        movesText.on('pointerdown', () => {
+            this.updateInventoryDisplay('moves');
         });
     
         this.createScrollableInventory();
@@ -73,12 +78,14 @@ export class InventoryScene extends Phaser.Scene {
     updateEquippedText() {
         const inventory = this.registry.get('inventory');
         const astrobeasts = this.registry.get('astrobeasts');
+        const moves = this.registry.get('moves');
 
         const equippedItemsCount = inventory.filter(item => item.isEquipped).length;
         const equippedAstrobeastsCount = astrobeasts.filter(astrobeast => astrobeast.isEquipped).length;
+        const equippedMovesCount = moves.filter(move => move.isEquipped).length;
 
         // update the text to show the current counts
-        this.equippedText.setText(`Equipped: ${equippedItemsCount}/5 Items, ${equippedAstrobeastsCount}/4 AstroBeasts`);
+        this.equippedText.setText(`Equipped: ${equippedItemsCount}/5 Items, ${equippedAstrobeastsCount}/4 AstroBeasts, ${equippedMovesCount}/5 Moves`);
     }
     createScrollableInventory() {
         const inventoryWidth = 400; 
@@ -132,7 +139,8 @@ export class InventoryScene extends Phaser.Scene {
 
         // do not exceed limit
         if (!item.isEquipped && ((type === 'inventory' && list.filter(item => item.isEquipped).length > 5) ||
-            (type === 'astrobeasts' && list.filter(item => item.isEquipped).length > 4))) {
+            (type === 'astrobeasts' && list.filter(item => item.isEquipped).length > 4) || 
+            (type === 'moves' && list.filter(item => item.isEquipped).length > 5))) {
             alert('Max capacity reached.');
             return;
         }

@@ -17,6 +17,13 @@ export class NewGameScene extends Phaser.Scene {
         // 1. key (image name), 2. name (astrobeast name), 3. description (it's affinity), 4. quantity (always 1), 5. isEquipped (has the player equipped this beast for battle?)
         this.registry.set('astrobeasts', [{ key: 'skol', name: 'Skol', description: 'Fire AstroBeast', quantity: 1, isEquipped: false },
         { key: 'tarkeel', name: 'Tarkeel', description: 'Water AstroBeast', quantity: 1, isEquipped: false }]); // similar as above. showing starter astrobeasts
+        
+
+        // moves contain dictionaries, where each dictionary represents a move. it has the following variables:
+        // 1. key (image name), 2. name (move name), 3. description (what it does), 4. quantity, 5. isEquipped (has the player equipped this  for battle?)
+        this.registry.set('moves', [{ key: 'slash', name: 'Slash', description: 'Deals damage to enemy', quantity: 2, isEquipped: false },
+        { key: 'headbutt', name: 'Headbutt', description: 'Deals damage to enemy', quantity: 1, isEquipped: false }]); 
+        
         this.registry.set('playerName', '');
 
         // caps for equipped items/astrobeasts/moves
