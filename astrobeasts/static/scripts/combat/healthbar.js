@@ -11,7 +11,7 @@ export class HPBar {
     /**
      * @param {number} x
      * @param {number} y
-     * @param {this} scene
+     * @param {Phaser.Scene} scene
      */
     constructor(scene,x,y)
     {
@@ -21,6 +21,7 @@ export class HPBar {
         this.#HPcontainer = this.#scene.add.container(x,y, [])
         this.#HPBarImage(x,y)
         this.#setHP(1);
+        this.animateHP(0.2);
         
     }
 

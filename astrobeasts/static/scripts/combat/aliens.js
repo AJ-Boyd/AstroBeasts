@@ -1,7 +1,7 @@
 //Base class for alienz!
 import { HPBar } from "./healthbar.js";
 
-/**
+/** Define Object "Alien Config"
  * @typedef AlienConfig
  * @type {Object}
  * @property {Phaser.Scene} scene
@@ -9,7 +9,7 @@ import { HPBar } from "./healthbar.js";
  * */
 
 
-/**
+/** Define Object "Alien"
  * @typedef Alien
  * @type {Object}
  * @property {string} name
@@ -22,7 +22,7 @@ import { HPBar } from "./healthbar.js";
  * 
  * */
 
-/**
+/**Define Object "coord" which is the coordinates of the alien 
  * @typedef coord
  * @type {Object}
  * @property {number} x
@@ -54,8 +54,6 @@ export class Aliens {
     {
         this._scene = config.scene;
         this._alienDetails = config.AlienDetails;
-
-        this._HPBar= new HPBar(this._scene,10,22);
 
         this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(3);
         this.AlienGuy.anims.play(this._alienDetails.assetAnim)

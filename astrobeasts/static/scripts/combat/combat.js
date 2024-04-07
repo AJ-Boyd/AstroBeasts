@@ -72,6 +72,7 @@ create() {
 
 
 //create our alien and idle
+
 this.#PlayerAlien = new Aliens({
     scene:this,
     AlienDetails: {
@@ -86,6 +87,7 @@ this.#PlayerAlien = new Aliens({
     
  }, {x: 200, y: 310})
  
+
  
  //
  
@@ -135,7 +137,7 @@ this.#PlayerAlien = new Aliens({
         .image(0, 0,"healthback")
         .setOrigin(0),
         enemyAlien,
-        new HPBar(this, 10, 22).container,
+       new HPBar(this, 10, 22).container,
        
     ]);
 
