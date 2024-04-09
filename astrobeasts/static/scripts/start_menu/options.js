@@ -12,13 +12,16 @@ export class OptionsScene extends Phaser.Scene {
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('HighScore'));
 
-        let smthn = this.add.text(100, 200, 'Credits', {font: '24px', color: 'deeppink' })
+        let rollcreds = this.add.text(100, 200, 'Credits', {font: '24px', color: 'deeppink' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('RollCredits'));
 
-        let smelse = this.add.text(100, 250, 'Option 3', {font: '24px', color: 'deeppink' })
+        let muwusic = this.add.text(100, 250, 'Mute Music', {font: '24px', color: 'deeppink' })
+        let musicOff = this.add.text(260, 250, '□', {font: '28px', color: 'deeppink' })
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('HighScore'));
+            .on('pointerdown', () => this.add.text(260, 250, '✓', {font: '24px', color: 'white' }));
+            // ADD MUSIC MUTE FUNCTIONALITY
+        
 
         let GoBackText = this.add.text(100, 500, '< Back', { color: 'white' })
             .setInteractive({ useHandCursor: true })
