@@ -27,13 +27,20 @@ export class SaveScene extends Phaser.Scene {
     }
 
     async saveGame(slot) {
+        // SAVES ALL VARIABLES NEEDED IN DATABASE
+        const gameState = {
+            inventory: this.registry.get('inventory'),
+            astrobeasts: this.registry.get('astrobeasts'),
+            playerName: this.registry.get('playerName'),
+            // will need to include other registry variables
+        };
         try {
             const response = await fetch('/save_game', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ slot: slot.toString() }),
+                body: JSON.stringify({ slot: slot.toString(), gameState: gameState }),
             });
             const data = await response.json();
             if (data.status === 'success') {

@@ -1,23 +1,35 @@
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
 Base = declarative_base()
+
+#relationships for player and items  in inventory
+player_inventory_association = Table('player_inventory', Base.metadata,
+    Column('PlayerID', ForeignKey('Players.PlayerID'), primary_key=True),
+    Column('ItemID', ForeignKey('InventoryItems.ItemID'), primary_key=True)
+)
+
+# relationships for player and astrobeasts in inventory
+player_astrobeast_association = Table('player_astrobeast', Base.metadata,
+    Column('PlayerID', ForeignKey('Players.PlayerID'), primary_key=True),
+    Column('AstroBeastID', ForeignKey('AstroBeasts.AstroBeastID'), primary_key=True)
+)
 
 # Define the Players table
 class Player(Base):
     __tablename__ = 'Players'
     
     PlayerID = Column(Integer, primary_key=True)
-    username = Column(String)
-    password = Column(String)
-    inventory = relationship('PlayerInventory', back_populates='player')
-    alien_inventory = relationship('AlienInventory', back_populates='player')
-    leaderboard = relationship('LeaderBoard', back_populates='player')
+    name = Column(String)
+    inventoryItems = relationship('InventoryItem', secondary=player_inventory_association, back_populates='players')
+    astroBeasts = relationship('AstroBeast', secondary=player_astrobeast_association, back_populates='players')
+    #leaderboard = relationship('LeaderBoard', back_populates='player')
 
+"""
 # Define the PlayerInventory table
-class PlayerInventory(Base):
-    __tablename__ = 'PlayerInventory'
+class PlayerInventory(Base): #unsure where to use this. 
+   __tablename__ = 'PlayerInventory'
     
     InventoryID = Column(Integer, primary_key=True)
     PlayerID = Column(Integer, ForeignKey('Players.PlayerID'))
@@ -26,7 +38,18 @@ class PlayerInventory(Base):
     Level = Column(Integer)
     
     player = relationship('Player', back_populates='inventory')
+"""
 
+class InventoryItem(Base):
+    __tablename__ = 'InventoryItems'
+    ItemID = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    quantity = Column(Integer)
+    isEquipped = Column(Boolean)
+    players = relationship('Player', secondary=player_inventory_association, back_populates='inventoryItems')
+
+"""
 # Define the AlienInventory table
 class AlienInventory(Base):
     __tablename__ = 'AlienInventory'
@@ -36,8 +59,19 @@ class AlienInventory(Base):
     
     player = relationship('Player', back_populates='alien_inventory')
     alien = relationship('Alien', back_populates='alien_inventory')
+"""
+
+class AstroBeast(Base): #need to adjust to include relationship with stats. stats are not implemented in game yet.
+    __tablename__ = 'AstroBeasts'
+    AstroBeastID = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    quantity = Column(Integer, default=1)
+    isEquipped = Column(Boolean)
+    players = relationship('Player', secondary=player_astrobeast_association, back_populates='astroBeasts')
 
 # Define the Aliens table
+"""
 class Alien(Base):
     __tablename__ = 'Aliens'
     
@@ -88,6 +122,7 @@ class AlienAttributesLink(Base):
     
     alien = relationship('Alien', back_populates='alien_attributes')
     attributes = relationship('AlienAttributes')
+"""
 
 # Initialize the database connection (SQLite in-memory database)
 engine = create_engine('sqlite:///mydatabase.db')

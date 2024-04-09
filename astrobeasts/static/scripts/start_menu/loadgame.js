@@ -6,7 +6,7 @@ export class LoadGameScene extends Phaser.Scene {
 
     create() {
         const centerX = this.cameras.main.width / 2;
-        this.add.text(centerX, 50, 'Choose your Save Slot', {font: '32px', color: 'orange', align: 'center'}).setOrigin(0.5, 0);
+        this.add.text(centerX, 50, 'Choose your Save Slot to Load', {font: '32px', color: 'orange', align: 'center'}).setOrigin(0.5, 0);
         
         let SaveSlot1Text= this.add.text(100, 140, 'Save Slot 1', {font: '24px', color: 'cyan'})
             .setInteractive({ useHandCursor: true })
