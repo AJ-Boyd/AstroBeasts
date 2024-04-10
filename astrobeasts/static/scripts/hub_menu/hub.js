@@ -29,10 +29,10 @@ export class HubScene extends Phaser.Scene {
 
         // first row of options
         let InventoryText = this.add.text(startXFirstRow, firstRowY, ' > Inventory', { font: '22px', color: 'DodgerBlue' })
-            .setInteractive({ useHandCursor: true })
-            .setOrigin(0.5, 0.5)
-            .on('pointerdown', () => this.scene.start('LoadInventory'));
-
+        .setInteractive({ useHandCursor: true })
+        .setOrigin(0.5, 0.5)
+        .on('pointerdown', () => this.scene.start('LoadInventory'));
+       
         let ShopText = this.add.text(startXFirstRow + gap, firstRowY, ' > Shop', { font: '22px', color: 'MediumSeaGreen' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
@@ -58,6 +58,7 @@ export class HubScene extends Phaser.Scene {
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
             .on('pointerdown', () => this.scene.start('MainMenu'));
+
     }
 }
 

@@ -2,7 +2,7 @@ export class InventoryScene extends Phaser.Scene {
     constructor() {
         super('LoadInventory');
     }
-
+    
     preload() {
         // load all possible inventory images even if user doesn't have them at the moment
         this.load.image('skol', 'static/assets/Objects/skol.png');
@@ -12,16 +12,20 @@ export class InventoryScene extends Phaser.Scene {
         this.load.image('atk_potion', 'static/assets/Objects/atk_potion.png');
         this.load.image('def_potion', 'static/assets/Objects/def_potion.png');
     }
+    
 
     create() {
+        
         const bg = this.add.image(0, 0, 'bg').setOrigin(0, 0);
-
+        
         let itemsText = this.add.text(((87.4 / 2) + 38.5) - 5 , ((164.1 / 2) + 34.7) - 50, "Items", {font: '25px', color: '#000'})
         
         let beastsText = this.add.text(((87.4 / 2) + 38.5) - 10 , ((164.1 / 2) + 168.9) - 65, "Astro\nbeasts", {font: '25px', color: '#000'})
 
         let movesText = this.add.text(((87.4 / 2) + 38.5) - 4 , ((164.1 / 2) + 303.2) - 50, "Moves", {font: '25px', color: '#000'})
         
+        
+
         itemsText.setInteractive();
         beastsText.setInteractive();
         movesText.setInteractive();
@@ -35,21 +39,21 @@ export class InventoryScene extends Phaser.Scene {
 
     
         itemsText.on('pointerdown', () => {
-            this.updateInventoryDisplay('inventory');
+            this.updateInventoryDisplay('inventory_items');
         });
     
         beastsText.on('pointerdown', () => {
-            this.updateInventoryDisplay('astrobeasts');
+            this.updateInventoryDisplay('inventory_astrobeasts');
         });
 
         movesText.on('pointerdown', () => {
-            this.updateInventoryDisplay('moves');
+            this.updateInventoryDisplay('inventory_moves');
         });
     
         this.createScrollableInventory();
 
         // default
-        this.updateInventoryDisplay('inventory');
+        this.updateInventoryDisplay('inventory_items');
 
         //loop through inventory global variable to print each item name, image, description, quantity(calculate this)
         const backButtonX = this.cameras.main.width - margin; 
@@ -76,11 +80,11 @@ export class InventoryScene extends Phaser.Scene {
     }
 
     updateEquippedText() {
-        const inventory = this.registry.get('inventory');
-        const astrobeasts = this.registry.get('astrobeasts');
-        const moves = this.registry.get('moves');
+        const items = this.registry.get('inventory_items');
+        const astrobeasts = this.registry.get('inventory_astrobeasts');
+        const moves = this.registry.get('inventory_moves');
 
-        const equippedItemsCount = inventory.filter(item => item.isEquipped).length;
+        const equippedItemsCount = items.filter(item => item.isEquipped).length;
         const equippedAstrobeastsCount = astrobeasts.filter(astrobeast => astrobeast.isEquipped).length;
         const equippedMovesCount = moves.filter(move => move.isEquipped).length;
 
@@ -138,7 +142,7 @@ export class InventoryScene extends Phaser.Scene {
         const item = list.find(item => item.key === key);
 
         // do not exceed limit
-        if (!item.isEquipped && ((type === 'inventory' && list.filter(item => item.isEquipped).length > 5) ||
+        if (!item.isEquipped && ((type === 'items' && list.filter(item => item.isEquipped).length > 5) ||
             (type === 'astrobeasts' && list.filter(item => item.isEquipped).length > 4) || 
             (type === 'moves' && list.filter(item => item.isEquipped).length > 5))) {
             alert('Max capacity reached.');
@@ -150,5 +154,8 @@ export class InventoryScene extends Phaser.Scene {
 
         this.updateInventoryDisplay(type); //refresh display
         this.updateEquippedText();
+    }
+    refreshInventory() {
+        this.updateInventoryDisplay('inventory_items'); // Default display or based on user's last view
     }
 }

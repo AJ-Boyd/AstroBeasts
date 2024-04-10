@@ -42,12 +42,12 @@ def save_game():
         return jsonify({'status': 'error', 'message': 'Source database does not exist.'}), 404
 
     # Perform the copy operation
-    print("before db created")
-    shutil.copy(src, dest)
-    print("db created")
+    #print("before db created")
+    #shutil.copy(src, dest)
+    #print("db created")
 
     # Connect to the copied save slot database
-    engine = create_engine(f'sqlite:///{dest}')
+    engine = create_engine(f'sqlite:///{src}')
     Base.metadata.bind = engine
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -64,12 +64,12 @@ def save_game():
     session.query(AstroBeast).delete()
 
     # Update player's inventory
-    for item in gameState['inventory']:
+    for item in gameState['inventory_items']:
         inventory_item = InventoryItem(name=item['name'], description=item['description'],
                                        quantity=item['quantity'], isEquipped=item['isEquipped'])
-        session.add(inventory_item)  # Assuming a direct relationship without needing to append to player
+        session.add(inventory_item)
 
-    for beast in gameState['astrobeasts']:
+    for beast in gameState['inventory_astrobeasts']:
         astro_beast = AstroBeast(name=beast['name'], description=beast['description'],
                                  isEquipped=beast['isEquipped'])
         session.add(astro_beast)

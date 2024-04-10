@@ -29,8 +29,8 @@ export class SaveScene extends Phaser.Scene {
     async saveGame(slot) {
         // SAVES ALL VARIABLES NEEDED IN DATABASE
         const gameState = {
-            inventory: this.registry.get('inventory'),
-            astrobeasts: this.registry.get('astrobeasts'),
+            inventory_items: this.registry.get('inventory_items'),
+            inventory_astrobeasts: this.registry.get('inventory_astrobeasts'),
             playerName: this.registry.get('playerName'),
             // will need to include other registry variables
         };
