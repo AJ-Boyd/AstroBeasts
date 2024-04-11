@@ -15,9 +15,9 @@ import { HPBar } from "./healthbar.js";
  * @property {string} name
  * @property {string} assets
  * @property {string} assetAnim
- * @property {number} maxHp
- * @property {number} currentHp
- * @property {number} baseAttack
+ * @property {number} maxHP
+ * @property {number} currentHP
+ * @property {number[]} stats 
  * @property {string[]} attackOptions
  * 
  * */
