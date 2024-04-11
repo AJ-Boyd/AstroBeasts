@@ -9,11 +9,11 @@ var CURR_TURN = 0;
 
 export class CombatScene extends Phaser.Scene {
     //member variables
-    #combatMenu;
-    #EnemyAlien;
+    #combatMenu; //the console at the bottom of the screen that displays input options
+    #EnemyAlien; //this will be depreciated
     #PlayerAlien;
     #player; //the player object
-    #party; // array of party members
+    #party; // shallow copy array of party members
     #enemies; // array of enemies
 
     constructor() {
@@ -21,6 +21,8 @@ export class CombatScene extends Phaser.Scene {
             key:CombatScene.name,
          
         });
+
+        
         console.log(CombatScene.name);
         
     }
@@ -191,22 +193,47 @@ update() {
                 target = 3;
             }
 
-            //attack target
-            var d = this.attack(attacker, target, move);
-            
-            //reduce health
+            //check hit
+            //for now this is purely random; this will depend on player DEX later
+            var hit = this.getRand(0,100);
+            if(hit <= 95){
+                //attack target
+                var d = this.attack(attacker, target, move);
+                
+                //check critical
+                //this is also purely random; this will depend on player LUK later
+                var crit = this.getRand(0,100);
+                if(crit <= 5){
+                    d *= 2; //if there's a critical hit, double the damage
+                }
 
-            //check battle
+                //reduce health
+                target.currentHP -= d;
 
-            //if battle is over, end battle
-
-            //else, change turns
-            STATUS_STATE = 'fight';
+            }else{
+                console.log("MISS")
+            }
+            STATUS_STATE = "checking";
         }
 
-       // STATUS_STATE = 'rest';
+        if(STATUS_STATE == "checking"){
+            //this part still needs to be implemented...
+            //check battle
+            var battleCondtion = this.checkBattle(party, enemies);
+            //if battle is over, end battle
 
+            //condition will equal 1 if defeated
+            if(battleCondition == 1){
+                this.endBattle(battleCondtion);
+            }
+
+            //else, change turns
+            this.changeTurn();
+
+            STATUS_STATE = 'fight';
         
+        }
+       // STATUS_STATE = 'rest';
     }
     else
         if(Phaser.Input.Keyboard.JustDown(cursors.up)){ //FIGHT
@@ -259,6 +286,47 @@ update() {
         }
     }
 
+    /*
+    returns the total damage an attacker does to a target with a given move
+    attacker--Astrobeast
+    target--Astrobeast
+    move-Move
+    */
+    attack(attacker, target, move){
+        var d = this.calcDamage(attacker, move); //raw damage a move can do
+        var m = this.calcMitigation(target); //the percentage of damage that the target can mitigate
+        d *= 1-m;
+        return d;
+    }
+
+    /*
+    formula to calculate raw damage an attacker does with a move. this is based on attacker and move level, 
+    attacker ATK stat, move baseATK stat, and a random number
+    */
+    calcDamage(attacker, move){
+        var a = (1.05 * move.level + 1.08 * attacker.level) * Math.pow(attacker.stats[0], 1.6);
+        var b = move.baseATK / 100;
+        var c = 70 + this.getRand(-10, 25);
+
+        var d = Math.floor(b + (a/c)); 
+
+        return 100;
+    }
+
+    /*
+    formula to calculate the percentage of damage that a target mitigates. this is based on the target's
+    DEF stat and a random number
+    */
+    calcMitigation(target){
+        var a = 1.9 * target.stats[1] + 0.5 * this.getRand(-10, 25);
+        var b = 55;
+
+        var c = Math.floor(a / b);
+        c /= 100;
+
+        return 0.05;
+    }
+
     endBattle(condition){
         var expGain = 0;
         var moneyGain = 0;
@@ -278,6 +346,7 @@ update() {
         }
     }
 
+    //returns a random number between min and max, both inclusinve
     getRand(min, max) {
         return Math.floor(Math.random() * (max - min + 1) ) + min;
     }
