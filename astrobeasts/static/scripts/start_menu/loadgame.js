@@ -4,24 +4,83 @@ export class LoadGameScene extends Phaser.Scene {
         super('LoadGame');
     }
 
-    create() {
-        const centerX = this.cameras.main.width / 2;
-        this.add.text(centerX, 50, 'Choose your Save Slot to Load', {font: '32px', color: 'orange', align: 'center'}).setOrigin(0.5, 0);
-        
-        let SaveSlot1Text= this.add.text(100, 140, 'Save Slot 1', {font: '24px', color: 'cyan'})
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('LoadHub'));
-        
-        let SaveSlot2Text= this.add.text(100, 220, 'Save Slot 2', {font: '24px', color: 'cyan'})
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('LoadHub'));
+    create ()
+    {
+        this.add.text(10, 10, 'Enter your name:, Hit enter when done', { font: '32px Courier', fill: '#ffffff' });
 
-        let SaveSlot3Text= this.add.text(100, 300, 'Save Slot 3', {font: '24px', color: 'cyan'})
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('LoadHub'));
+        const textEntry = this.add.text(10, 50, '', { font: '32px Courier', fill: '#ffff00' });
 
-        let GoBackText = this.add.text(100, 380, '< Back', {font: '24px', color: 'white' })
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('MainMenu'));
+        let playerName = '';
+
+        let inputHandler =  this.input.keyboard.on('keydown', event =>
+        {
+            if (event.keyCode === 8 && textEntry.text.length > 0)
+            {
+                textEntry.text = textEntry.text.substring(0, textEntry.text.length - 1);
+            }
+            else if (event.keyCode === 32 || (event.keyCode >= 48 && event.keyCode <= 90))
+            {
+                textEntry.text += event.key;
+            }else if (event.keyCode == 13){
+                this.playerName = textEntry.text;
+                //this.add.text(this.cameras.main.width / 2, 380, this.playerName, { font: '24px', color: 'green' }).setOrigin(0.5, 0);
+                textEntry.text = '';
+                this.check_name(this.playerName);
+
+                inputHandler.removeListener('keydown');
+            }
+        });
+
+        this.registry.set('playerName', playerName);
+
+        
+    }
+    async check_name(my_name) {
+        // Your async code to save the name goes here
+        try {
+            const response = await fetch('/check_name', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: my_name }),
+            });
+            const data = await response.json();
+            if (data.exists) {
+                console.log('user exists inside of DB:', data.message);
+                // Update to show feedback in a consistent and visible location
+                const playerData = data.playerData;
+
+                // Retrieve existing data
+                const existingInventoryItems = this.registry.get('inventory_items') || [];
+                const existingAstrobeasts = this.registry.get('inventory_astrobeasts') || [];
+                
+                // Append new data
+                const updatedInventoryItems = existingInventoryItems.concat(playerData.inventory_items);
+                const updatedAstrobeasts = existingAstrobeasts.concat(playerData.inventory_astrobeasts);
+    
+                // Update the registry
+                this.registry.set('inventory_items', updatedInventoryItems);
+                this.registry.set('inventory_astrobeasts', updatedAstrobeasts);
+                this.registry.set('playerName', data.playerName)
+
+                this.scene.start('LoadHub');
+            } else {
+                console.error('User does not exist in DB:', data.message);
+                this.scene.start('NameInput');
+            }
+        } catch (error) {
+            console.error('Error chekcing user:', error);
+            this.add.text(this.cameras.main.width / 2, 380, 'Error chekcing user.', { font: '24px', color: 'red' }).setOrigin(0.5, 0);
+        }
     }
 }
+
+const config = {
+    type: Phaser.AUTO,
+    parent: 'phaser-example',
+    width: 800,
+    height: 600,
+    scene: LoadGameScene
+};
+

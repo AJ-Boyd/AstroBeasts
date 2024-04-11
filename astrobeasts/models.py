@@ -24,21 +24,26 @@ class Player(Base):
     name = Column(String)
     inventoryItems = relationship('InventoryItem', secondary=player_inventory_association, back_populates='players')
     astroBeasts = relationship('AstroBeast', secondary=player_astrobeast_association, back_populates='players')
-    #leaderboard = relationship('LeaderBoard', back_populates='player')
+    leaderboard = relationship('LeaderBoard', back_populates='player')
+    inventory = relationship('PlayerInventory', back_populates='player')
+    alien_inventory = relationship('AlienInventory', back_populates='player')
 
-"""
+
+
 # Define the PlayerInventory table
-class PlayerInventory(Base): #unsure where to use this. 
-   __tablename__ = 'PlayerInventory'
+class PlayerInventory(Base):
+    __tablename__ = 'PlayerInventory'
     
+    # Correctly define columns with proper indentation
     InventoryID = Column(Integer, primary_key=True)
-    PlayerID = Column(Integer, ForeignKey('Players.PlayerID'))
+    PlayerID = Column(Integer, ForeignKey('Players.PlayerID'))  # Make sure the table name is lowercase
     Credits = Column(Integer)
     XP = Column(Integer)
     Level = Column(Integer)
-    
+
+    # Define the relationship, ensuring 'Player' class has 'inventory' attribute for back_populates
     player = relationship('Player', back_populates='inventory')
-"""
+
 
 class InventoryItem(Base):
     __tablename__ = 'InventoryItems'
@@ -49,7 +54,7 @@ class InventoryItem(Base):
     isEquipped = Column(Boolean)
     players = relationship('Player', secondary=player_inventory_association, back_populates='inventoryItems')
 
-"""
+
 # Define the AlienInventory table
 class AlienInventory(Base):
     __tablename__ = 'AlienInventory'
@@ -59,7 +64,7 @@ class AlienInventory(Base):
     
     player = relationship('Player', back_populates='alien_inventory')
     alien = relationship('Alien', back_populates='alien_inventory')
-"""
+
 
 class AstroBeast(Base): #need to adjust to include relationship with stats. stats are not implemented in game yet.
     __tablename__ = 'AstroBeasts'
@@ -71,7 +76,7 @@ class AstroBeast(Base): #need to adjust to include relationship with stats. stat
     players = relationship('Player', secondary=player_astrobeast_association, back_populates='astroBeasts')
 
 # Define the Aliens table
-"""
+
 class Alien(Base):
     __tablename__ = 'Aliens'
     
@@ -122,7 +127,7 @@ class AlienAttributesLink(Base):
     
     alien = relationship('Alien', back_populates='alien_attributes')
     attributes = relationship('AlienAttributes')
-"""
+
 
 # Initialize the database connection (SQLite in-memory database)
 engine = create_engine('sqlite:///mydatabase.db')
