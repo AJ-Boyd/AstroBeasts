@@ -146,33 +146,67 @@ update() {
     console.log('update - Combat');
     //console.log(JSON.parse(JSON.stringify(STATUS_STATE)));
 
-    //when selecting move to perform
+    //when selecting which attack to perform
    if(STATUS_STATE == 'fight'){
-        //first attack
+        //the Astrobeast that is currently attacking
+        var attacker = 0;//this.#party[CURR_TURN];
+        //the attack they want to use
+        var move;
+        
+        //select move
         if(Phaser.Input.Keyboard.JustDown(cursors.up)){ 
-           this.#combatMenu.playerFightInputSelect(0);
-           var move = this.#party[CURR_TURN];
-            STATUS_STATE = 'rest';
-            return;
+            //this doesn't work yet
+            // move = attacker.#moves[0]; //move is the first attack
+            move = 0;
+            STATUS_STATE = 'target';
         }
-        //second attack
         else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ //Option Down
-            this.#combatMenu.playerFightInputSelect(1);
-            STATUS_STATE = 'rest'
-            return;
+            // move = attacker.#moves[1]; //second attack
+            move = 1;
+            STATUS_STATE = 'target';
         }
-        //third attack
         else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //Option Left
-            this.#combatMenu.playerFightInputSelect(2);
-            STATUS_STATE = 'rest'
-            return;
-        }
-        //fourth attack
+            // move = attacker.#moves[2]; //third attack
+            move = 2;
+            STATUS_STATE = 'target';
+        }     
         else if(Phaser.Input.Keyboard.JustDown(cursors.right)){  ////Option Right
-            this.#combatMenu.playerFightInputSelect(3)
-            STATUS_STATE = 'rest'
-            return;
+            // move = attacker.#moves[3]; //fourth attack
+            move = 3;
+            STATUS_STATE = 'target';
         }
+
+        if(STATUS_STATE == "target"){
+            //select target
+            var target;
+            console.log("ready to select target")
+
+            if(Phaser.Input.Keyboard.JustDown(cursors.up)){ 
+                target = 0;
+            }else if(Phaser.Input.Keyboard.JustDown(cursors.up)){
+                target = 1;
+            }else if(Phaser.Input.Keyboard.JustDown(cursors.up)){
+                target = 2;
+            }else if(Phaser.Input.Keyboard.JustDown(cursors.up)){
+                target = 3;
+            }
+
+            //attack target
+            var d = this.attack(attacker, target, move);
+            
+            //reduce health
+
+            //check battle
+
+            //if battle is over, end battle
+
+            //else, change turns
+            STATUS_STATE = 'fight';
+        }
+
+       // STATUS_STATE = 'rest';
+
+        
     }
     else
         if(Phaser.Input.Keyboard.JustDown(cursors.up)){ //FIGHT

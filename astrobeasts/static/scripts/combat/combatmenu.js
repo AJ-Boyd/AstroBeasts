@@ -198,7 +198,7 @@ playerInput(entry)
     {
         console.log("YOU are FLEEING")
         //Return to main battle menu?
-        this.scene.start("MainMenu")
+        this.#scene.start("MainMenu")
         return;
         
     }
@@ -230,7 +230,8 @@ playerInput(entry)
 
 playerFightInputSelect(entry)  //THIS IS WHERE I was thinkign comabt logic goes
 {
-
+    console.log(entry)
+        
   //Step 1: Player Attacks
    
         this.fightOptionsOff(),
