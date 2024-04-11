@@ -5,11 +5,16 @@ import { RenderBackground } from './renderbackground.js';
 
 var cursors;
 var STATUS_STATE = 'default'
+var CURR_TURN = 0;
 
 export class CombatScene extends Phaser.Scene {
+    //member variables
     #combatMenu;
     #EnemyAlien;
     #PlayerAlien;
+    #player; //the player object
+    #party; // array of party members
+    #enemies; // array of enemies
 
     constructor() {
         super({
@@ -31,57 +36,38 @@ preload()
 
 }
 
-
-create() {
-   
-   
+create() {   
     console.log('create - Combat');
-
- //accept keyboard input
+    //accept keyboard input
     cursors = this.input.keyboard.createCursorKeys();
-    
-    
-
- 
-
-//background
-  const background = new RenderBackground(this);
-  background.showFire();
-
-
-
-//create enemy alien and idle
- this.#EnemyAlien = new Aliens({
-    scene:this,
-    AlienDetails: {
-        name: "Tarkeel",
-        assets: 'Tarkeel',
-        assetAnim: "idle_Tarkeel",
-        maxHp: 25,
-        currentHp: 25,
-        baseAttack: 2,
-        attackOptions: []
-    }
-    
- }, {x: 600, y: 310})
-
- //OLD CODE - creating a single instance
-    // this.enemy = this.add.sprite(600, 310, 'Tarkeel').setScale(3);
-    // this.enemy.anims.play("idle_Tarkeel", true)
-
-
+    //background
+    const background = new RenderBackground(this);
+    background.showFire();
+    //create enemy alien and idle
+    this.#EnemyAlien = new Aliens({
+        scene:this,
+        AlienDetails: {
+            name: "Tarkeel",
+            assets: 'Tarkeel',
+            assetAnim: "idle_Tarkeel",
+            maxHP: 25,
+            currentHP: 25,
+            stats: [300, 250, 300, 250, 250],
+            attackOptions: []
+        }
+        
+    }, {x: 600, y: 310})
 
 //create our alien and idle
-
 this.#PlayerAlien = new Aliens({
     scene:this,
     AlienDetails: {
         name: "Strikoh",
         assets: 'Strikoh',
         assetAnim: "idle_Strikoh",
-        maxHp: 25,
-        currentHp: 25,
-        baseAttack: 2,
+        maxHP: 25,
+        currentHP: 25,
+        stats: [300, 250, 300, 250, 250],
         attackOptions: []
     }
     
@@ -157,52 +143,43 @@ this.#combatMenu.battleOptionsOn()
 
 
 update() {
-
     console.log('update - Combat');
     //console.log(JSON.parse(JSON.stringify(STATUS_STATE)));
 
+    //when selecting move to perform
    if(STATUS_STATE == 'fight'){
-      
-        if(Phaser.Input.Keyboard.JustDown(cursors.up)){ //Option Up
-           this.#combatMenu.playerFightInputSelect("SLASH");
+        //first attack
+        if(Phaser.Input.Keyboard.JustDown(cursors.up)){ 
+           this.#combatMenu.playerFightInputSelect(0);
+           var move = this.#party[CURR_TURN];
             STATUS_STATE = 'rest';
             return;
-
         }
+        //second attack
         else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ //Option Down
-
-    
-            this.#combatMenu.playerFightInputSelect("TACKLE");
+            this.#combatMenu.playerFightInputSelect(1);
             STATUS_STATE = 'rest'
             return;
-
         }
+        //third attack
         else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //Option Left
-
-            this.#combatMenu.playerFightInputSelect("CROSS SLASH");
+            this.#combatMenu.playerFightInputSelect(2);
             STATUS_STATE = 'rest'
             return;
-
         }
+        //fourth attack
         else if(Phaser.Input.Keyboard.JustDown(cursors.right)){  ////Option Right
-
-            this.#combatMenu.playerFightInputSelect("BITE")
+            this.#combatMenu.playerFightInputSelect(3)
             STATUS_STATE = 'rest'
             return;
-
-        }
-        else {
-            //Nothing here for now.
         }
     }
-    else{
-
+    else
         if(Phaser.Input.Keyboard.JustDown(cursors.up)){ //FIGHT
             console.log('Up Is Down')
             this.#combatMenu.playerInput('FIGHT')
             STATUS_STATE = 'fight';
-            return;
-           
+            return; 
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ //SCAN. TO DO
             console.log('down Is Down')
@@ -218,6 +195,7 @@ update() {
         else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //FLEE. TO DO...
             console.log('Left Is Down')
             this.#combatMenu.playerInput('FLEE')
+            this.flee();
             return;
         } 
         else
@@ -226,6 +204,49 @@ update() {
         }
     }
     
+    calcAvgSpd(party, enemies){
+        var pSpdSum = 0;
+        var eSpdSum = 0;
+
+        for(var i = 0; i < party.length; i++)
+            pSpdSum += party[i].stats[3];
+
+        for(var i = 0; i < enemies.length; i++)
+            eSpdSum += enemies[i].stats[2];
+        
+        //return true if party has higher avg speed, false for enemies
+        return (pSpdSum / party.length >= eSpdSum / enemies.length);
+    }
+
+    flee(){
+        if(this.getRand(0, 100) >= 80){
+            console.log("flee success!")
+            this.endBattle(2)
+        }
+    }
+
+    endBattle(condition){
+        var expGain = 0;
+        var moneyGain = 0;
+
+        //these end the scene
+        //end scene in victory
+        if(condition == 0){
+
+        }
+        //end scene in defeat
+        else if(condition == 1){
+
+        }
+        //end scene in fleeing
+        else if(condition == 2){
+
+        }
+    }
+
+    getRand(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) ) + min;
+    }
    // while(this.#combatMenu.STATUS_STATE === 'battle'){
     // if(Phaser.Input.Keyboard.JustDown(cursors.up)){
     //    console.log('In Fight Up Is Down')
@@ -247,10 +268,5 @@ update() {
       //  console.log('Left Is Down')
         //this.#combatMenu.playerInput('FLEE')
     //} 
-    }
-
-
-
-
-    
 }
+
