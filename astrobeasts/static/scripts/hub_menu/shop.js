@@ -5,7 +5,7 @@ export class ShopScene extends Phaser.Scene {
 
     preload() {
         // Load all possible inventory images even if user doesn't have them at the moment
-        this.load.image('bgShop', '/static/assets/Backgrounds/bgShopFinal.png');
+        this.load.image('bgShop', '/static/assets/Backgrounds/bgShopFinal2.png');
     }
 
     create() {
@@ -18,14 +18,33 @@ export class ShopScene extends Phaser.Scene {
         // 3 Menu Choices that bring up menus (scenes)
         let ItemsChoice = this.add.text(100, 90, 'Items', {font: '22px', color: '#FF2222' })
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.updateShopDisplay('shop_items'));
+            .on('pointerdown', () => this.updateShopDisplay('shop_items'))
+            .on('pointerover', () => {
+                ItemsChoice.setStyle({ color: 'white'}); // when you hover, changes to white
+            })
+            .on('pointerout', () => {
+                ItemsChoice.setStyle({ fill: '#FF2222'}); 
+            });
+    ;
         let AstrobeastChoice = this.add.text(325, 90, 'AstroBeasts', {font: '22px', color: 'DodgerBlue' })
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.updateShopDisplay('shop_astrobeasts'));
+            .on('pointerdown', () => this.updateShopDisplay('shop_astrobeasts'))
+            .on('pointerover', () => {
+                AstrobeastChoice.setStyle({ color: 'white'}); // when you hover, changes to white
+            })
+            .on('pointerout', () => {
+                AstrobeastChoice.setStyle({ color: 'DodgerBlue'}); 
+            });
         let MovesChoice = this.add.text(600, 90, 'Moves', {font: '22px', color: 'Green' })
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.updateShopDisplay('shop_moves'));
-        let BalanceText = this.add.text(520, 450, 'Balance', {font: '22px', color: 'White' })
+            .on('pointerdown', () => this.updateShopDisplay('shop_moves'))
+            .on('pointerover', () => {
+                MovesChoice.setStyle({ color: 'white'}); // when you hover, changes to white
+            })
+            .on('pointerout', () => {
+                MovesChoice.setStyle({ color: 'Green'}); 
+            });
+        let BalanceText = this.add.text(520, 270, 'Balance', {font: '22px', color: 'White' })
         //let currCost = this.registry.values.cost
         
         // Margin
@@ -33,14 +52,12 @@ export class ShopScene extends Phaser.Scene {
 
         // Wallet Text X,Y Position 
         const xPosition = this.cameras.main.width - 50
-        const yPosition = this.cameras.main.height - 90;
+        const yPosition = this.cameras.main.height - 270;
         this.walletText = this.add.text(xPosition, yPosition, '', { fontSize: '22px', color: '#fff' }).setOrigin(1, 1);
         
     
         // Scrollable Inventory
         this.createScrollableInventory();
-        // Shopping Cart
-        this.createCart();
 
         // default
         this.updateShopDisplay('shop_items');
@@ -72,10 +89,10 @@ export class ShopScene extends Phaser.Scene {
         this.walletText.setText(`${Wallet} Credits`);
     }
     createScrollableInventory() {
-        const inventoryWidth = 453; 
-        const inventoryHeight = 395; 
-        const posX = 622 - inventoryWidth + 200; // start from the right edge of the white rectangle
-        const posY = -127; 
+        const inventoryWidth = 451; 
+        const inventoryHeight = 399; 
+        const posX = 620 - inventoryWidth + 200; // start from the right edge of the white rectangle
+        const posY = -129; 
 
         // create dom element in order to use a scrollbar while displaying inventory
         const inventoryHtml = `
@@ -83,33 +100,6 @@ export class ShopScene extends Phaser.Scene {
         `;
 
         this.inventoryElement = this.add.dom(posX + (inventoryWidth / 2),  posY + (inventoryHeight / 2)).createFromHTML(inventoryHtml);
-    }
-
-    // Right side Shopping Cart
-    createCart() {
-        const cartWidth = 258; 
-        const cartHeight = 312; 
-        const cartPosX = 792 - cartWidth + 200; // start from the right edge of the white rectangle
-        const cartPosY = -85; 
-
-        // create dom element in order to use a scrollbar while displaying inventory
-        const cartHtml = `
-            <div id="inventory-container" style="overflow-y: auto; width: ${cartWidth}px; height: ${cartHeight}px; background-color: rgba(0,0,0,0.8); color: white; padding: 10px;"></div>
-        `;
-        
-        this.cartElement = this.add.dom(cartPosX + (cartWidth / 2),  cartPosY + (cartHeight / 2)).createFromHTML(cartHtml);
-        this.cartElement.body = this.add.text(600, 350, 'BUY', {font: '36px', color: 'White' })              // Move this into createCart and alter funct
-            .setInteractive({ useHandCursor: true })
-            .on('pointerover', () => {
-                this.cartElement.body.setStyle({ fill: '#04AA6D'}); // When you hover, changes color
-            })
-            .on('pointerout', () => {
-                this.cartElement.body.setStyle({ fill: 'White'}); // When unhover, changes color back
-            })
-            .on('pointerdown', () => {
-                this.registry.values.walletTotal -= 50;
-                this.updateEquippedText();
-            });
     }
 
     updateShopDisplay(type) {
@@ -187,7 +177,6 @@ export class ShopScene extends Phaser.Scene {
         
     }
     
-
     toggleEquip(key, type) {
         const list = this.registry.get(type);
         const item = list.find(item => item.key === key);
