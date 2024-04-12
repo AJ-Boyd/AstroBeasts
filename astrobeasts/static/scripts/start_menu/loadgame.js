@@ -52,17 +52,11 @@ export class LoadGameScene extends Phaser.Scene {
                 const playerData = data.playerData;
 
                 // Retrieve existing data
-                const existingInventoryItems = this.registry.get('inventory_items') || [];
-                const existingAstrobeasts = this.registry.get('inventory_astrobeasts') || [];
-                
-                // Append new data
-                const updatedInventoryItems = existingInventoryItems.concat(playerData.inventory_items);
-                const updatedAstrobeasts = existingAstrobeasts.concat(playerData.inventory_astrobeasts);
     
                 // Update the registry
-                this.registry.set('inventory_items', updatedInventoryItems);
-                this.registry.set('inventory_astrobeasts', updatedAstrobeasts);
-                this.registry.set('playerName', data.playerName)
+                this.registry.set('inventory_items', playerData['inventory_items']);
+                this.registry.set('inventory_astrobeasts', playerData['inventory_astrobeasts']);
+                this.registry.set('playerName', playerData.playerName)
 
                 this.scene.start('LoadHub');
             } else {

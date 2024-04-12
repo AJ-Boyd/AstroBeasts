@@ -32,21 +32,7 @@ def start():
 @router.route('/save_game', methods=['POST'])
 def save_game():
     data = request.get_json()
-    slot = data.get('slot')
     gameState = data['gameState']
-    if slot not in ['1', '2', '3']:
-        return jsonify({'status': 'error', 'message': 'Invalid save slot.'}), 400
-
-    dest = f'save_slot{slot}.db'
-    
-    # Ensure the source database exists
-    if not os.path.exists(src):
-        return jsonify({'status': 'error', 'message': 'Source database does not exist.'}), 404
-
-    # Perform the copy operation
-    #print("before db created")
-    #shutil.copy(src, dest)
-    #print("db created")
 
     playerName = gameState.get('playerName')  # Safely get playerName, returns None if not found
     if not playerName:
@@ -64,20 +50,22 @@ def save_game():
     else:
         player.name = playerName  # Update player's name
 
-    session.query(InventoryItem).delete()
+    session.query(InventoryItem).filter_by(Player_Name=playerName).delete()
     session.query(AstroBeast).delete()
 
-    for item in gameState.get('inventory_items', []):  # Safe iteration
+    for item in gameState.get('inventory_items', []):
         inventory_item = InventoryItem(
+            Player_Name=playerName,  # Link by name
             name=item['name'], 
             description=item['description'],
-            quantity=item.get('quantity', 0),  # Use the safely gotten quantity
-            isEquipped=item.get('isEquipped', False)  # Use the safely gotten isEquipped
+            quantity=item.get('quantity', 0),
+            isEquipped=item.get('isEquipped', False)
         )
         session.add(inventory_item)
 
     for beast in gameState.get('inventory_astrobeasts', []):
         astro_beast = AstroBeast(
+            Player_Name=playerName,
             name=beast['name'], 
             description=beast['description'],
             isEquipped=beast.get('isEquipped', False)  # Safely get isEquipped
@@ -87,7 +75,7 @@ def save_game():
     
     session.commit()
     session.close()  # Make sure to close the session
-    return jsonify({'status': 'success', 'message': f'Game saved successfully in slot {slot}.'})
+    return jsonify({'status': 'success'})
 
 @router.route('/check_name', methods=['POST'])
 def check_name():
@@ -95,12 +83,15 @@ def check_name():
     player_name = data['name']
 
     session = Session()
+    session.flush()
     player = session.query(Player).filter_by(name=player_name).first()
     if player:
+        inventory_items = session.query(InventoryItem).filter(InventoryItem.Player_Name == player_name).all()
+        myBeasts = session.query(AstroBeast).filter(AstroBeast.Player_Name == player_name).all()
         player_data = {
             'playerName': player.name,
-            'inventory_items': [{'name': item.name, 'description': item.description, 'quantity': item.quantity, 'isEquipped': item.isEquipped} for item in player.inventoryItems],
-            'inventory_astrobeasts': [{'name': beast.name, 'description': beast.description, 'isEquipped': beast.isEquipped} for beast in player.astroBeasts],
+            'inventory_items': [{'name': item.name, 'description': item.description, 'quantity': item.quantity, 'isEquipped': item.isEquipped} for item in inventory_items],
+            'inventory_astrobeasts': [{'name': beast.name, 'description': beast.description, 'isEquipped': beast.isEquipped} for beast in myBeasts],
         }
         # If a player with the given name exists
         return jsonify({'exists': True, 'message': f'Player {player_name} exists.', 'playerData': player_data})
