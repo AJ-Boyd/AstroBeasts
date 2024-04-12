@@ -182,14 +182,14 @@ export class ShopScene extends Phaser.Scene {
         const item = list.find(item => item.key === key);
 
         // do not exceed limit
-        if (!item.isEquipped && ((type === 'inventory' && list.filter(item => item.isEquipped).length > 5) ||
-            (type === 'astrobeasts' && list.filter(item => item.isEquipped).length > 4) || 
-            (type === 'moves' && list.filter(item => item.isEquipped).length > 5))) {
+        if (!item.isSelected && ((type === 'inventory' && list.filter(item => item.isSelected).length > 5) ||
+            (type === 'astrobeasts' && list.filter(item => item.isSelected).length > 4) || 
+            (type === 'moves' && list.filter(item => item.isSelected).length > 5))) {
             alert('Max capacity reached.');
             return;
         }
 
-        item.isEquipped = !item.isEquipped;// change equipped status
+        item.isSelected = !item.isSelected;// change equipped status
         this.registry.set(type, list); // update the registry
 
         this.updateShopDisplay(type); //refresh display
