@@ -2,10 +2,30 @@ import { Aliens } from './aliens.js';
 import { CombatMenu } from './combatmenu.js';
 import { HPBar } from './healthbar.js';
 import { RenderBackground } from './renderbackground.js';
+import {Move} from './moves.js';
+import { Enemy } from './enemy.js';
 
 var cursors;
 var STATUS_STATE = 'default'
 var CURR_TURN = 0;
+
+//hard-coded stuff
+const exMove = new Move("Punch", "Medium damage to a single enemy", 40, 2, false);
+const Hotu = new Enemy({
+    scene: this,
+    EnemyDetails: {
+        name: "Hotu",
+        assets: "Hotu",
+        assetAnim: "idle_Tarkeel",
+        maxHP: 25,
+        currentHP: 25,
+        stats: [300, 250, 100],
+        attackOptions: [exMove],
+        level: 5
+    }
+}, 
+{x: 200, y: 310},
+);
 
 export class CombatScene extends Phaser.Scene {
     //member variables

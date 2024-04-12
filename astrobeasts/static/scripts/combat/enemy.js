@@ -1,6 +1,7 @@
 //Base class for enemies
 
 import { HPBar } from "healthbar.js";
+import { Move } from "./moves";
 
 /** Define Object "Enemy Config"
  * @typedef EnemyConfig
@@ -16,10 +17,10 @@ import { HPBar } from "healthbar.js";
  * @property {string} name
  * @property {string} assets
  * @property {string} assetAnim
- * @property {number} maxHp
- * @property {number} currentHp
- * @property {string[]} stats
- * @property {string[]} attackOptions // moves
+ * @property {number} maxHP
+ * @property {number} currentHP
+ * @property {number[]} stats //[ATK, DEF, SPD]
+ * @property {Move[]} attackOptions // moves
  * @property {number} level
  * 
  * */

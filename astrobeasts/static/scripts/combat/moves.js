@@ -1,28 +1,28 @@
-/** Define Object "MoveDetails"
- * @typedef MoveDetails
- * @type {Object}
- * @property {string} name
- * @property {string} description
- * @property {number} baseAttack
- * @property {number} level // maybe not needed?
- * @property {boolean} isSplash
- * */
+// /** Define Object "MoveDetails"
+//  * @typedef MoveDetails
+//  * @type {Object}
+//  * @property {string} name
+//  * @property {string} description
+//  * @property {number} baseAttack
+//  * @property {number} level // maybe not needed?
+//  * @property {boolean} isSplash
+//  * */
 
 export class Move {
-    /**
-     * @param {MoveDetails} details 
-     */
-    constructor(details) {
+    // /**
+    //  * @param {MoveDetails} details 
+    //  */
+    constructor(name, desc, base, lvl, splash) {
       /** @protected @type {string} */
-      this._name = details.name;
+      this._name = name;
       /** @protected @type {string} */
-      this._description = details.description;
+      this._description = desc;
       /** @protected @type {number} */
-      this._baseAttack = details.baseAttack;
+      this._baseAttack = base;
       /** @protected @type {number} */
-      this._level = details.level;
+      this._level = lvl;
       /** @protected @type {boolean} */
-      this._isSplash = details.isSplash;
+      this._isSplash = splash;
     }
 
 // getters (don't know if already implemented elsewhere)
