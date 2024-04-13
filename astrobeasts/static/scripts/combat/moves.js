@@ -1,17 +1,4 @@
-// /** Define Object "MoveDetails"
-//  * @typedef MoveDetails
-//  * @type {Object}
-//  * @property {string} name
-//  * @property {string} description
-//  * @property {number} baseAttack
-//  * @property {number} level // maybe not needed?
-//  * @property {boolean} isSplash
-//  * */
-
 export class Move {
-    // /**
-    //  * @param {MoveDetails} details 
-    //  */
     constructor(name, desc, base, lvl, splash) {
       /** @protected @type {string} */
       this._name = name;
