@@ -190,7 +190,7 @@ export class TutorialScene extends Phaser.Scene {
 
         noButton.on('pointerdown', () => {
             // if no, load game // we go save menue
-            this.scene.start('SaveGame');
+            this.scene.start('LoadHub');
         });
 
         [yesButton, noButton].forEach(button => {
