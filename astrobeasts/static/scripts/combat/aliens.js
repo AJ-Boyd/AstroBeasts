@@ -1,5 +1,6 @@
 //Base class for alienz!
 import { HPBar } from "./healthbar.js";
+import { Move } from "./moves.js";
 
 /** Define Object "Alien Config"
  * @typedef AlienConfig
@@ -17,8 +18,8 @@ import { HPBar } from "./healthbar.js";
  * @property {string} assetAnim
  * @property {number} maxHP
  * @property {number} currentHP
- * @property {number[]} stats 
- * @property {string[]} attackOptions
+ * @property {number[]} stats //ATK, DEF, DEX, SPD, LUK
+ * @property {Move[]} moves
  * 
  * */
 
@@ -37,8 +38,8 @@ export class Aliens {
 
     /** @protected @type {Phaser.Scene} */ 
     _scene;
-    /** @protected @type {Alien} */ 
-    _alienDetails;
+    /** @public @type {Alien} */ 
+    alienDetails;
      /** @protected @type {Phaser.GameObjects.Image} */ 
     _AlienGuy;
     /**
@@ -53,10 +54,13 @@ export class Aliens {
     constructor(config, position)
     {
         this._scene = config.scene;
-        this._alienDetails = config.AlienDetails;
+        this.alienDetails = config.AlienDetails;
+        
+        console.log(this._scene)
+        console.log(this.alienDetails.assets)
 
-        this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(3);
-        this.AlienGuy.anims.play(this._alienDetails.assetAnim)
+        //this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(3);
+        //this.AlienGuy.anims.play(this._alienDetails.assetAnim)
     }
 }
 //create enemy alien and idle

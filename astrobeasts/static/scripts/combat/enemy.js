@@ -1,7 +1,7 @@
 //Base class for enemies
 
-import { HPBar } from "healthbar.js";
-import { Move } from "./moves";
+import { HPBar } from "./healthbar.js";
+import { Move } from "./moves.js";
 
 /** Define Object "Enemy Config"
  * @typedef EnemyConfig
@@ -22,6 +22,7 @@ import { Move } from "./moves";
  * @property {number[]} stats //[ATK, DEF, SPD]
  * @property {Move[]} attackOptions // moves
  * @property {number} level
+ * @property {boolean} isAlive
  * 
  * */
 
@@ -40,8 +41,8 @@ export class Enemy {
 
     /** @protected @type {Phaser.Scene} */ 
     _scene;
-    /** @protected @type {EnemyDetails} */ 
-    _enemyDetails;
+    /** @public @type {EnemyDetails} */ 
+    enemyDetails;
      /** @protected @type {Phaser.GameObjects.Image} */ 
     _EnemyGuy;
     /**
@@ -56,9 +57,9 @@ export class Enemy {
     constructor(config, position)
     {
         this._scene = config.scene;
-        this._enemyDetails = config.EnemyDetails;
+        this.enemyDetails = config.EnemyDetails;
 
-        this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(3);
-        this.EnemyGuy.anims.play(this._enemyDetails.assetAnim)
+        //this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(3);
+        //this.EnemyGuy.anims.play(this._enemyDetails.assetAnim)
     }
 }
