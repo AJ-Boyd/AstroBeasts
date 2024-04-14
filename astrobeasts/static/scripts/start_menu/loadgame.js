@@ -38,7 +38,7 @@ export class LoadGameScene extends Phaser.Scene {
                 families: ['Press Start 2P']
             },
             active: () => {
-                name_input.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                name_input.setFontFamily('"Press Start 2P"').setColor('#ffff')
                 textEntry.setFontFamily('"Press Start 2P"').setColor('#0f0')
             }
         }) 

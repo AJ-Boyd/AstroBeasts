@@ -5,6 +5,9 @@ export class MainMenuScene extends Phaser.Scene {
     constructor() {
         super('MainMenu');
     }
+    preload() {
+        this.load.image('sky', 'static/assets/Backgrounds/bPlanets.jpg');
+    }
     init() {
         this.registry.set('playerName', '');
         // Inventory contains dictionary items, where each dictionary represents an item. it has the following variables:
@@ -68,24 +71,21 @@ export class MainMenuScene extends Phaser.Scene {
        this.registry.set('walletTotal', 1000);  
     }
     create() {
+        this.add.image(0, 0, 'sky').setOrigin(0, 0);
         // center of screen horizontally (x axis)
         const centerX = this.cameras.main.width / 2;
 
-        let title = this.add.text(centerX, 50, 'AstroBeasts', {font: '64px', color: 'cyan', align: 'center'}).setOrigin(0.5, 0);
+        let title = this.add.text(centerX, 70, 'AstroBeasts', {font: '64px', color: '#ffff', align: 'center'}).setOrigin(0.5, 0);
 
-        let startGameText= this.add.text(100, 175, 'Start New Game', {font: '24px', color: '#0f0' })
+        let startGameText= this.add.text(100, 220, 'Start New Game', {font: '24px', color: '#ffff' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () =>  this.scene.start('NewGame'));
         
-        let loadGameText = this.add.text(100, 275, 'Load Game', {font: '24px', color: '#0f0' })
+        let loadGameText = this.add.text(100, 320, 'Load Game', {font: '24px', color: '#ffff' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('LoadGame'));
 
-        let optionsText = this.add.text(100, 375, 'Options', {font: '24px', color: '#0f0' })
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('Options'));
-
-        let exitText = this.add.text(100, 475, 'Exit', {font: '24px', color: '#0f0' })
+        let optionsText = this.add.text(100, 420, 'Options', {font: '24px', color: '#ffff' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('Options'));
 
@@ -95,11 +95,10 @@ export class MainMenuScene extends Phaser.Scene {
                     families: ['Press Start 2P']
                 },
                 active: () => {
-                    title.setFontFamily('"Press Start 2P"').setColor( 'cyan')
-                    startGameText.setFontFamily('"Press Start 2P"').setColor( 'cyan')
-                    loadGameText.setFontFamily('"Press Start 2P"').setColor( 'cyan')
-                    optionsText.setFontFamily('"Press Start 2P"').setColor( 'cyan')
-                    exitText.setFontFamily('"Press Start 2P"').setColor( 'cyan')
+                    title.setFontFamily('"Press Start 2P"')
+                    startGameText.setFontFamily('"Press Start 2P"')
+                    loadGameText.setFontFamily('"Press Start 2P"')
+                    optionsText.setFontFamily('"Press Start 2P"')
                 }
             }) 
     }

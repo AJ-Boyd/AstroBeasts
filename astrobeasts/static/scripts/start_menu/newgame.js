@@ -16,7 +16,7 @@ export class NewGameScene extends Phaser.Scene {
         const introText = "a long time ago in a galaxy far, far away....";
         const centerX = this.cameras.main.width / 2;
         const centerY = this.cameras.main.height / 2;
-        const displayText = this.add.text(centerX, centerY - 50, '', { font: '30px', color: '#ffffff', align: 'center', wordWrap: { width: 600 } }).setOrigin(0.5,0.5);
+        const displayText = this.add.text(centerX, centerY - 50, '', { font: '30px', color: '#ffff', align: 'center', wordWrap: { width: 600 } }).setOrigin(0.5,0.5);
 
         // add typing effect event
         let index = 0;
@@ -53,7 +53,7 @@ export class NewGameScene extends Phaser.Scene {
                 families: ['Press Start 2P']
             },
             active: () => {
-                displayText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                displayText.setFontFamily('"Press Start 2P"').setColor('#ffff')
                 nextButton.setFontFamily('"Press Start 2P"').setColor('#0f0')
             }
         }) 
@@ -111,8 +111,8 @@ export class NameInputScene extends Phaser.Scene {
                 families: ['Press Start 2P']
             },
             active: () => {
-                nameQuestion.setFontFamily('"Press Start 2P"').setColor('#ffffff')
-                errorText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                nameQuestion.setFontFamily('"Press Start 2P"').setColor('#ffff')
+                errorText.setFontFamily('"Press Start 2P"').setColor('#ffff')
             }
         }) 
         
@@ -182,11 +182,11 @@ export class PickYourStarterScene extends Phaser.Scene {
                 families: ['Press Start 2P']
             },
             active: () => {
-                text1.setFontFamily('"Press Start 2P"').setColor('#ffffff')
-                skol_name.setFontFamily('"Press Start 2P"').setColor('#ffffff')
-                skolinfo.setFontFamily('"Press Start 2P"').setColor('#ffffff')
-                tarkeel_name.setFontFamily('"Press Start 2P"').setColor('#ffffff')
-                tarkeel_info.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                text1.setFontFamily('"Press Start 2P"').setColor('#ffff')
+                skol_name.setFontFamily('"Press Start 2P"').setColor('#ffff')
+                skolinfo.setFontFamily('"Press Start 2P"').setColor('#ffff')
+                tarkeel_name.setFontFamily('"Press Start 2P"').setColor('#ffff')
+                tarkeel_info.setFontFamily('"Press Start 2P"').setColor('#ffff')
                 nextButton.setFontFamily('"Press Start 2P"').setColor('#0f0')
             }
         }) 

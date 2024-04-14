@@ -6,9 +6,10 @@ export class InventoryScene extends Phaser.Scene {
     
     preload() {
         // load all possible inventory images even if user doesn't have them at the moment
+        this.load.image('sky', 'static/assets/Backgrounds/bPlanets.jpg');
         this.load.image('skol', 'static/assets/Objects/skol.png');
         this.load.image('tarkeel', 'static/assets/Objects/tarkeel.png');
-        this.load.image('bg', 'static/assets/Backgrounds/inventory.png');
+        this.load.image('bg', 'static/assets/Backgrounds/inventory-2.png');
         this.load.image('cookies', 'static/assets/Objects/cookies.png');
         this.load.image('atk_potion', 'static/assets/Objects/atk_potion.png');
         this.load.image('def_potion', 'static/assets/Objects/def_potion.png');
@@ -16,8 +17,8 @@ export class InventoryScene extends Phaser.Scene {
     
 
     create() {
-        
-        const bg = this.add.image(0, 0, 'bg').setOrigin(0, 0);
+        this.add.image(0, 0, 'sky').setOrigin(0, 0);
+        this.add.image(0, 0, 'bg').setOrigin(0, 0);
         
         let itemsText = this.add.text(((87.4 / 2) + 38.5) - 5 , ((164.1 / 2) + 34.7) - 50, "Items", {font: '19px', color: '#000'})
         
@@ -83,9 +84,9 @@ export class InventoryScene extends Phaser.Scene {
                 families: ['Press Start 2P']
             },
             active: () => {
-                itemsText.setFontFamily('"Press Start 2P"').setColor('#000000')
-                beastsText.setFontFamily('"Press Start 2P"').setColor('#000000')
-                movesText.setFontFamily('"Press Start 2P"').setColor('#000000')
+                itemsText.setFontFamily('"Press Start 2P"').setColor('#00000')
+                beastsText.setFontFamily('"Press Start 2P"').setColor('#00000')
+                movesText.setFontFamily('"Press Start 2P"').setColor('#00000')
                 this.backButton.setFontFamily('"Press Start 2P"')
                 this.equippedText.setFontFamily('"Press Start 2P"')
             }
@@ -124,7 +125,7 @@ export class InventoryScene extends Phaser.Scene {
 
         // create dom element in order to use a scrollbar while displaying inventory
         const inventoryHtml = `
-            <div id="inventory-container" style="overflow-y: auto; width: ${inventoryWidth}px; height: ${inventoryHeight}px; background-color: rgba(0,0,0,0.8); color: white; padding: 10px;"></div>
+            <div id="inventory-container" style="overflow-y: auto; width: ${inventoryWidth}px; height: ${inventoryHeight}px; color: white; padding: 10px;"></div>
         `;
 
         this.inventoryElement = this.add.dom(posX + (inventoryWidth / 2),  posY + (inventoryHeight / 2)).createFromHTML(inventoryHtml);
