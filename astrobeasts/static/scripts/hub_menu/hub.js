@@ -1,4 +1,5 @@
 // THE HUB 
+import * as WebFontLoader from '../webfontloader.js'
 export class HubScene extends Phaser.Scene {
     constructor() {
         super('LoadHub');
@@ -28,39 +29,54 @@ export class HubScene extends Phaser.Scene {
         const secondRowY = this.cameras.main.height - 60;
 
         // first row of options
-        let InventoryText = this.add.text(startXFirstRow, firstRowY, ' > Inventory', { font: '22px', color: 'DodgerBlue' })
+        let InventoryText = this.add.text(startXFirstRow, firstRowY, ' > Inventory', { font: '15px', color: 'DodgerBlue' })
         .setInteractive({ useHandCursor: true })
         .setOrigin(0.5, 0.5)
         .on('pointerdown', () => this.scene.start('LoadInventory'));
        
-        let ShopText = this.add.text(startXFirstRow + gap, firstRowY, ' > Shop', { font: '22px', color: 'MediumSeaGreen' })
+        let ShopText = this.add.text(startXFirstRow + gap, firstRowY, ' > Shop', { font: '15px', color: 'MediumSeaGreen' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
             .on('pointerdown', () => this.scene.start('LoadShop'));
 
-        let DojoText = this.add.text(startXFirstRow + 2 * gap, firstRowY, ' > Dojo', { font: '22px', color: 'crimson' })
+        let DojoText = this.add.text(startXFirstRow + 2 * gap, firstRowY, ' > Dojo', { font: '15px', color: 'crimson' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
             .on('pointerdown', () => this.scene.start('LoadDojo'));
 
         // second row of options
-        let TournamentText = this.add.text(startXSecondRow, secondRowY, ' > Tournament', { font: '22px', color: 'gold' })
+        let TournamentText = this.add.text(startXSecondRow, secondRowY, ' > Tournament', { font: '15px', color: 'gold' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
             .on('pointerdown', () => this.scene.start('LoadTourney'));
 
-        let SaveText = this.add.text(startXSecondRow + gap, secondRowY, ' > Save', { font: '22px', color: 'white' })
+        let SaveText = this.add.text(startXSecondRow + gap, secondRowY, '  > Save ', { font: '15px', color: 'white' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
             .on('pointerdown', () => this.saveGame()); //add a function to save and a pop-up saying save successful
 
-        let SaveAndQuitText = this.add.text(startXSecondRow + 2 * gap, secondRowY, ' > Save & Quit', { font: '22px', color: 'DodgerBlue' })
+        let SaveAndQuitText = this.add.text(startXSecondRow + 2 * gap, secondRowY, '  > Save & Quit', { font: '15px', color: 'DodgerBlue' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
             .on('pointerdown', () => {
                 this.saveGame();  // Call the saveGame function
                 this.scene.start('MainMenu');  // Transition to the MainMenu scene
             });
+
+            // below is using the webfontloader module to use external fonts for the scene
+        WebFontLoader.default.load({
+            google: {
+                families: ['Press Start 2P']
+            },
+            active: () => {
+                InventoryText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                ShopText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                DojoText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                TournamentText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                SaveText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                SaveAndQuitText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+            }
+        }) 
 
     }
     async saveGame() {
@@ -82,7 +98,7 @@ export class HubScene extends Phaser.Scene {
             const data = await response.json();
             if (data.status === 'success') {
                 console.log('Game saved:', data.message);
-                // Update to show feedback in a consistent and visible location
+                // update to show feedback
                 this.add.text(this.cameras.main.width / 2, 380, 'Save successful!', { font: '24px', color: 'green' }).setOrigin(0.5, 0);
             } else {
                 console.error('Save failed:', data.message);

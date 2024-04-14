@@ -1,5 +1,6 @@
 // first scene - start menu
 // calls newgame, loadgame, and options scenes
+import * as WebFontLoader from '../webfontloader.js'
 export class MainMenuScene extends Phaser.Scene {
     constructor() {
         super('MainMenu');
@@ -70,7 +71,7 @@ export class MainMenuScene extends Phaser.Scene {
         // center of screen horizontally (x axis)
         const centerX = this.cameras.main.width / 2;
 
-        this.add.text(centerX, 50, 'AstroBeasts', {font: '64px', color: 'cyan', align: 'center'}).setOrigin(0.5, 0);
+        let title = this.add.text(centerX, 50, 'AstroBeasts', {font: '64px', color: 'cyan', align: 'center'}).setOrigin(0.5, 0);
 
         let startGameText= this.add.text(100, 175, 'Start New Game', {font: '24px', color: '#0f0' })
             .setInteractive({ useHandCursor: true })
@@ -87,5 +88,19 @@ export class MainMenuScene extends Phaser.Scene {
         let exitText = this.add.text(100, 475, 'Exit', {font: '24px', color: '#0f0' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('Options'));
+
+            // below is using the webfontloader module to use external fonts for the scene
+            WebFontLoader.default.load({
+                google: {
+                    families: ['Press Start 2P']
+                },
+                active: () => {
+                    title.setFontFamily('"Press Start 2P"').setColor( 'cyan')
+                    startGameText.setFontFamily('"Press Start 2P"').setColor( 'cyan')
+                    loadGameText.setFontFamily('"Press Start 2P"').setColor( 'cyan')
+                    optionsText.setFontFamily('"Press Start 2P"').setColor( 'cyan')
+                    exitText.setFontFamily('"Press Start 2P"').setColor( 'cyan')
+                }
+            }) 
     }
 }

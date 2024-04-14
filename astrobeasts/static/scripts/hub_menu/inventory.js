@@ -1,3 +1,4 @@
+import * as WebFontLoader from '../webfontloader.js'
 export class InventoryScene extends Phaser.Scene {
     constructor() {
         super('LoadInventory');
@@ -18,11 +19,11 @@ export class InventoryScene extends Phaser.Scene {
         
         const bg = this.add.image(0, 0, 'bg').setOrigin(0, 0);
         
-        let itemsText = this.add.text(((87.4 / 2) + 38.5) - 5 , ((164.1 / 2) + 34.7) - 50, "Items", {font: '25px', color: '#000'})
+        let itemsText = this.add.text(((87.4 / 2) + 38.5) - 5 , ((164.1 / 2) + 34.7) - 50, "Items", {font: '19px', color: '#000'})
         
-        let beastsText = this.add.text(((87.4 / 2) + 38.5) - 10 , ((164.1 / 2) + 168.9) - 65, "Astro\nbeasts", {font: '25px', color: '#000'})
+        let beastsText = this.add.text(((87.4 / 2) + 38.5) - 10 , ((164.1 / 2) + 168.9) - 65, "Astro\nbeasts", {font: '19px', color: '#000'})
 
-        let movesText = this.add.text(((87.4 / 2) + 38.5) - 4 , ((164.1 / 2) + 303.2) - 50, "Moves", {font: '25px', color: '#000'})
+        let movesText = this.add.text(((87.4 / 2) + 38.5) - 4 , ((164.1 / 2) + 303.2) - 50, "Moves", {font: '19px', color: '#000'})
         
         
 
@@ -34,7 +35,7 @@ export class InventoryScene extends Phaser.Scene {
         const xPosition = margin;
         const yPosition = this.cameras.main.height - margin;
 
-        this.equippedText = this.add.text(xPosition, yPosition, '', { fontSize: '16px', color: '#fff' }).setOrigin(0, 1);
+        this.equippedText = this.add.text(xPosition, yPosition, '', { fontSize: '13px', color: '#fff' }).setOrigin(0, 1);
        
 
     
@@ -75,8 +76,23 @@ export class InventoryScene extends Phaser.Scene {
         this.backButton.on('pointerout', () => {
             this.backButton.setStyle({ fill: '#0f0'}); 
         });
+        
+        // below is using the webfontloader module to use external fonts for the scene
+        WebFontLoader.default.load({
+            google: {
+                families: ['Press Start 2P']
+            },
+            active: () => {
+                itemsText.setFontFamily('"Press Start 2P"').setColor('#000000')
+                beastsText.setFontFamily('"Press Start 2P"').setColor('#000000')
+                movesText.setFontFamily('"Press Start 2P"').setColor('#000000')
+                this.backButton.setFontFamily('"Press Start 2P"')
+                this.equippedText.setFontFamily('"Press Start 2P"')
+            }
+        }) 
 
         this.updateEquippedText();
+
     }
 
     updateEquippedText() {
@@ -90,6 +106,15 @@ export class InventoryScene extends Phaser.Scene {
 
         // update the text to show the current counts
         this.equippedText.setText(`Equipped: ${equippedItemsCount}/5 Items, ${equippedAstrobeastsCount}/4 AstroBeasts, ${equippedMovesCount}/5 Moves`);
+        // below is using the webfontloader module to use external fonts for the scene
+        WebFontLoader.default.load({
+            google: {
+                families: ['Press Start 2P']
+            },
+            active: () => {
+                this.equippedText.setFontFamily('"Press Start 2P"')
+            }
+        }) 
     }
     createScrollableInventory() {
         const inventoryWidth = 400; 
@@ -156,6 +181,6 @@ export class InventoryScene extends Phaser.Scene {
         this.updateEquippedText();
     }
     refreshInventory() {
-        this.updateInventoryDisplay('inventory_items'); // Default display or based on user's last view
+        this.updateInventoryDisplay('inventory_items'); 
     }
 }
