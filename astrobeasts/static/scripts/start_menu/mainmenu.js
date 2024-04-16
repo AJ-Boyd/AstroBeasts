@@ -50,7 +50,7 @@ export class MainMenuScene extends Phaser.Scene {
 
         this.registry.set('shop_items', [
         { key: 'cookies', name: 'CosmoCookies', description: 'Restores 15 HP', quantity: 1, cost: 20, isSelected: false },
-        { key: 'atk_potion', name: 'AstroAde', description: 'Restores 30 HP', quantity: 1, cost: 35, isSelected: false },
+        { key: 'ade', name: 'AstroAde', description: 'Restores 30 HP', quantity: 1, cost: 35, isSelected: false },
         { key: 'sequid', name: 'SequidSando', description: 'Restores 60 HP', quantity: 1, cost: 60, isSelected: false },
         { key: 'claws', name: 'Titanium Claws', description: '+10 ATK for the fight duration', quantity: 1, cost: 60, isSelected: false },
         { key: 'boosters', name: 'Sonic Boosters', description: '+10 SPD for fight duration', quantity: 1, cost: 60, isSelected: false },
