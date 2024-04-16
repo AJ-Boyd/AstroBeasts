@@ -7,7 +7,7 @@ import { Move } from "./moves.js";
  * @typedef EnemyConfig
  * @type {Object}
  * @property {Phaser.Scene} scene
- * @property {EnemyDetails} EnemyDetails
+ * @property {EnemyDetails} enemyDetails
  * */
 
 
@@ -20,7 +20,7 @@ import { Move } from "./moves.js";
  * @property {number} maxHP
  * @property {number} currentHP
  * @property {number[]} stats //[ATK, DEF, SPD]
- * @property {Move[]} attackOptions // moves
+ * @property {Move[]} moves // moves
  * @property {number} level
  * @property {boolean} isAlive
  * 
@@ -57,7 +57,7 @@ export class Enemy {
     constructor(config, position)
     {
         this._scene = config.scene;
-        this.enemyDetails = config.EnemyDetails;
+        this.enemyDetails = config.enemyDetails;
 
         //this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(3);
         //this.EnemyGuy.anims.play(this._enemyDetails.assetAnim)

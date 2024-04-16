@@ -36,14 +36,14 @@ const Strikoh = new Aliens({
 //Enemies
 const Hotu = new Enemy({
     scene: this,
-    EnemyDetails: {
+    enemyDetails: {
         name: "Hotu",
         assets: "Hotu",
         assetAnim: "idle_Hotu",
         maxHP: 500,
         currentHP: 100,
         stats: [300, 250, 100],
-        attackOptions: [exMove],
+        moves: [exMove],
         level: 5,
         isAlive: true
     }
@@ -52,14 +52,14 @@ const Hotu = new Enemy({
 );
 const Tarkeel = new Enemy({
     scene: this,
-    EnemyDetails: {
+    enemyDetails: {
         name: "Tarkeel",
         assets: 'Tarkeel',
         assetAnim: "idle_Tarkeel",
         maxHP: 2500,
         currentHP: 100,
         stats: [500, 500, 100],
-        attackOptions: [exMove],
+        moves: [exMove],
         level: 6,
         isAlive: true
     }
@@ -326,7 +326,48 @@ update() {
         //Nothing here for now. 
         }
     }else if(STATUS_STATE == "enemy"){
-        //enemy turn goes here...eventually.
+        //enemy turn goes here
+
+        //get attacker (living enemies)
+        var atkrs = this.#enemies.filter(e => e.enemyDetails.isAlive)
+        attacker = atkrs[CURR_TURN]; //get the attacker
+        console.log("enemy attacker", attacker)
+
+        //get move list
+        var moves = attacker.enemyDetails.moves;
+        move = moves[this.getRand(0, moves.length - 1)]; //get random move
+        console.log("enemy's move", move)
+
+        //get available targets (living friendlies)
+        var targets = this.#party.filter(ab => ab.alienDetails.isAlive)
+        target = this.#party[this.getRand(0, targets.length - 1)] //get random living target
+        
+        //enemy attack
+        var dmg = 10;
+        target.alienDetails.currentHP -= dmg;
+
+        alert(attacker.enemyDetails.name + " performed " + move.name + " on " + target.alienDetails.name + " and did " + dmg + " damage!")
+        alert(target.alienDetails.name + " now has " + target.alienDetails.currentHP + " HP remaining!")
+
+        //check if target is dead
+        if(target.alienDetails.currentHP <= 0){
+            target.alienDetails.isAlive = false;
+            alert(target.alienDetails.name + " has been defeated!")
+        }
+
+        var condition = this.checkBattle() //see if one side is completely dead
+        if(condition != -1)
+            this.endBattle(condition); //if battle is over, end the battle
+        else{    
+            //STATUS_STATE = "nothing"; //reset state
+            this.changeTurn();
+        }
+
+         //reset global vars and state
+         target = undefined;
+         move = undefined;
+         attacker = undefined;
+ 
     }
 }
     
@@ -417,8 +458,12 @@ update() {
     */
     changeTurn(){
         CURR_TURN++; //increment CURR_TURN counter
+
+        var livP = this.#party.filter(ab => ab.alienDetails.isAlive)
+        var livE = this.#enemies.filter(e => e.enemyDetails.isAlive)
+
         if(CURR_PARTY == "player"){
-            if(CURR_TURN >= this.#party.length){
+            if(CURR_TURN >= livP.length){
                 //if finished with player party, change to enemy's turn
                 CURR_PARTY = "enemy";
                 CURR_TURN = 0;
@@ -427,7 +472,7 @@ update() {
             }
         }else if(CURR_PARTY == "enemy"){
             //if finished with enemy party, change to player's turn
-            if(CURR_TURN >= this.#enemies.length){
+            if(CURR_TURN >= livE.length){
                 CURR_PARTY = "player";
                 CURR_TURN = 0;
                 alert("player's turn!")
@@ -443,15 +488,18 @@ update() {
         //these end the scene
         //end scene in victory
         if(condition == 0){
-
+            alert("YOU WON!!!!")
+            STATUS_STATE = "nothing";
         }
         //end scene in defeat
         else if(condition == 1){
-
+            alert("YOU LOSE :((((")
+            STATUS_STATE = "nothing";
         }
         //end scene in fleeing
         else if(condition == 2){
-
+            alert("coward!")
+            STATUS_STATE = "nothing";
         }
     }
 
