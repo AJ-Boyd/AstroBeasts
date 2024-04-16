@@ -3,7 +3,7 @@ import { CombatMenu } from './combatmenu.js';
 import { HPBar } from './healthbar.js';
 import { RenderBackground } from './renderbackground.js';
 import {Move} from './moves.js';
-import { Enemy } from './enemy.js';
+import { Enemies } from './enemy.js';
 
 var cursors;
 var STATUS_STATE = 'nothing'
@@ -16,55 +16,6 @@ var attacker, move, target; //i know global vars are bad, but the code works so 
 //example Move object
 const exMove = new Move("Punch", "Medium damage to a single enemy", 40, 2, false);
 
-//friendlies
-const Strikoh = new Aliens({
-    scene:this,
-    AlienDetails: {
-        name: "Strikoh",
-        assets: "Strikoh",
-        assetAnim: "idle_Strikoh",
-        maxHP: 250,
-        currentHP: 250,
-        stats: [300, 250, 300, 250, 250],
-        moves: [exMove],
-        isAlive: true
-    }
-    
- }, {x: 200, y: 310})
-
-
-//Enemies
-const Hotu = new Enemy({
-    scene: this,
-    enemyDetails: {
-        name: "Hotu",
-        assets: "Hotu",
-        assetAnim: "idle_Hotu",
-        maxHP: 500,
-        currentHP: 100,
-        stats: [300, 250, 100],
-        moves: [exMove],
-        level: 5,
-        isAlive: true
-    }
-}, 
-{x: 200, y: 310},
-);
-const Tarkeel = new Enemy({
-    scene: this,
-    enemyDetails: {
-        name: "Tarkeel",
-        assets: 'Tarkeel',
-        assetAnim: "idle_Tarkeel",
-        maxHP: 2500,
-        currentHP: 100,
-        stats: [500, 500, 100],
-        moves: [exMove],
-        level: 6,
-        isAlive: true
-    }
-    
-}, {x: 600, y: 310});
 
 export class CombatScene extends Phaser.Scene {
     //member variables
@@ -72,8 +23,8 @@ export class CombatScene extends Phaser.Scene {
     #EnemyAlien; //this will be depreciated
     #PlayerAlien;
     #player; //the player object
-    #party = [Strikoh]; // shallow copy array of party members
-    #enemies = [Hotu, Tarkeel]; // array of enemies
+    #party = []; // shallow copy array of party members
+    #enemies = []; // array of enemies
 
     constructor() {
         super({
@@ -95,6 +46,7 @@ preload()
 }
 
 create() {   
+
     console.log('create - Combat');
     //accept keyboard input
     cursors = this.input.keyboard.createCursorKeys();
@@ -102,7 +54,7 @@ create() {
     const background = new RenderBackground(this);
     background.showFire();
     //create enemy alien and idle
-    this.#EnemyAlien = new Aliens({
+    this.#EnemyAlien = new Aliens ({
         scene:this,
         AlienDetails: {
             name: "Tarkeel",
@@ -112,6 +64,7 @@ create() {
             currentHP: 25,
             stats: [300, 250, 300, 250, 250],
             moves: [],
+            level: 1,
             isAlive: true
         }
         
@@ -128,6 +81,7 @@ this.#PlayerAlien = new Aliens({
         currentHP: 25,
         stats: [300, 250, 300, 250, 250],
         moves: [],
+        level: 1,
         isAlive: true
     }
     

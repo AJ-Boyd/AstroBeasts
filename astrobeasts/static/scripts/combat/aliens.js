@@ -20,6 +20,8 @@ import { Move } from "./moves.js";
  * @property {number} currentHP
  * @property {number[]} stats //ATK, DEF, DEX, SPD, LUK
  * @property {Move[]} moves
+ * @property {number} level
+ * @property {boolean} isAlive
  * 
  * */
 
@@ -39,7 +41,7 @@ export class Aliens {
     /** @protected @type {Phaser.Scene} */ 
     _scene;
     /** @public @type {Alien} */ 
-    alienDetails;
+    _alienDetails;
      /** @protected @type {Phaser.GameObjects.Image} */ 
     _AlienGuy;
     /**
@@ -54,13 +56,13 @@ export class Aliens {
     constructor(config, position)
     {
         this._scene = config.scene;
-        this.alienDetails = config.AlienDetails;
+        this._alienDetails = config.AlienDetails;
         
         console.log(this._scene)
-        console.log(this.alienDetails.assets)
+        console.log(this._alienDetails.assets)
 
-        //this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(3);
-        //this.AlienGuy.anims.play(this._alienDetails.assetAnim)
+        this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(3);
+        this.AlienGuy.anims.play(this._alienDetails.assetAnim)
     }
 }
 //create enemy alien and idle
