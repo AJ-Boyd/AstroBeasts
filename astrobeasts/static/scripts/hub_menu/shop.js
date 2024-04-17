@@ -1,3 +1,4 @@
+import * as WebFontLoader from '../webfontloader.js'
 export class ShopScene extends Phaser.Scene {
     constructor() {
         super('LoadShop');
@@ -14,10 +15,12 @@ export class ShopScene extends Phaser.Scene {
         const bgShop = this.add.image(0, 0, 'bgShop').setOrigin(0, 0);
 
         // Shop Title
-        this.add.text(100, 40, 'Welcome to the Shop!\nBuy something to stimulate galactic economy growth :)', {font: '18px', color: 'White' });
+        // center of screen horizontally (x axis)
+         const centerX = this.cameras.main.width / 2;
+        const intro = this.add.text(centerX, 60, 'Welcome to the Shop!', {font: '18px', color: 'White', align: 'center'}).setOrigin(0.5, 0.5);
 
         // 3 Menu Choices that bring up menus (scenes)
-        let ItemsChoice = this.add.text(100, 90, 'Items', {font: '22px', color: '#FF2222' })
+        let ItemsChoice = this.add.text(100, 90, 'Items', {font: '18px', color: '#FF2222' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.updateShopDisplay('shop_items'))
             .on('pointerover', () => {
@@ -27,7 +30,7 @@ export class ShopScene extends Phaser.Scene {
                 ItemsChoice.setStyle({ fill: '#FF2222'}); 
             });
     ;
-        let AstrobeastChoice = this.add.text(325, 90, 'AstroBeasts', {font: '22px', color: 'DodgerBlue' })
+        let AstrobeastChoice = this.add.text(325, 90, 'AstroBeasts', {font: '18px', color: 'DodgerBlue' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.updateShopDisplay('shop_astrobeasts'))
             .on('pointerover', () => {
@@ -36,7 +39,7 @@ export class ShopScene extends Phaser.Scene {
             .on('pointerout', () => {
                 AstrobeastChoice.setStyle({ color: 'DodgerBlue'}); 
             });
-        let MovesChoice = this.add.text(600, 90, 'Moves', {font: '22px', color: 'Green' })
+        let MovesChoice = this.add.text(600, 90, 'Moves', {font: '18px', color: 'Green' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.updateShopDisplay('shop_moves'))
             .on('pointerover', () => {
@@ -54,7 +57,7 @@ export class ShopScene extends Phaser.Scene {
         // Wallet Text X,Y Position 
         const xPosition = this.cameras.main.width - 50
         const yPosition = this.cameras.main.height - 270;
-        this.walletText = this.add.text(xPosition, yPosition, '', { fontSize: '22px', color: '#fff' }).setOrigin(1, 1);
+        this.walletText = this.add.text(xPosition, yPosition, '', { fontSize: '19px', color: '#fff' }).setOrigin(1, 1);
         
     
         // Scrollable Inventory
@@ -82,13 +85,41 @@ export class ShopScene extends Phaser.Scene {
             this.backButton.setStyle({ fill: '#0f0'}); 
         });
 
+        // below is using the webfontloader module to use external fonts for the scene
+        WebFontLoader.default.load({
+            google: {
+                families: ['Press Start 2P']
+            },
+            active: () => {
+                ItemsChoice.setFontFamily('"Press Start 2P"')
+                AstrobeastChoice.setFontFamily('"Press Start 2P"')
+                MovesChoice.setFontFamily('"Press Start 2P"')
+                this.backButton.setFontFamily('"Press Start 2P"')
+                BalanceText.setFontFamily('"Press Start 2P"')
+                intro.setFontFamily('"Press Start 2P"')
+                this.walletText.setFontFamily('"Press Start 2P"')
+                
+            }
+        }) 
+
         // Update the Equipped Text
         this.updateEquippedText();
+
+
     }
     
     updateEquippedText() {
         const Wallet = this.registry.get('walletTotal');
         this.walletText.setText(`${Wallet} Credits`);
+        // below is using the webfontloader module to use external fonts for the scene
+        WebFontLoader.default.load({
+            google: {
+                families: ['Press Start 2P']
+            },
+            active: () => {
+                this.walletText.setFontFamily('"Press Start 2P"')
+            }
+        }) 
     }
     createScrollableInventory() {
         const inventoryWidth = 451; 
@@ -168,7 +199,7 @@ export class ShopScene extends Phaser.Scene {
         // Update or add the item in inventory
         const existingItemIndex = inventory.findIndex(item => item.key === newItem.key);
         if (existingItemIndex !== -1) {
-            inventory[existingItemIndex].quantity += 1; // Assumes items can be stacked
+            inventory[existingItemIndex].quantity += 1;
         } else {
             inventory.push(newItem);
         }
@@ -177,12 +208,10 @@ export class ShopScene extends Phaser.Scene {
         this.registry.set(inventoryType, inventory);
     
         // Refresh the inventory display for the current shop type
-        this.updateShopDisplay(shopType); // Assuming this method also refreshes the visible inventory display
+        this.updateShopDisplay(shopType); 
         this.updateEquippedText(); // Refresh wallet display
        // this.createScrollableInventory(); // Refresh inventory display
-       if (inventoryType === 'inventory_moves') {
-        console.log('Moves inventory after purchase:', inventory);
-    }
+        
     }
     
     toggleEquip(key, type) {

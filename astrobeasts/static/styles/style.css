@@ -11,7 +11,6 @@ body {
   overflow-y: auto;
   width: auto;
   height: 600px; 
-  background-color: rgba(0,0,0,0.8);
   color: white;
   padding: 0;
   position: absolute;

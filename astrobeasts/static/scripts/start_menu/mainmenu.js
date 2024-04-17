@@ -1,8 +1,12 @@
 // first scene - start menu
 // calls newgame, loadgame, and options scenes
+import * as WebFontLoader from '../webfontloader.js'
 export class MainMenuScene extends Phaser.Scene {
     constructor() {
         super('MainMenu');
+    }
+    preload() {
+        this.load.image('sky', 'static/assets/Backgrounds/bPlanets.jpg');
     }
     init() {
         this.registry.set('playerName', '');
@@ -46,7 +50,7 @@ export class MainMenuScene extends Phaser.Scene {
 
         this.registry.set('shop_items', [
         { key: 'cookies', name: 'CosmoCookies', description: 'Restores 15 HP', quantity: 1, cost: 20, isSelected: false },
-        { key: 'atk_potion', name: 'AstroAde', description: 'Restores 30 HP', quantity: 1, cost: 35, isSelected: false },
+        { key: 'ade', name: 'AstroAde', description: 'Restores 30 HP', quantity: 1, cost: 35, isSelected: false },
         { key: 'sequid', name: 'SequidSando', description: 'Restores 60 HP', quantity: 1, cost: 60, isSelected: false },
         { key: 'claws', name: 'Titanium Claws', description: '+10 ATK for the fight duration', quantity: 1, cost: 60, isSelected: false },
         { key: 'boosters', name: 'Sonic Boosters', description: '+10 SPD for fight duration', quantity: 1, cost: 60, isSelected: false },
@@ -67,25 +71,35 @@ export class MainMenuScene extends Phaser.Scene {
        this.registry.set('walletTotal', 1000);  
     }
     create() {
+        this.add.image(0, 0, 'sky').setOrigin(0, 0);
         // center of screen horizontally (x axis)
         const centerX = this.cameras.main.width / 2;
 
-        this.add.text(centerX, 50, 'AstroBeasts', {font: '64px', color: 'cyan', align: 'center'}).setOrigin(0.5, 0);
+        let title = this.add.text(centerX, 70, 'AstroBeasts', {font: '64px', color: '#ffff', align: 'center'}).setOrigin(0.5, 0);
 
-        let startGameText= this.add.text(100, 175, 'Start New Game', {font: '24px', color: '#0f0' })
+        let startGameText= this.add.text(100, 220, 'Start New Game', {font: '24px', color: '#ffff' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () =>  this.scene.start('NewGame'));
         
-        let loadGameText = this.add.text(100, 275, 'Load Game', {font: '24px', color: '#0f0' })
+        let loadGameText = this.add.text(100, 320, 'Load Game', {font: '24px', color: '#ffff' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('LoadGame'));
 
-        let optionsText = this.add.text(100, 375, 'Options', {font: '24px', color: '#0f0' })
+        let optionsText = this.add.text(100, 420, 'Options', {font: '24px', color: '#ffff' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('Options'));
 
-        let exitText = this.add.text(100, 475, 'Exit', {font: '24px', color: '#0f0' })
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('Options'));
+            // below is using the webfontloader module to use external fonts for the scene
+            WebFontLoader.default.load({
+                google: {
+                    families: ['Press Start 2P']
+                },
+                active: () => {
+                    title.setFontFamily('"Press Start 2P"')
+                    startGameText.setFontFamily('"Press Start 2P"')
+                    loadGameText.setFontFamily('"Press Start 2P"')
+                    optionsText.setFontFamily('"Press Start 2P"')
+                }
+            }) 
     }
 }

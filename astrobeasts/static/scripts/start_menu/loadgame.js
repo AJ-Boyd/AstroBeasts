@@ -1,14 +1,14 @@
 // third scene - load game
+import * as WebFontLoader from '../webfontloader.js'
 export class LoadGameScene extends Phaser.Scene {
     constructor() {
         super('LoadGame');
     }
 
-    create ()
-    {
-        this.add.text(10, 10, 'Enter your name:, Hit enter when done', { font: '32px Courier', fill: '#ffffff' });
+    create () {
+        const name_input = this.add.text(10, 10, 'Enter your name and hit enter:', { font: '20px', color: '#ffffff' });
 
-        const textEntry = this.add.text(10, 50, '', { font: '32px Courier', fill: '#ffff00' });
+        const textEntry = this.add.text(10, 50, '', { font: '20px', color: '#ffff00' });
 
         let playerName = '';
 
@@ -23,7 +23,6 @@ export class LoadGameScene extends Phaser.Scene {
                 textEntry.text += event.key;
             }else if (event.keyCode == 13){
                 this.playerName = textEntry.text;
-                //this.add.text(this.cameras.main.width / 2, 380, this.playerName, { font: '24px', color: 'green' }).setOrigin(0.5, 0);
                 textEntry.text = '';
                 this.check_name(this.playerName);
 
@@ -33,10 +32,21 @@ export class LoadGameScene extends Phaser.Scene {
 
         this.registry.set('playerName', playerName);
 
+        // below is using the webfontloader module to use external fonts for the scene
+        WebFontLoader.default.load({
+            google: {
+                families: ['Press Start 2P']
+            },
+            active: () => {
+                name_input.setFontFamily('"Press Start 2P"').setColor('#ffff')
+                textEntry.setFontFamily('"Press Start 2P"').setColor('#0f0')
+            }
+        }) 
+
         
     }
     async check_name(my_name) {
-        // Your async code to save the name goes here
+        
         try {
             const response = await fetch('/check_name', {
                 method: 'POST',
@@ -48,12 +58,12 @@ export class LoadGameScene extends Phaser.Scene {
             const data = await response.json();
             if (data.exists) {
                 console.log('user exists inside of DB:', data.message);
-                // Update to show feedback in a consistent and visible location
+                // update to show feedback
                 const playerData = data.playerData;
 
-                // Retrieve existing data
+                // retrieve existing data
     
-                // Update the registry
+                // update the registry
                 this.registry.set('inventory_items', playerData['inventory_items']);
                 this.registry.set('inventory_astrobeasts', playerData['inventory_astrobeasts']);
                 this.registry.set('inventory_moves', playerData['inventory_moves']);
@@ -65,7 +75,7 @@ export class LoadGameScene extends Phaser.Scene {
                 this.scene.start('NameInput');
             }
         } catch (error) {
-            console.error('Error chekcing user:', error);
+            console.error('Error checking user:', error);
             this.add.text(this.cameras.main.width / 2, 380, 'Error chekcing user.', { font: '24px', color: 'red' }).setOrigin(0.5, 0);
         }
     }
