@@ -219,14 +219,17 @@ export class TutorialScene extends Phaser.Scene {
 
     preload() {
         this.load.image('sky', 'static/assets/Backgrounds/bPlanets.jpg');
+        this.load.image('tut', 'static/assets/Backgrounds/Tutorial.png');
         this.tutorialStep = 0;
     }
 
     create() {
+        this.add.image(0, 0, 'sky').setOrigin(0, 0);
         this.askForTutorial();
     }
 
     askForTutorial() {
+        
         // asks the user if they want a tutorial or not. if not, proceed to loadgame.js
         const centerX = this.cameras.main.width / 2;
         const centerY = this.cameras.main.height / 2;
@@ -238,9 +241,34 @@ export class TutorialScene extends Phaser.Scene {
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5);
 
+       
+
         yesButton.on('pointerdown', () => {
             // if yes, start tutorial
-            // currently leaving empty until more of the gameplay is completed in order to have accurate tutorial
+            question.destroy();
+            yesButton.destroy();
+            noButton.destroy();
+            this.add.image(0,0, 'tut').setOrigin(0,0);
+
+
+            // next button to go to hub
+            const nextButtonX = this.cameras.main.width - 100; 
+            const nextButtonY = this.cameras.main.height - 50;
+            const nextButton = this.add.text(nextButtonX, nextButtonY, 'Next >', { color: '#0f0' })
+            .setInteractive({ useHandCursor: true }) 
+            .setOrigin(0.5, 0.5).setFontFamily('"Press Start 2P"'); 
+
+            nextButton.on('pointerdown', () => {
+                this.scene.start('LoadHub'); 
+            });
+            
+            nextButton.on('pointerover', () => {
+                nextButton.setStyle({ fill: '#fff'}); // when you hover, changes to white
+            });
+
+            nextButton.on('pointerout', () => {
+                nextButton.setStyle({ fill: '#0f0'}); 
+            });
         });
 
         const noButton = this.add.text(centerX + 100, centerY + 50, 'No', { color: '#0f0' })
@@ -271,8 +299,10 @@ export class TutorialScene extends Phaser.Scene {
                 question.setFontFamily('"Press Start 2P"')
                 yesButton.setFontFamily('"Press Start 2P"')
                 noButton.setFontFamily('"Press Start 2P"')
+                
             }
         }) 
     }
 
 }
+
