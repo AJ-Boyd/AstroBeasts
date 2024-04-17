@@ -9,6 +9,7 @@ export class ShopScene extends Phaser.Scene {
     }
 
     create() {
+        
         // Background Image
         const bgShop = this.add.image(0, 0, 'bgShop').setOrigin(0, 0);
 
@@ -71,6 +72,7 @@ export class ShopScene extends Phaser.Scene {
             .setInteractive({ useHandCursor: true }) 
             .setOrigin(1, 1); 
         this.backButton.on('pointerdown', () => {
+            console.log('Current inventory state before leaving Shop:', this.registry.get('inventory_moves'));
             this.scene.start('LoadHub'); 
         });
         this.backButton.on('pointerover', () => {
@@ -153,6 +155,10 @@ export class ShopScene extends Phaser.Scene {
             'shop_moves': 'inventory_moves'
         };
         const inventoryType = inventoryTypeMap[shopType];
+
+        if (inventoryType === 'inventory_moves') {
+            console.log('Moves inventory before purchase:', this.registry.get(inventoryType));
+        }
     
         // Get the current inventory and add the item
          // Add the item to the correct inventory
@@ -174,7 +180,9 @@ export class ShopScene extends Phaser.Scene {
         this.updateShopDisplay(shopType); // Assuming this method also refreshes the visible inventory display
         this.updateEquippedText(); // Refresh wallet display
        // this.createScrollableInventory(); // Refresh inventory display
-        
+       if (inventoryType === 'inventory_moves') {
+        console.log('Moves inventory after purchase:', inventory);
+    }
     }
     
     toggleEquip(key, type) {

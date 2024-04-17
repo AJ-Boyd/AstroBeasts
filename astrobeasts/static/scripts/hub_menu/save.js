@@ -4,6 +4,7 @@ export class SaveScene extends Phaser.Scene {
     }
 
     create() {
+        console.log('Moves inventory after purchase:', this.registry.get('inventory_moves'));
     
         const centerX = this.cameras.main.width / 2;
         this.add.text(centerX, 50, 'Choose your Save Slot', {font: '32px', color: 'orange', align: 'center'}).setOrigin(0.5, 0);
