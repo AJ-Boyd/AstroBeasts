@@ -61,7 +61,7 @@ export class OptionsScene extends Phaser.Scene {
                 families: ['Press Start 2P']
             },
             active: () => {
-                Option.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                Option.setFontFamily('"Press Start 2P"').setColor('yellow')
                 HighScore.setFontFamily('"Press Start 2P"').setColor('#ffffff')
                 Rollcreds.setFontFamily('"Press Start 2P"').setColor('#ffffff')
                 Music.setFontFamily('"Press Start 2P"').setColor('#ffffff')
