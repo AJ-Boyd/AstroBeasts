@@ -53,6 +53,7 @@ class InventoryItem(Base):
     quantity = Column(Integer)
     isEquipped = Column(Boolean)
     Player_Name = Column(String, ForeignKey('Players.name'))
+    key = Column(String)
     players = relationship('Player', secondary=player_inventory_association, back_populates='inventoryItems')
 
 
@@ -74,11 +75,11 @@ class AstroBeast(Base): #need to adjust to include relationship with stats. stat
     description = Column(String)
     quantity = Column(Integer, default=1)
     isEquipped = Column(Boolean)
+    key = Column(String)
     Player_Name = Column(String, ForeignKey('Players.name'))
     players = relationship('Player', secondary=player_astrobeast_association, back_populates='astroBeasts')
 
 # Define the Aliens table
-
 class Alien(Base):
     __tablename__ = 'Aliens'
     
@@ -99,6 +100,18 @@ class AlienStats(Base):
     Level = Column(Integer)
     
     alien = relationship('Alien', back_populates='alien_stats')
+
+class Move(Base):
+    __tablename__ = 'Moves'
+
+    MoveID = Column(Integer, primary_key=True)
+    key = Column(String)
+    name = Column(String)
+    description = Column(String)
+    quantity = Column(Integer)
+    cost = Column(Integer)
+    isEquipped = Column(Boolean)
+    Player_Name = Column(String, ForeignKey('Players.name'))
 
 # Define the LeaderBoard table
 class LeaderBoard(Base):

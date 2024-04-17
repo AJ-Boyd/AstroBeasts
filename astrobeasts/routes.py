@@ -13,7 +13,7 @@ import os
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .models import Base, Player, InventoryItem, AstroBeast
+from .models import Base, Player, InventoryItem, AstroBeast,Move
 
 router = Blueprint("router", __name__)
 src = 'mydatabase.db'
@@ -52,11 +52,13 @@ def save_game():
 
     session.query(InventoryItem).filter_by(Player_Name=playerName).delete()
     session.query(AstroBeast).delete()
+    session.query(Move).delete()
 
     for item in gameState.get('inventory_items', []):
         inventory_item = InventoryItem(
             Player_Name=playerName,  # Link by name
-            name=item['name'], 
+            name=item['name'],
+            key = item['key'], 
             description=item['description'],
             quantity=item.get('quantity', 0),
             isEquipped=item.get('isEquipped', False)
@@ -66,12 +68,24 @@ def save_game():
     for beast in gameState.get('inventory_astrobeasts', []):
         astro_beast = AstroBeast(
             Player_Name=playerName,
-            name=beast['name'], 
+            name=beast['name'],
+            key = beast['key'],  
             description=beast['description'],
             isEquipped=beast.get('isEquipped', False)  # Safely get isEquipped
         )
         session.add(astro_beast)
-    
+    print(gameState.get('inventory_moves'))
+    for move in gameState.get('inventory_moves', []):
+        move_entry = Move(
+            Player_Name=playerName,
+            name=move['name'],
+            key=move['key'],  
+            description=move['description'],
+            quantity=move.get('quantity', 1),  # Default to 1 if not provided
+            cost=move.get('cost', 0),  # Default to 0 if not provided
+            isEquipped=move.get('isEquipped', False)  # Safely get isEquipped
+        )
+        session.add(move_entry)
     
     session.commit()
     session.close()  # Make sure to close the session
@@ -88,10 +102,12 @@ def check_name():
     if player:
         inventory_items = session.query(InventoryItem).filter(InventoryItem.Player_Name == player_name).all()
         myBeasts = session.query(AstroBeast).filter(AstroBeast.Player_Name == player_name).all()
+        myMoves = session.query(Move).filter(Move.Player_Name == player_name).all()
         player_data = {
             'playerName': player.name,
-            'inventory_items': [{'name': item.name, 'description': item.description, 'quantity': item.quantity, 'isEquipped': item.isEquipped} for item in inventory_items],
-            'inventory_astrobeasts': [{'name': beast.name, 'description': beast.description, 'isEquipped': beast.isEquipped} for beast in myBeasts],
+            'inventory_items': [{'name': item.name, 'description': item.description, 'quantity': item.quantity, 'isEquipped': item.isEquipped, 'key': item.key} for item in inventory_items],
+            'inventory_astrobeasts': [{'name': beast.name, 'description': beast.description, 'isEquipped': beast.isEquipped,  'key': beast.key} for beast in myBeasts],
+            'inventory_moves': [{'name': move.name, 'description': move.description, 'quantity': move.quantity, 'cost': move.cost, 'isEquipped': move.isEquipped, 'key': move.key} for move in myMoves]
         }
         # If a player with the given name exists
         return jsonify({'exists': True, 'message': f'Player {player_name} exists.', 'playerData': player_data})

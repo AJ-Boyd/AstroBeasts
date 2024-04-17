@@ -56,6 +56,7 @@ export class LoadGameScene extends Phaser.Scene {
                 // Update the registry
                 this.registry.set('inventory_items', playerData['inventory_items']);
                 this.registry.set('inventory_astrobeasts', playerData['inventory_astrobeasts']);
+                this.registry.set('inventory_moves', playerData['inventory_moves']);
                 this.registry.set('playerName', playerData.playerName)
 
                 this.scene.start('LoadHub');
