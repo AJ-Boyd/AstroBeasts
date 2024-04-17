@@ -78,31 +78,50 @@ export class NameInputScene extends Phaser.Scene {
         const left = this.cameras.main.height / 2;
         const textX = 3 * this.cameras.main.width / 4; 
 
-        const nameQuestion = this.add.text(textX, 200, 'What is your name?', { color: '#0f0',  align: 'center' }).setOrigin(0.5, 0);
-        let errorText = this.add.text(0,0,'')
-         // create form for user to input info
-         // will need to make it look pretty with bootstrap!
-         const formHtml = `
-            <input type="text" name="nameField" placeholder="Enter your name">
-            <button type="button" name="playButton">OK</button>
-        `;
+        // prompt text
+        const namePrompt = this.add.text(textX,200, 'What is your name?', {font: '20px', color: '#ffffff',align: 'center'}).setOrigin(0.5, 0.5);
 
-        // create the form, using dom module (which gives the ability to interact with HTML objects on our phaser canvas)
-        let element = this.add.dom(textX, 300).createFromHTML(formHtml).setOrigin(0.5);
+       //name input text field
+        const nameEntry = this.add.text(textX, 300, '', {font: '20px', color: '#ffff00'}).setOrigin(0.5, 0.5);
+
+        let playerName = '';
+        let cursor = this.add.text(textX, 300, '|', {
+            font: '20px Arial',
+            color: '#ffff00'
+        }).setOrigin(0.5, 0.5);
+
         
-        element.addListener('click');
-        element.on('click', (event) => {
-            if (event.target.name === 'playButton') {
-                let inputText = document.querySelector('input[name="nameField"]'); // player name
- 
-                if (inputText instanceof HTMLInputElement && inputText.value !== '') {
-                    this.registry.set('playerName', inputText.value);
-                    this.scene.start('PickYourStarter');
-                } else {
-                    errorText = this.add.text(textX, 400, 'Please input a name!', { color: '#fff', align: 'center' }).setOrigin(0.5, 0);
-                }
+        this.input.keyboard.on('keydown', (event) => {
+            if (event.keyCode === 8 && nameEntry.text.length > 0) {  // detects backspace
+                nameEntry.setText(nameEntry.text.substring(0, nameEntry.text.length - 1));
+            } else if ((event.keyCode === 32 || (event.keyCode >= 48 && event.keyCode <= 90 )) && nameEntry.text.length < 15) {  // user can only enter up to 15 characters
+                nameEntry.setText(nameEntry.text + event.key);
+            } 
+            cursor.setPosition(nameEntry.getTopRight().x - 3, nameEntry.y); 
+        });
+
+        // a blinking cursor effect at the end of the typing
+        this.time.addEvent({
+            delay: 530,  
+            callback: () => {
+                cursor.visible = !cursor.visible;
+            },
+            loop: true
+        });
+
+        // button for submitting the name
+        const okButton = this.add.text(textX, 500, 'OK!', {font: '20px',color: '#00ff00',backgroundColor: '#000000'}).setOrigin(0.5, 0.5).setInteractive().setPadding(10).setStyle({ backgroundColor: '#000' });
+
+        okButton.on('pointerdown', () => {
+            let playerName = nameEntry.text.trim();
+            if (playerName.length > 0) {
+                this.registry.set('playerName', playerName);
+                this.scene.start('PickYourStarter');  // go to next scene
+            } else {
+                namePrompt.setText('Please enter a name:');
             }
         });
+
         let player = this.add.image(200, left, 'dude').setOrigin(0.5, 0.5);
 
         // below is using the webfontloader module to use external fonts for the scene
@@ -111,8 +130,8 @@ export class NameInputScene extends Phaser.Scene {
                 families: ['Press Start 2P']
             },
             active: () => {
-                nameQuestion.setFontFamily('"Press Start 2P"').setColor('#ffff')
-                errorText.setFontFamily('"Press Start 2P"').setColor('#ffff')
+                namePrompt.setFontFamily('"Press Start 2P"').setColor('#ffff')
+                nameEntry.setFontFamily('"Press Start 2P"').setColor('#ffff')
             }
         }) 
         
