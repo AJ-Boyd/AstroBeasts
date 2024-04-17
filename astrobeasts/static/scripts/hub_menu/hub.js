@@ -7,6 +7,7 @@ export class HubScene extends Phaser.Scene {
 
     preload() {
         this.load.image('hub', 'static/assets/Backgrounds/The_Hub.jpg');
+        this.load.image('my', 'static/assets/Backgrounds/bPlanets.png');
     }
 
     create() {
@@ -30,30 +31,60 @@ export class HubScene extends Phaser.Scene {
 
         // first row of options
         let InventoryText = this.add.text(startXFirstRow, firstRowY, ' > Inventory', { font: '15px', color: 'DodgerBlue' })
-        .setInteractive({ useHandCursor: true })
-        .setOrigin(0.5, 0.5)
-        .on('pointerdown', () => this.scene.start('LoadInventory'));
+            .setInteractive({ useHandCursor: true })
+            .setOrigin(0.5, 0.5)
+            .on('pointerdown', () => this.scene.start('LoadInventory'));
+            InventoryText.on('pointerover', () => {
+                InventoryText.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
+            });
+            InventoryText.on('pointerout', () => {
+                InventoryText.setStyle({ fill: 'white'}); 
+            });
        
         let ShopText = this.add.text(startXFirstRow + gap, firstRowY, ' > Shop', { font: '15px', color: 'MediumSeaGreen' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
             .on('pointerdown', () => this.scene.start('LoadShop'));
+            ShopText.on('pointerover', () => {
+                ShopText.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
+            });
+            ShopText.on('pointerout', () => {
+                ShopText.setStyle({ fill: 'white'}); 
+            });
 
         let DojoText = this.add.text(startXFirstRow + 2 * gap, firstRowY, ' > Dojo', { font: '15px', color: 'crimson' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
             .on('pointerdown', () => this.scene.start('LoadDojo'));
+            DojoText.on('pointerover', () => {
+                DojoText.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
+            });
+            DojoText.on('pointerout', () => {
+                DojoText.setStyle({ fill: 'white'}); 
+            });
 
         // second row of options
         let TournamentText = this.add.text(startXSecondRow, secondRowY, ' > Tournament', { font: '15px', color: 'gold' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
             .on('pointerdown', () => this.scene.start('LoadTourney'));
+            TournamentText.on('pointerover', () => {
+                TournamentText.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
+            });
+            TournamentText.on('pointerout', () => {
+                TournamentText.setStyle({ fill: 'white'}); 
+            });
 
         let SaveText = this.add.text(startXSecondRow + gap, secondRowY, '  > Save ', { font: '15px', color: 'white' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
             .on('pointerdown', () => this.saveGame()); //add a function to save and a pop-up saying save successful
+            SaveText.on('pointerover', () => {
+                SaveText.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
+            });
+            SaveText.on('pointerout', () => {
+                SaveText.setStyle({ fill: 'white'}); 
+            });
 
         let SaveAndQuitText = this.add.text(startXSecondRow + 2 * gap, secondRowY, '  > Save & Quit', { font: '15px', color: 'DodgerBlue' })
             .setInteractive({ useHandCursor: true })
@@ -61,6 +92,12 @@ export class HubScene extends Phaser.Scene {
             .on('pointerdown', () => {
                 this.saveGame();  // Call the saveGame function
                 this.scene.start('MainMenu');  // Transition to the MainMenu scene
+            });
+            SaveAndQuitText.on('pointerover', () => {
+                SaveAndQuitText.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
+            });
+            SaveAndQuitText.on('pointerout', () => {
+                SaveAndQuitText.setStyle({ fill: 'white'}); 
             });
 
             // below is using the webfontloader module to use external fonts for the scene
