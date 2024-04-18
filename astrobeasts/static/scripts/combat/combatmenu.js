@@ -1,3 +1,5 @@
+import { Aliens } from "./aliens.js";
+import { Move } from "./moves.js";
 
 //BATTLE Options - TO DO: Make this reference the list of moves available
 const ATTACK_LIST = Object.freeze({
@@ -38,37 +40,27 @@ export class CombatMenu {
     #scene;
     #battleOpt;
     #fightOpt;
-
     #BattleText;
     #FightText;
-
-   
     #fightSlash;
     #fightMessage;
-
     #RenderMessage
 
-    
-
-    
     constructor(scene) {    
         this.#scene = scene;
+        /**@type {Move[]} */
+        this.astroMoves = []; //the astro to show itshealth and moves
         this.#createDialog();
         this.#createBattleOptions();
-        this.#createFightOptions();
- 
+        // this.createFightOptions();
         this.#promptItem();
         this.#Slashfight();
     }
-
-
-
 
  //Create the Dialog Box.
  #createDialog()
  {
      const rHeight = 94; 
-     
      this.#scene.add
          .rectangle(
          3, 
@@ -79,7 +71,6 @@ export class CombatMenu {
          1
          ).setOrigin(0)
          .setStrokeStyle(6,0x00b2e3,1) //sets border on text box (6 pixels, color)
- 
  }
  
  //Create Run/Fight/Scan options. 
@@ -104,8 +95,15 @@ export class CombatMenu {
  }
 
  //Create options for Player Moves
- #createFightOptions()
+ createFightOptions()
  {
+    alert(this.astroMoves.length);
+    const atkOptCoords =  [
+        [170, 15],
+        [55, 43],
+        [220, 43],
+        [170, 70],
+        ]
   this.#FightText = this.#scene.add.text(55,540,'What Do You Want To Do?', MessageTextStyle)
 
   this.#fightOpt =  this.#scene.add.container(400,500, [
@@ -114,12 +112,15 @@ export class CombatMenu {
   this.#scene.add.image(150,20,'upkey').setScale(0.5),
   this.#scene.add.image(150,80,'downkey').setScale(0.5),
 
-  this.#scene.add.text(170,15, ATTACK_LIST.MOVE_1, MenuOptionsTextStyle),
-  this.#scene.add.text(55,43, ATTACK_LIST.MOVE_2,  MenuOptionsTextStyle),
-  this.#scene.add.text(220,43, ATTACK_LIST.MOVE_3, MenuOptionsTextStyle),
-  this.#scene.add.text(170,70, ATTACK_LIST.MOVE_4,MenuOptionsTextStyle),
+  
+//   this.#scene.add.text(55,43, ATTACK_LIST.MOVE_2,  MenuOptionsTextStyle),
+//   this.#scene.add.text(220,43, ATTACK_LIST.MOVE_3, MenuOptionsTextStyle),
+//   this.#scene.add.text(170,70, ATTACK_LIST.MOVE_4,MenuOptionsTextStyle),
   ]);
-
+  
+  for(var i = 0; i < this.astroMoves.length; i++){
+    this.#FightText.add.text(atkOptCoords[i][0], atkOptCoords[i][1], this.astroMoves[i].name, MenuOptionsTextStyle)
+  }
    this.fightOptionsOff();
  
  }

@@ -20,7 +20,7 @@ import { Move } from "./moves.js";
  * @property {number} currentHP
  * @property {number[]} stats //ATK, DEF, DEX, SPD, LUK
  * @property {Move[]} moves
- * 
+ * @property {boolean} isAlive
  * */
 
 /**Define Object "coord" which is the coordinates of the alien 
@@ -31,11 +31,8 @@ import { Move } from "./moves.js";
  * */
 
 
- 
 export class Aliens {
-
     //identify with underscore as "should be private/protected"
-
     /** @protected @type {Phaser.Scene} */ 
     _scene;
     /** @public @type {Alien} */ 
@@ -59,8 +56,8 @@ export class Aliens {
         console.log(this._scene)
         console.log(this.alienDetails.assets)
 
-        //this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(3);
-        //this.AlienGuy.anims.play(this._alienDetails.assetAnim)
+        this.AlienGuy = this._scene.add.sprite(position.x, position.y, this.alienDetails.assets).setScale(3);
+        this.AlienGuy.anims.play(this.alienDetails.assetAnim)
     }
 }
 //create enemy alien and idle
@@ -69,5 +66,5 @@ export class Aliens {
 
 //create our alien and idle
 
-    //this.player = this.add.sprite(200, 310, 'Strikoh').setScale(4);
-   // this.player.anims.play("idle_Strikoh", true)
+// this.player = this.add.sprite(200, 310, 'Strikoh').setScale(4);
+// this.player.anims.play("idle_Strikoh", true)
