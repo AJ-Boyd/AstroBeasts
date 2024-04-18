@@ -34,8 +34,14 @@ export class OptionsScene extends Phaser.Scene {
 
         let Music = this.add.text(100, 280, 'Mute Music □', {font: '24px', color: 'deeppink' })
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.add.text(365, 280, '✓', {font: '24px', color: 'white' }));            
-            // ADD MUSIC MUTE FUNCTIONALITY
+            .on('pointerdown', () => {
+                this.add.text(365, 280, '✓', {font: '24px', color: 'white' })           
+                let music = this.game.registry.get('bgMusic');
+                let isMuted = this.game.registry.get('isMuted');
+                isMuted = !isMuted; // Toggle the current state
+                music.setMute(isMuted);
+                this.game.registry.set('isMuted', isMuted); // Update the registry with new state
+            });
             Music.on('pointerover', () => {
                 Music.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
             });

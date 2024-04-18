@@ -7,6 +7,7 @@ export class MainMenuScene extends Phaser.Scene {
     }
     preload() {
         this.load.image('sky', 'static/assets/Backgrounds/bPlanets.jpg');
+        this.load.audio('bg-music', 'static/assets/Music/FrozenJamSeamlessLoop.mp3');
     }
     init() {
         this.registry.set('playerName', '');
@@ -74,6 +75,22 @@ export class MainMenuScene extends Phaser.Scene {
     }
     create() {
         this.add.image(0, 0, 'sky').setOrigin(0, 0);
+        // check if bgMusic has already been created
+        if (!this.game.registry.has('bgMusic')) {
+            let bgMusic = this.sound.add('bg-music', {loop: true });
+            bgMusic.play();
+            this.game.registry.set('bgMusic', bgMusic);
+        }
+        
+        // initialize the mute state only if it has not been initialized yet
+        if (!this.game.registry.has('isMuted')) {
+            this.game.registry.set('isMuted', false);
+        }
+
+        // Apply the current mute state
+        let music = this.game.registry.get('bgMusic');
+        let isMuted = this.game.registry.get('isMuted');
+        music.setMute(isMuted);
         // center of screen horizontally (x axis)
         const centerX = this.cameras.main.width / 2;
 
