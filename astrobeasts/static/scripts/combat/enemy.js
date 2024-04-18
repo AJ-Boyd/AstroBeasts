@@ -7,12 +7,12 @@ import { Move } from "./moves.js";
  * @typedef EnemyConfig
  * @type {Object}
  * @property {Phaser.Scene} scene
- * @property {EnemyDetails} enemyDetails
+ * @property {Enemy} EnemyDetails
  * */
 
 
 /** Define Object "EnemyDetails"
- * @typedef EnemyDetails
+ * @typedef Enemy
  * @type {Object}
  * @property {string} name
  * @property {string} assets
@@ -35,14 +35,14 @@ import { Move } from "./moves.js";
 
 
  
-export class Enemy {
+export class Enemies {
 
     //identify with underscore as "should be private/protected"
 
     /** @protected @type {Phaser.Scene} */ 
     _scene;
-    /** @public @type {EnemyDetails} */ 
-    enemyDetails;
+    /** @public @type {Enemy} */ 
+    _EnemyDetails;
      /** @protected @type {Phaser.GameObjects.Image} */ 
     _EnemyGuy;
     /**
@@ -57,9 +57,9 @@ export class Enemy {
     constructor(config, position)
     {
         this._scene = config.scene;
-        this.enemyDetails = config.enemyDetails;
+        this._enemyDetails = config.EnemyDetails;
 
-        //this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(3);
-        //this.EnemyGuy.anims.play(this._enemyDetails.assetAnim)
+        this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(3);
+        this.EnemyGuy.anims.play(this._enemyDetails.assetAnim)
     }
 }

@@ -3,7 +3,7 @@ import { CombatMenu } from './combatmenu.js';
 import { HPBar } from './healthbar.js';
 import { RenderBackground } from './renderbackground.js';
 import {Move} from './moves.js';
-import { Enemy } from './enemy.js';
+import { Enemies } from './enemy.js';
 
 var cursors;
 var STATUS_STATE = 'nothing'
@@ -41,6 +41,7 @@ preload()
 }
 
 create() {   
+
     console.log('create - Combat');
     //hard-coded stuff
     //example Move object
@@ -57,7 +58,8 @@ create() {
             currentHP: 250,
             stats: [300, 250, 300, 250, 250],
             moves: [exMove],
-            isAlive: true
+            isAlive: true,
+            level: 1
         }
     }, {x: 100, y: 310})
 
@@ -180,7 +182,7 @@ update() {
         this.#combatMenu.astroMoves = attacker.alienDetails.moves;
         this.#combatMenu.createFightOptions();
         this.#combatMenu.playerInput('FIGHT')
-        
+
         console.log("attacker", attacker.alienDetails);
         
         this.updateUConsole("Select a move for " + attacker.alienDetails.name + " to do")
