@@ -118,10 +118,10 @@ export class InventoryScene extends Phaser.Scene {
         }) 
     }
     createScrollableInventory() {
-        const inventoryWidth = 400; 
-        const inventoryHeight = 300; 
-        const posX = 800 - inventoryWidth + 200; // start from the right edge of the white rectangle
-        const posY = -160; 
+        const inventoryWidth = 440; 
+        const inventoryHeight = 510; 
+        const posX = 835 - inventoryWidth + 200; // start from the right edge of the white rectangle
+        const posY = -260; 
 
         // create dom element in order to use a scrollbar while displaying inventory
         const inventoryHtml = `
