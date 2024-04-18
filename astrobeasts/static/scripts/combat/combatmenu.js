@@ -9,8 +9,6 @@ const ATTACK_LIST = Object.freeze({
     MOVE_4: 'Tackle',
 });
 
-
-
 //Run/Fight/Item/Scan - Should be CONSTANT?
 const PLAYER_OPTIONS = Object.freeze({
     FIGHT: 'FIGHT',
@@ -19,10 +17,7 @@ const PLAYER_OPTIONS = Object.freeze({
     SCAN: 'SCAN',
 });
 
-
-
 const MessageTextStyle = {
-
     color:'Blue',
     fontSize: '22px',
     fontStyle: 'bold',

@@ -133,7 +133,9 @@ this.load.spritesheet('item',
     '../static/assets/Backgrounds/righthealth.png'
     );
    
-
+//Combat consoles
+    this.load.image('upperConsole',
+'../static/assets/Backgrounds/upperConsole.png');
 
 }
 

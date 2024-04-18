@@ -179,7 +179,7 @@ update() {
     if(STATUS_STATE == 'fight'){
         //get the Astrobeast that is currently attacking
         attacker = this.party[CURR_TURN];
-        this.#combatMenu.astroMoves = attacker.alienDetails.moves;
+        this.#combatMenu.astroMoves = attacker._alienDetails.moves;
         this.#combatMenu.createFightOptions();
         this.#combatMenu.playerInput('FIGHT')
 

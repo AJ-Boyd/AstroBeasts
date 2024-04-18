@@ -5,7 +5,7 @@ export class LoadGameScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.text(100, 100, 'Load Game Scene', { fill: '#fff' });
+        this.add.text(100, 100, 'Load Game Scene', { color: '#fff' });
         // add load game functionality here
     }
 }

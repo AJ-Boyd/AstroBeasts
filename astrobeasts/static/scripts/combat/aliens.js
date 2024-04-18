@@ -60,8 +60,8 @@ export class Aliens {
 
         this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(3);
         this.AlienGuy.anims.play(this._alienDetails.assetAnim)
-        this.AlienGuy = this._scene.add.sprite(position.x, position.y, this.alienDetails.assets).setScale(3);
-        this.AlienGuy.anims.play(this.alienDetails.assetAnim)
+        this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(3);
+        this.AlienGuy.anims.play(this._alienDetails.assetAnim)
     }
 }
 //create enemy alien and idle
