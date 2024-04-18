@@ -65,9 +65,9 @@ create() {
 
 
     //Enemies
-    const Hotu = new Enemy({
+    const Hotu = new Enemies({
         scene: this,
-        enemyDetails: {
+        EnemyDetails: {
             name: "Hotu",
             assets: "Hotu",
             assetAnim: "idle_Hotu",
@@ -81,9 +81,9 @@ create() {
     }, 
     {x: 200, y: 310},
     );
-    const Tarkeel = new Enemy({
+    const Tarkeel = new Enemies({
         scene: this,
-        enemyDetails: {
+        EnemyDetails: {
             name: "Tarkeel",
             assets: 'Tarkeel',
             assetAnim: "idle_Tarkeel",

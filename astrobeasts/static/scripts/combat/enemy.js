@@ -57,9 +57,9 @@ export class Enemies {
     constructor(config, position)
     {
         this._scene = config.scene;
-        this._enemyDetails = config.EnemyDetails;
+        this.enemyDetails = config.EnemyDetails;
 
-        this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(3);
-        this.EnemyGuy.anims.play(this._enemyDetails.assetAnim)
+        this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this.enemyDetails.assets).setScale(3);
+        this.EnemyGuy.anims.play(this.enemyDetails.assetAnim)
     }
 }
