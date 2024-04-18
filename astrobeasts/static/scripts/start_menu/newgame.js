@@ -122,6 +122,14 @@ export class NameInputScene extends Phaser.Scene {
             }
         });
 
+        okButton.on('pointerover', () => {
+            okButton.setStyle({ fill: '#fff'}); // when you hover, changes to white
+        });
+
+        okButton.on('pointerout', () => {
+            okButton.setStyle({ fill: '#0f0'}); 
+        });
+
         let player = this.add.image(200, left, 'dude').setOrigin(0.5, 0.5);
 
         // below is using the webfontloader module to use external fonts for the scene
@@ -132,6 +140,7 @@ export class NameInputScene extends Phaser.Scene {
             active: () => {
                 namePrompt.setFontFamily('"Press Start 2P"').setColor('#ffff')
                 nameEntry.setFontFamily('"Press Start 2P"').setColor('#ffff')
+                okButton.setFontFamily('"Press Start 2P"')
             }
         }) 
         

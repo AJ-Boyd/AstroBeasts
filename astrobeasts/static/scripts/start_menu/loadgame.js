@@ -49,6 +49,14 @@ export class LoadGameScene extends Phaser.Scene {
                 name_input.setText('Please enter a name:');
             }
         });
+
+        okButton.on('pointerover', () => {
+            okButton.setStyle({ fill: '#fff'}); // when you hover, changes to white
+        });
+
+        okButton.on('pointerout', () => {
+            okButton.setStyle({ fill: '#0f0'}); 
+        });
         
         
 
@@ -60,6 +68,7 @@ export class LoadGameScene extends Phaser.Scene {
             active: () => {
                 name_input.setFontFamily('"Press Start 2P"').setColor('#ffff')
                 textEntry.setFontFamily('"Press Start 2P"').setColor('#0f0')
+                okButton.setFontFamily('"Press Start 2P"')
             }
         }) 
 
@@ -100,7 +109,7 @@ export class LoadGameScene extends Phaser.Scene {
         }
     }
 }
-
+/*
 const config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
@@ -108,4 +117,5 @@ const config = {
     height: 600,
     scene: LoadGameScene
 };
+*/
 
