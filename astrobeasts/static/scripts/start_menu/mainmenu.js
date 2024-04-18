@@ -77,7 +77,7 @@ export class MainMenuScene extends Phaser.Scene {
         // center of screen horizontally (x axis)
         const centerX = this.cameras.main.width / 2;
 
-        let title = this.add.text(centerX, 70, 'AstroBeasts', {font: '64px', color: '#ffff', align: 'center'}).setOrigin(0.5, 0);
+        let title = this.add.text(centerX, 70, 'AstroBeasts', {font: '64px', color: '#ffff', stroke: '#13b2f3', strokeThickness: 3, align: 'center'}).setOrigin(0.5, 0);
 
         let startGameText= this.add.text(100, 220, 'Start New Game', {font: '24px', color: '#ffff' })
             .setInteractive({ useHandCursor: true })
