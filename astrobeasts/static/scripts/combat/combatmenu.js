@@ -1,4 +1,5 @@
 
+
 //BATTLE Options - TO DO: Make this reference the list of moves available
 const ATTACK_LIST = Object.freeze({
     MOVE_1: 'Slash',
@@ -18,7 +19,6 @@ const PLAYER_OPTIONS = Object.freeze({
 });
 
 
-
 const MessageTextStyle = {
 
     color:'Blue',
@@ -34,6 +34,9 @@ const MenuOptionsTextStyle = {
     fontStyle: 'bold',
 }
 
+var lName
+var lMoves = []
+
 export class CombatMenu {
     #scene;
     #battleOpt;
@@ -42,23 +45,33 @@ export class CombatMenu {
     #BattleText;
     #FightText;
 
-   
+
     #fightSlash;
     #fightMessage;
+   
 
     #RenderMessage
 
-    
+  
+    //_astromoves
 
     
-    constructor(scene) {    
+    constructor(scene, alien)    
+        {
         this.#scene = scene;
+
+        this.lAlien = alien;
+           
+        lMoves = []
+
         this.#createDialog();
         this.#createBattleOptions();
         this.#createFightOptions();
+
  
         this.#promptItem();
-        this.#Slashfight();
+       // this.#Slashfight();
+
     }
 
 
@@ -106,7 +119,19 @@ export class CombatMenu {
  //Create options for Player Moves
  #createFightOptions()
  {
-  this.#FightText = this.#scene.add.text(55,540,'What Do You Want To Do?', MessageTextStyle)
+
+
+ //var astromoves =  this.#LocalAlien.getMoves();
+    const atkOptCoords =  [
+        [170, 15],
+        [55, 43],
+        [220, 43],
+        [170, 70],
+        ]
+
+        lMoves = this.lAlien.getMoves()
+
+  this.#FightText = this.#scene.add.text(55,540, `Select a Move for ${this.lAlien.getName()}`, MessageTextStyle)
 
   this.#fightOpt =  this.#scene.add.container(400,500, [
   this.#scene.add.image(40,52, 'leftkey').setScale(0.5),
@@ -114,10 +139,12 @@ export class CombatMenu {
   this.#scene.add.image(150,20,'upkey').setScale(0.5),
   this.#scene.add.image(150,80,'downkey').setScale(0.5),
 
-  this.#scene.add.text(170,15, ATTACK_LIST.MOVE_1, MenuOptionsTextStyle),
-  this.#scene.add.text(55,43, ATTACK_LIST.MOVE_2,  MenuOptionsTextStyle),
-  this.#scene.add.text(220,43, ATTACK_LIST.MOVE_3, MenuOptionsTextStyle),
-  this.#scene.add.text(170,70, ATTACK_LIST.MOVE_4,MenuOptionsTextStyle),
+
+
+   this.#scene.add.text(170,15, lMoves[0], MenuOptionsTextStyle),
+   this.#scene.add.text(55,43, lMoves[1],  MenuOptionsTextStyle),
+   this.#scene.add.text(220,43, lMoves[2], MenuOptionsTextStyle),
+   this.#scene.add.text(170,70, lMoves[3],MenuOptionsTextStyle),
   ]);
 
    this.fightOptionsOff();
@@ -128,7 +155,7 @@ export class CombatMenu {
  #promptItem()
  {    
 
-    this.#RenderMessage = this.#scene.add.text(400, 540, "blank", MessageTextStyle);
+    this.#RenderMessage = this.#scene.add.text(300, 540, "blank", MessageTextStyle);
     this.RenderMessageOff();
 
 }
@@ -164,8 +191,8 @@ fightOptionsOff()
 managedInFightScene()
 {
     this.battleOptionsOff();
-
     this.fightOptionsOn();
+    
 
 }
 
@@ -185,6 +212,10 @@ RenderMessageOff()
 RenderMessageOn()
 {
     this.#RenderMessage.setAlpha(1);
+}
+
+getRand(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
 
 playerInput(entry)
@@ -228,27 +259,20 @@ playerInput(entry)
 }
 
 
-playerFightInputSelect(entry)  //THIS IS WHERE I was thinkign comabt logic goes
+playerFightInputSelect(name, hit, remains)  
 {
 
   //Step 1: Player Attacks
    
         this.fightOptionsOff(),
-
-        this.#RenderMessage.setText(`You Used ${entry}`); 
+        
+       
+        this.#RenderMessage.setText(`${this.lAlien.getName()} Used ${name} \n and Dealt ${hit} Damage! ${remains} HP Left`); 
         this.RenderMessageOn();
         this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this )
     
-        //Step 2: Reduce Enemy Life
-
-    //     this.#RenderMessage.setText(`Your Enemy Loses HP`); 
-    //     this.RenderMessageOn();      
-    //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
      
 
-    //     // Step 3: Check Enemy is still alive
-
-    //     // Step 4: Enemy Attacks
 
     //     var attack = "WHOMP"
     //     this.#RenderMessage.setText(`Your Enemy Uses ${attack}`); 
@@ -267,34 +291,100 @@ playerFightInputSelect(entry)  //THIS IS WHERE I was thinkign comabt logic goes
     this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
     // return;
     
+
 }
 
-///Casey thinks all below this like may be old, redundant after I refactored - 4/4/24
-#Slashfight()
+enemyAttacks(attackerName, attackerMove, friendlyName, damage, friendlyHP)
 {
-    var A = "slash"
-        this.#fightSlash = this.#scene.add.text(
-        200,
-        300,
-        "Slash",
-        {
-            color:'Red',
-            fontSize: '40px',
-            fontStyle: 'bold italic',
-        }),
 
-   this.slashOff();
+  //Step 1: Player Attacks
+   
+        this.fightOptionsOff(),
+        
+       
+        this.#RenderMessage.setText(`It's ${attackerName}'s turn`); 
+        this.RenderMessageOn();
+        this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+        this.#RenderMessage.setText(`${attackerName} performed ${attackerMove} on \t ${friendlyName} and did ${damage} damage!`); 
+        this.RenderMessageOn();
+        this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this )
+        this.#RenderMessage.setText(`${friendlyName} now has ${friendlyHP} remaining!`); 
+        this.RenderMessageOn();
+        this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+
+        this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
 }
 
-slashOff()
+missRender(name)
 {
-    this.#fightSlash.setAlpha(0);
-}
-slashOn()
+ 
+        this.fightOptionsOff(),
+        
+       
+        this.#RenderMessage.setText(`${name} Missed!!`); 
+        this.RenderMessageOn();
+        this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+        this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
+    }
+    
+
+    
+deathnotice(name)
 {
-    this.#fightSlash.setAlpha(1);
-}
+ 
+        this.fightOptionsOff(),
+        
+       
+        this.#RenderMessage.setText(`${name} is defeated`); 
+        this.RenderMessageOn();
+        this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+        this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
+    }
+
+
+// #Slashfight()
+// {
+//     var hit = this.getRand(0,100);
+//     console.log("hit:", hit)
+//     if(hit <= 95){
+//         console.log("attack lands!")
+//         //attack target
+//         // attack(attacker, target, move){
+//         //     var d = this.calcDamage(attacker, move); //raw damage a move can do
+//         //     var m = this.calcMitigation(target); //the percentage of damage that the target can mitigate
+//         //     d *= 1-m;
+//         //     return d;
+//         // }
+        
+//         //this will have a fully fleshed out formula but for now this should always return 95
+//         var d = this.attack(attacker, target, move);
+        
+//         //check critical
+//         //this is also purely random; this will depend on player LUK later
+//         var crit = this.getRand(0,100);
+//         if(crit <= 5){
+//             d *= 2; //if there's a critical hit, double the damage
+//         }
+// }
+
+// slashOff()
+// {
+//     this.#fightSlash.setAlpha(0);
+// }
+// slashOn()
+// {
+//     this.#fightSlash.setAlpha(1);
+// }
 
 
 
+
+
+// //returns a random number between min and max, both inclusinve
+
+
+
+  
+
+// }
 }

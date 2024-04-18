@@ -1,5 +1,6 @@
 //Base class for alienz!
 import { HPBar } from "./healthbar.js";
+import { Move } from "./moves.js";
 
 /** Define Object "Alien Config"
  * @typedef AlienConfig
@@ -16,9 +17,11 @@ import { HPBar } from "./healthbar.js";
  * @property {string} assets
  * @property {string} assetAnim
  * @property {number} maxHp
- * @property {number} currentHp
- * @property {number} baseAttack
- * @property {string[]} attackOptions
+ * @property {number} currentHP
+ * @property {number[]} stats //[ATK, DEF, SPD]
+ * @property {string[]} moves // moves
+ * @property {number} level
+ * @property {boolean} isAlive
  * 
  * */
 
@@ -55,15 +58,62 @@ export class Aliens {
         this._scene = config.scene;
         this._alienDetails = config.AlienDetails;
 
-        this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(3);
+        this._HPBar = new  HPBar(this._scene, 10, 22);
+
+        this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(2);
         this.AlienGuy.anims.play(this._alienDetails.assetAnim)
+        
     }
+
+
+    getAlive(){
+        return this._alienDetails.isAlive;
+    }
+
+    setAlive(v)
+    {
+        this._alienDetails.isAlive = v;
+    }
+
+
+    getName(){
+        return this._alienDetails.name;
+    }
+
+getCurrentHP(){
+    return this._alienDetails.currentHP;
 }
-//create enemy alien and idle
 
-   
+getLevel(){
+    return this._alienDetails.level;
+}
 
-//create our alien and idle
+getMoves(){
+    return this._alienDetails.moves;
+}
 
-    //this.player = this.add.sprite(200, 310, 'Strikoh').setScale(4);
-   // this.player.anims.play("idle_Strikoh", true)
+getStats()
+{
+    return this._alienDetails.stats;
+}
+takeDamage(damage, callback)
+{
+    console.log("It is", this._alienDetails.currentHP)
+    console.log("you are subtracting", damage)
+    var dam = this._alienDetails.currentHP -= damage;
+    if (dam < 0){
+        dam =0;
+        this._alienDetails.isAlive = false;
+    }
+    this._HPBar.animateHP(dam/this._alienDetails.maxHp, {callback});
+    //this.updateHP(dam);
+
+}
+
+// updateHP(dam)
+//     {
+//         console.log("WHat is it:" , this._alienDetails.currentHP)
+
+//     }
+
+}
