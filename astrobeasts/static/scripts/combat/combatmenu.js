@@ -272,7 +272,7 @@ playerInput(entry)
     {
         console.log("YOU are FLEEING")
         //Return to main battle menu?
-        this.#scene.start("MainMenu")
+        this.#scene.scene.start("LoadHub")
         return;
         
     }
