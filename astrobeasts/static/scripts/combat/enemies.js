@@ -119,7 +119,7 @@ takeDamage(damage, callback)
 {
     this._HPBar = new HPBar(this._scene, 10, 22);
 
-    const enemyAlienName = this._scene.add.text(40,0, "ENEMIES",//this._enemyDetails.name, 
+    const enemyAlienName = this._scene.add.text(40,0, this._enemyDetails.name, 
     {
         color: '#31b1e0',
         fontSize: '28px',
@@ -127,7 +127,6 @@ takeDamage(damage, callback)
     }
     );
 
-    this._HPBar = new HPBar(this._scene, 10, 22);
 
 const hpImg = this._scene.add.image(0, 0,"healthback").setOrigin(0)
 

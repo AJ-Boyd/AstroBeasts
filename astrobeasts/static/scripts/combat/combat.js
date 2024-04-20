@@ -203,28 +203,7 @@ update() {
         }
     }
     
-   // while(this.#combatMenu.STATUS_STATE === 'battle'){
-    // if(Phaser.Input.Keyboard.JustDown(cursors.up)){
-    //    console.log('In Fight Up Is Down')
-    //    this.#combatMenu.playerFightInputSelect('HELLO'')
-     //   return;
-    //}
-
-    
-   // else if(cursors.down.isDown){
-    //    console.log('In Fight DOWN Is Down')
-    //    this.#combatMenu.playerFightInputSelect(this.#combatMenu.MOVE_2)
-    //    return;
-   // }
-   // else if(cursors.right.isDown){
-    //    console.log('Right Is Down')
-    //    this.#combatMenu.playerInput('ITEM')
-   // }
-    //else if(cursors.left.isDown){
-      //  console.log('Left Is Down')
-        //this.#combatMenu.playerInput('FLEE')
-    //} 
-    
+   
 
 }
 
@@ -350,10 +329,7 @@ update() {
     }else{
         //if the attack misses
         console.log("MISS")
-        this.#combatMenu.missRender(attacker.getName());
-        attacker.NameandHPOff();
-        this.#PlayerAlien1.NameandHPon;
-              
+        this.#combatMenu.missRender(attacker.getName());            
 
         STATUS_STATE = 'rest';
         

@@ -62,7 +62,6 @@ get container() {
     this.#rightCap.x = this.#middle.x + this.#middle.displayWidth;
 
 }
-
     /**
      * @param {number} percent
      */
