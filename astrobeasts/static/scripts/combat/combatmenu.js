@@ -12,10 +12,10 @@ const PLAYER_OPTIONS = Object.freeze({
 
 //UI positioning constants
 const optCoords =  [
-    [170, 15],
-    [55, 43],
-    [220, 43],
-    [170, 70],
+    [170, 15], //up
+    [55, 43], //left
+    [220, 43], //right
+    [170, 70], //down
 ]
     
 //text styles
@@ -132,7 +132,7 @@ export class CombatMenu {
    this.#scene.add.text(170,15, lMoves[0], MenuOptionsTextStyle),
    this.#scene.add.text(55,43, lMoves[1],  MenuOptionsTextStyle),
    this.#scene.add.text(220,43, lMoves[2], MenuOptionsTextStyle),
-   this.#scene.add.text(170,70, lMoves[3],MenuOptionsTextStyle),
+   this.#scene.add.text(170,70, lMoves[3], MenuOptionsTextStyle),
   ]);
 
    this.fightOptionsOff();
@@ -148,7 +148,7 @@ createTargetOptions()
     this.#targetOpt = this.#scene.add.container(400, 500,
     [
         this.#scene.add.image(40,52, 'leftkey').setScale(0.5),
-        this.#scene.add.image(285,52, 'rightkey').setScale(0.5),
+        this.#scene.add.image(320,52, 'rightkey').setScale(0.5),
         this.#scene.add.image(150,20,'upkey').setScale(0.5),
         this.#scene.add.image(150,80,'downkey').setScale(0.5),
     ]);
@@ -164,7 +164,6 @@ createTargetOptions()
 
 setTargetOptions(targets){
     console.log(targets)
-   
 
     var j = 0;
     for(var i = 0; i < this.#targetOpt.list.length; i++){
@@ -393,6 +392,7 @@ setAlien(alien){
 
 showScan(enemy)
 {
+    enemy.NameandHPon(); //This is not working for some reason
     var stats = [];
     stats = enemy.getStats();
     this.targetOptionsOff()
@@ -400,13 +400,18 @@ showScan(enemy)
     this.RenderMessageOn();
     this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
     //[ATK, DEF, SPD, LUK]
-    this.#RenderMessage.setText(`${enemy.getName()}'s Stats:\nATK: ${stats[0]}\nDEF: ${stats[1]}\nSPD: ${stats[2]}\nLUK: ${stats[3]}
-     `) .setFontSize('20px')
+    this.#RenderMessage.setText(`${enemy.getName()}'s Stats: 
+                 ATK: ${stats[0]}       DEF: ${stats[1]}       
+                 SPD: ${stats[2]}       LVL: ${enemy.getLevel()}
+                 LUK: ${stats[3]}       HP:  ${enemy.getCurrentHP()}
+                 
+     `) .setFontSize('25px')
         .setScale(0.8)
         .setDisplayOrigin(0,0);
 
     this.RenderMessageOn();
     this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+    this.#scene.time.delayedCall(1500, enemy.NameandHPoff(), null, this)
     this.#scene.time.delayedCall(1600, this.battleOptionsOn, null, this )
 
 }

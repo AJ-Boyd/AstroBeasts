@@ -16,7 +16,11 @@ var CURR_PARTY = 'player';
 
 export class CombatScene extends Phaser.Scene {
     #combatMenu;
-    #EnemyAlien;
+    #EnemyAlien1;
+    #EnemyAlien2;
+    #EnemyAlien3;
+    #EnemyAlien4;
+
     #PlayerAlien1;
     #PlayerAlien2;
     #player;
@@ -61,7 +65,7 @@ create() {
   background.showFire();
 
 //create enemy alien and idle
- this.#EnemyAlien = new Enemies({
+ this.#EnemyAlien1 = new Enemies({
     scene:this,
     EnemyDetails: {
         name: "Tarkeel",
@@ -77,7 +81,66 @@ create() {
 
     }
     
- }, {x: 100, y: 310})
+ }, {x: 75, y: 170})
+
+ this.#EnemyAlien2 = new Enemies({
+    scene:this,
+    EnemyDetails: {
+        name: "Shamrock",
+        assets: 'Shamrock',
+        assetAnim: "idle_Shamrock",
+        maxHP: 400,
+        currentHP: 250,
+        stats: [200, 200, 200, 200],
+        moves: ["Strike", "Slash","Bite","Sleep"] ,
+        level: 1,
+        isAlive: true,
+
+
+    }
+    
+ }, {x: 200, y: 150})
+
+ this.#EnemyAlien3 = new Enemies({
+    scene:this,
+    EnemyDetails: {
+        name: "Arquam",
+        assets: 'Arquam',
+        assetAnim: "idle_Arquam",
+        maxHP: 250,
+        currentHP: 250,
+        stats: [300, 300, 300, 300],
+        moves: ["Strike", "Slash","--","--"] ,
+        level: 1,
+        isAlive: true,
+
+
+    }
+    
+ }, { x: 210, y: 340})
+
+
+ this.#EnemyAlien4 = new Enemies({
+    scene:this,
+    EnemyDetails: {
+        name: "Icell",
+        assets: 'Icell',
+        assetAnim: "idle_Icell",
+        maxHP: 250,
+        currentHP: 250,
+        stats: [400, 400, 400, 400],
+        moves: ["Strike", "Slash","Bite","Sleep"] ,
+        level: 1,
+        isAlive: true,
+
+
+    }
+    
+ }, {x: 100, y: 340})
+
+
+
+
 
 //create our alien and idle
 
@@ -108,7 +171,7 @@ this.#PlayerAlien1 = new Aliens({
         assets: 'Hotu',
         assetAnim: "idle_Hotu",
         maxHP: 100,
-        currentHP: 100,
+        currentHP: 50,
         stats: [100, 100, 100, 100],
         moves: ["Punch", "Kick","",""] ,
         level: 1,
@@ -116,14 +179,14 @@ this.#PlayerAlien1 = new Aliens({
 
     }
     
- }, {x: 600, y: 330})
+ }, {x: 600, y: 340})
  
 //Create box on the bottom
 this.#combatMenu = new CombatMenu(this, this.#PlayerAlien1);// this.#PlayerAlien);
 this.#combatMenu.battleOptionsOn();
 
 party = [this.#PlayerAlien1, this.#PlayerAlien2];
-enemies = [this.#EnemyAlien]
+enemies = [this.#EnemyAlien1, this.#EnemyAlien2, this.#EnemyAlien3, this.#EnemyAlien4]
 }
 
 
@@ -141,18 +204,22 @@ if(STATUS_STATE =='scanning'){
     if(Phaser.Input.Keyboard.JustDown(cursors.up)){
         target = enemies[0]; //For now
         this.scanStuff();
+        
     }else if(Phaser.Input.Keyboard.JustDown(cursors.left)){
         if(enemies.length >= 2)
             target = enemies[1]; //For now
             this.scanStuff();
-    }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
+            
+    }else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
         if(enemies.length >= 3)
             target = enemies[2]; //For now
             this.scanStuff();
-    }else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
+            
+    }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
         if(enemies.length >= 4)
             target = enemies[3]; //For now
             this.scanStuff();
+            
     }
 
     //check if selected target is alive
@@ -167,40 +234,39 @@ if(STATUS_STATE =='scanning'){
 else if(STATUS_STATE == 'fight'){
 
     attacker = party[CURR_TURN];
-    target = enemies[0]; 
+    console.log("current turn:", CURR_TURN)
     attacker.NameandHPon();
-    target.NameandHPon();
+    attacker.takeDamage(0) //renders correct HPBat
+   // 
 
     //updates UI for moves
     this.#combatMenu.setFightText("Select a Move for " + attacker.getName());
     this.#combatMenu.setFightOptions(attacker.getMoves())
 
     console.log("it's " + attacker.getName() + "'s turn!")
-    
-   
 
     strList = attacker.getMoves();
 
         if(Phaser.Input.Keyboard.JustDown(cursors.up)) { //Option Up
            move = strList[0]
            STATUS_STATE = 'targeting';
-           //this.battlestuff();
+           
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //Option left
             move = strList[1]
             STATUS_STATE = 'targeting';
-            //this.battlestuff();
+          
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ //Option down
             move = strList[2]
             STATUS_STATE = 'targeting';
-            //this.battlestuff();
+            
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.right)){  ////Option Right
             move = strList[3]
             STATUS_STATE = 'targeting';
             return;
-            //this.battlestuff();
+         
         }
         else {
             //Nothing here for now.
@@ -220,18 +286,26 @@ else if(STATUS_STATE == 'targeting') {
         //get input for choosing target
         if(Phaser.Input.Keyboard.JustDown(cursors.up)){
             target = enemies[0]; //For now
+            target.NameandHPon();
+            target.takeDamage(0) //renders correct HPBat
             this.battlestuff();
         }else if(Phaser.Input.Keyboard.JustDown(cursors.left)){
             if(enemies.length >= 2)
                 target = enemies[1]; //For now
-                this.battlestuff();
-        }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
-            if(enemies.length >= 3)
-                target = enemies[2]; //For now
+                target.NameandHPon();
+                target.takeDamage(0) //renders correct HPBat
                 this.battlestuff();
         }else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
+            if(enemies.length >= 3)
+                target = enemies[2]; //For now
+                target.NameandHPon();
+                target.takeDamage(0) //renders correct HPBat
+                this.battlestuff();
+        }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
             if(enemies.length >= 4)
                 target = enemies[3]; //For now
+                target.NameandHPon();
+                target.takeDamage(0) //renders correct HPBat
                 this.battlestuff();
         }
 
@@ -367,9 +441,7 @@ else {
         if(hit <= 80){
             console.log("attack lands!")
             //attack target
-        //  console.log("attacker:",attacker.alienDetails);
-            //console.log("target:", target);
-            console.log("move:",move)
+             console.log("move:",move)
             
             //this will have a fully fleshed out formula but for now this should always return 95
             var d = this.attack(attacker, target, move);
@@ -384,8 +456,7 @@ else {
             var remains
 
             //reduce health
-            //strhit = hit.toString();
-            
+                       
             target.takeDamage(d)
             var remains = target.getCurrentHP();
 
@@ -396,7 +467,7 @@ else {
                 console.log("Someone Died")
                 target.setAlive(false);
                 this.#combatMenu.deathnotice(target.getName())
-                
+                                
             }
             
 
@@ -413,12 +484,12 @@ else {
     
         STATUS_STATE = "checking"
     
-        if(target.getCurrentHP() <= 0){
-            console.log("Someone Died")
-            target.setAlive(false);
-            this.#combatMenu.deathnotice(target.getName())
+        // if(target.getCurrentHP() <= 0){
+        //     console.log("Someone Died")
+        //     target.setAlive(false);
+        //     this.#combatMenu.deathnotice(target.getName())
         
-        }
+        // }
     
         var condition = this.checkBattle() //see if one side is completely dead
            
@@ -428,6 +499,7 @@ else {
         else
         {    
             STATUS_STATE = "nothing"; //reset state
+            //CURR_TURN = 0;
             this.changeTurn();
         }
     
@@ -445,9 +517,10 @@ changeTurn(){
     if(CURR_PARTY == "player"){
         if(CURR_TURN >= livP.length){
             //if finished with player party, change to enemy's turn
+            console.log("enemy's turn")
             alert("enemy's turn!")
-            //attacker.NameandHPoff();
-            //target.NameandHPoff();
+            attacker.NameandHPoff();
+            target.NameandHPoff();
             CURR_PARTY = "enemy";
             CURR_TURN = 0;
             STATUS_STATE = "enemy"; //change state to enemy turn 
@@ -519,6 +592,7 @@ enemyTurn(){
         target.alienDetails.isAlive = false;
         //this.time.delayedCall(10000, this.updateUConsole, [target.alienDetails.name + " has been defeated!"], this)
         console.log(target.alienDetails.name + " has been defeated!")
+        target.NameandHPoff();
 
     }
 
@@ -529,20 +603,17 @@ enemyTurn(){
         //STATUS_STATE = "nothing"; //reset state
         this.changeTurn();
     }
+
+    
 }
 
 scanStuff()
 {
     this.#combatMenu.targetOptionsOff();
- console.log("YOU SCANNED!")
- STATUS_STATE = 'nothing';
 
-var stats = []
+    STATUS_STATE = 'nothing';
 
-stats = target.getStats;
-
-this.#combatMenu.showScan(target)//to make
-//this.#combatMenu.battleOptionsOn()
+    this.#combatMenu.showScan(target)
 
  return
 

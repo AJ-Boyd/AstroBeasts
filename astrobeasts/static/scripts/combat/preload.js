@@ -162,7 +162,7 @@ this.anims.create({
 //Arquam
 
 this.anims.create({
-    key: 'idle_Aquam',
+    key: 'idle_Arquam',
     frames: this.anims.generateFrameNumbers('Arquam',  { frames: [ 9,12 ] } ),
     frameRate: 3,
     repeat: -1

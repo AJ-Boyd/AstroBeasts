@@ -19,7 +19,7 @@ import { Move } from "./moves.js";
  * @property {string} assetAnim
  * @property {number} maxHP
  * @property {number} currentHP
- * @property {number[]} stats //[ATK, DEF, SPD]
+ * @property {number[]} stats //[ATK, DEF, SPD, LUK]
  * @property {string[]} moves // moves
  * @property {number} level
  * @property {boolean} isAlive
@@ -62,7 +62,7 @@ export class Enemies {
         this._scene = config.scene;
         this._enemyDetails = config.EnemyDetails;
 
-        this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(3);
+        this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(2);
         this.EnemyGuy.anims.play(this._enemyDetails.assetAnim)
 
         this.#createHPBar();
@@ -137,6 +137,7 @@ this._HPContainer = this._scene.add.container(20, 440, [
     enemyAlienName,
     this._HPBar.container,
    
+   
 ]                        
 
 
@@ -150,7 +151,7 @@ NameandHPon()
     this._HPContainer.setAlpha(1);
 }
 
-NameandHPOff()
+NameandHPoff()
 {
 
     this._HPContainer.setAlpha(0);
