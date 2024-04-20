@@ -16,7 +16,7 @@ import { Move } from "./moves.js";
  * @property {string} name
  * @property {string} assets
  * @property {string} assetAnim
- * @property {number} maxHp
+ * @property {number} maxHP
  * @property {number} currentHP
  * @property {number[]} stats //[ATK, DEF, SPD]
  * @property {string[]} moves // moves
@@ -36,6 +36,8 @@ import { Move } from "./moves.js";
  
 export class Aliens {
 
+ 
+
     //identify with underscore as "should be private/protected"
 
     /** @protected @type {Phaser.Scene} */ 
@@ -48,6 +50,7 @@ export class Aliens {
      * @type {any}
      */
     _HPBar;
+    _HPContainer;
 
     /**
      * @param {AlienConfig} config
@@ -58,10 +61,13 @@ export class Aliens {
         this._scene = config.scene;
         this._alienDetails = config.AlienDetails;
 
-        this._HPBar = new  HPBar(this._scene, 10, 22);
-
+        
         this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(2);
         this.AlienGuy.anims.play(this._alienDetails.assetAnim)
+
+        this.#createHPBar();
+
+       
         
     }
 
@@ -105,15 +111,67 @@ takeDamage(damage, callback)
         dam =0;
         this._alienDetails.isAlive = false;
     }
-    this._HPBar.animateHP(dam/this._alienDetails.maxHp, {callback});
-    //this.updateHP(dam);
+    this._HPBar.animateHP(dam/this._alienDetails.maxHP, {callback});
+   
 
 }
 
-// updateHP(dam)
-//     {
-//         console.log("WHat is it:" , this._alienDetails.currentHP)
 
-//     }
+#createHPBar()
+{
+this._HPBar = new HPBar(this._scene, 10, 22);
+
+var up = String(this._alienDetails.currentHP)
+var low = String(this._alienDetails.maxHP)
+var out = up + "/"+low;
+
+const playerAlienName = this._scene.add.text(5,0, this._alienDetails.name,
+        {
+            color: '#045eda',
+            fontSize: '28px',
+            fontStyle: 'bold italic',
+        }
+);
+
+const hpImg = this._scene.add.image(0, 0,"healthback").setOrigin(0)
+
+const hpTxt = this._scene.add.text (140, 5, out ,
+    
+    {
+        color:'red',
+        fontSize: '18px',
+        fontStyle: 'Bold',
+    }
+    );
+
+    var out = up +'/' + low
+
+    this._HPContainer = this._scene.add.container(550, 440, 
+    [
+        hpImg,
+        playerAlienName,
+        this._HPBar.container,
+        hpTxt,
+    ]                        
+    ).setAlpha(0);
+
+
+
+
+}
+
+NameandHPon()
+{
+
+    this._HPContainer.setAlpha(1);
+}
+NameandHPOff()
+{
+
+    this._HPContainer.setAlpha(0);
+}
+
+
+
 
 }

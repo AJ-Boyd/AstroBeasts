@@ -273,23 +273,8 @@ playerFightInputSelect(name, hit, remains)
     
      
 
-
-    //     var attack = "WHOMP"
-    //     this.#RenderMessage.setText(`Your Enemy Uses ${attack}`); 
-    //     this.RenderMessageOn();      
-    //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
-
-    //     //Step 5: Reduce Player Life
-
-    //     this.#RenderMessage.setText(`You have lost HP`); 
-    //     this.RenderMessageOn();      
-    //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
-        
-    //     //Step6: Check Player is still alive
-
-    // // Step 7Return
     this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
-    // return;
+   
     
 
 }

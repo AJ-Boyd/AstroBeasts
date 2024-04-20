@@ -21,8 +21,7 @@ export class HPBar {
         this.#HPcontainer = this.#scene.add.container(x,y, [])
         this.#HPBarImage(x,y)
         this.#setHP(1);
-        //this.animateHP(0.2);
-        //
+        
     }
 
 

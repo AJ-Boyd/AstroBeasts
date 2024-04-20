@@ -1,8 +1,9 @@
 import { Aliens } from './aliens.js';
 import { CombatMenu } from './combatmenu.js';
+import { Enemies } from './enemies.js';
 import { HPBar } from './healthbar.js';
 import { RenderBackground } from './renderbackground.js';
-//import { Enemies } from './enemy.js';
+
 
 var cursors, attacker, move, target,  strList =[];
 var party = [];
@@ -59,13 +60,13 @@ create() {
 
 
 //create enemy alien and idle
- this.#EnemyAlien = new Aliens({
+ this.#EnemyAlien = new Enemies({
     scene:this,
-    AlienDetails: {
+    EnemyDetails: {
         name: "Tarkeel",
         assets: 'Tarkeel',
         assetAnim: "idle_Tarkeel",
-        maxHp: 250,
+        maxHP: 250,
         currentHP: 250,
         stats: [100, 100, 100, 100],
         moves: ["Strike", "Slash","Bite","Sleep"] ,
@@ -85,7 +86,7 @@ this.#PlayerAlien1 = new Aliens({
         name: "Strikoh",
         assets: 'Strikoh',
         assetAnim: "idle_Strikoh",
-        maxHp: 100,
+        maxHP: 100,
         currentHP: 100,
         stats: [100, 100, 100, 100],
         moves: ["Strike", "Slash","Bite","Sleep"] ,
@@ -102,7 +103,7 @@ this.#PlayerAlien1 = new Aliens({
         name: "Hotu",
         assets: 'Hotu',
         assetAnim: "idle_Hotu",
-        maxHp: 100,
+        maxHP: 100,
         currentHP: 100,
         stats: [100, 100, 100, 100],
         moves: ["Strike", "Slash","Sting","Pray"] ,
@@ -116,60 +117,7 @@ this.#PlayerAlien1 = new Aliens({
  
  //
  
- //OLD CODE - creating a single instance
- //this.player = this.add.sprite(200, 310, 'Strikoh').setScale(4);
-    //this.player.anims.play("idle_Strikoh", true)
-
-
-//Enemy Name formatting. TO DO to make this change based on  and Move into HP container, below
-    const enemyAlien = this.add.text(40,0, this.#EnemyAlien.getName(), 
-            {
-            color: '#31b1e0',
-            fontSize: '28px',
-            fontStyle: 'bold italic',
-            }
-    );
-
- //Player Name formatting. TO DO to make this change based on alien. Move into HP container, below
-    const playerAlien = this.add.text(40,0,this.#PlayerAlien1.getName(),
-        {
-            color: '#045eda',
-            fontSize: '28px',
-            fontStyle: 'bold italic',
-        }
-    );
-
-//Create container for Player health bar
-
-const playerHP = this.#PlayerAlien1._HPBar;
-const enemyHP = this.#EnemyAlien._HPBar;
-
-    this.add.container(550, 400, [
-      this.add
-        .image(0, 0,"healthback")
-        .setOrigin(0),
-        playerAlien,
-        playerHP.container,
-              
-
-   this.add.text (175, 5,'25/25', {
-        color:'red',
-        fontSize: '18px',
-        fontStyle: 'Bold',
-    })
-
-]);
-
-//Create container for Enemy health bar
-    this.add.container(1,400, [
-        this.add
-        .image(0, 0,"healthback")
-        .setOrigin(0),
-        enemyAlien,
-        enemyHP.container,
-       
-    ]);
-      
+     
      
 
 //Create box on the bottom
@@ -185,15 +133,14 @@ enemies = [this.#EnemyAlien]
 update() {
 
     console.log('update - Combat');
- 
-    
+     
 
    if(STATUS_STATE == 'fight'){
 
-    // = party[0];
-    //target = enemies[0];
     attacker = party[CURR_TURN];
-    target = enemies[0]; //For now
+    target = enemies[0]; 
+    attacker.NameandHPon();
+    target.NameandHPon();
 
     strList = attacker.getMoves();
 
@@ -363,7 +310,7 @@ update() {
     battlestuff(){
     var hit = this.getRand(0,100);
     console.log("hit:", hit)
-    if(hit <= 80){
+    if(hit <= 50){
         console.log("attack lands!")
         //attack target
       //  console.log("attacker:",attacker.alienDetails);
@@ -404,8 +351,12 @@ update() {
         //if the attack misses
         console.log("MISS")
         this.#combatMenu.missRender(attacker.getName());
+        attacker.NameandHPOff();
+        this.#PlayerAlien1.NameandHPon;
+              
+
         STATUS_STATE = 'rest';
-        //this.time.delayedCall(1000, this.updateUConsole, ["The " + move.name + " missed..."], this);
+        
     }
     STATUS_STATE = "checking"
     
