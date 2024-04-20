@@ -25,6 +25,13 @@ const MessageTextStyle = {
     fontStyle: 'bold',
 }
 
+const StatsTable = {
+    color:'green',
+    fontSize: '20px',
+    fontStyle: 'bold',
+}
+
+
 const MenuOptionsTextStyle = {
     color: 'red',
     fontSize: '20px',
@@ -177,7 +184,6 @@ targetOptionsOff(){
     this.#targetText.setAlpha(0);
 }
 targetOptionsOn(){
-    console.log("ARE THEY ON")
     this.#targetOpt.setAlpha(1);
     this.#targetText.setAlpha(1);
 }
@@ -186,7 +192,7 @@ targetOptionsOn(){
  #promptItem()
  {    
 
-    this.#RenderMessage = this.#scene.add.text(300, 540, "blank", MessageTextStyle);
+    this.#RenderMessage = this.#scene.add.text(300, 510, "blank", MessageTextStyle); 
     this.RenderMessageOff();
 
 }
@@ -285,13 +291,17 @@ playerInput(entry)
     if (entry == 'SCAN')
     {
         console.log("YOU are SCANNING")
+        this.battleOptionsOff();
+        return
+
+
     }
     if (entry == 'ITEM')
     {
         console.log("ITEM")
         
         this.battleOptionsOff();
-        this.#RenderMessage.setText(`You Used An Item`)
+        this.#RenderMessage.setText(`You Used An Item`).setFontSize('28px')
         this.RenderMessageOn();
         
         this.#scene.time.delayedCall(2500, this.battleOptionsOn, null, this )
@@ -316,7 +326,7 @@ playerFightInputSelect(name, hit, remains)
         this.fightOptionsOff(),
         
        
-        this.#RenderMessage.setText(`${this.lAlien.getName()} Used ${name} \n and Dealt ${hit} Damage! ${remains} HP Left`); 
+        this.#RenderMessage.setText(`${this.lAlien.getName()} Used ${name}\nand Dealt ${hit} Damage!\n${remains} HP Left`).setFontSize('25px').setDisplayOrigin(0, -10); 
         this.RenderMessageOn();
         this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this )
     
@@ -380,5 +390,25 @@ setAlien(alien){
 }
 
 
+
+showScan(enemy)
+{
+    var stats = [];
+    stats = enemy.getStats();
+    this.targetOptionsOff()
+    this.#RenderMessage.setText(`${enemy.getName()} is being scanned!`); 
+    this.RenderMessageOn();
+    this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+    //[ATK, DEF, SPD, LUK]
+    this.#RenderMessage.setText(`${enemy.getName()}'s Stats:\nATK: ${stats[0]}\nDEF: ${stats[1]}\nSPD: ${stats[2]}\nLUK: ${stats[3]}
+     `) .setFontSize('20px')
+        .setScale(0.8)
+        .setDisplayOrigin(0,0);
+
+    this.RenderMessageOn();
+    this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+    this.#scene.time.delayedCall(1600, this.battleOptionsOn, null, this )
+
+}
 
 }

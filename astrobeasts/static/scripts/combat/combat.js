@@ -44,6 +44,13 @@ preload()
 }
 
 
+//this.registry.get('inventory_items', playerData['inventory_items']);
+//this.registry.set('inventory_astrobeasts', playerData['inventory_astrobeasts']);
+//this.registry.set('inventory_moves', playerData['inventory_moves']);
+//this.registry.set('playerName', playerData.playerName)
+
+
+
 create() {  
     console.log('create - Combat');
  //accept keyboard input
@@ -73,6 +80,9 @@ create() {
  }, {x: 100, y: 310})
 
 //create our alien and idle
+
+//this.registry.get('inventory_astrobeasts');
+
 
 this.#PlayerAlien1 = new Aliens({
     scene:this,
@@ -121,7 +131,40 @@ update() {
     
 console.log('update - Combat');
   
-if(STATUS_STATE == 'fight'){
+if(STATUS_STATE =='scanning'){
+
+    var livE = enemies.filter(e => e.getAlive())
+    this.#combatMenu.setTargetOptions(livE)
+    this.#combatMenu.targetOptionsOn();
+
+    //get input for choosing target
+    if(Phaser.Input.Keyboard.JustDown(cursors.up)){
+        target = enemies[0]; //For now
+        this.scanStuff();
+    }else if(Phaser.Input.Keyboard.JustDown(cursors.left)){
+        if(enemies.length >= 2)
+            target = enemies[1]; //For now
+            this.scanStuff();
+    }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
+        if(enemies.length >= 3)
+            target = enemies[2]; //For now
+            this.scanStuff();
+    }else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
+        if(enemies.length >= 4)
+            target = enemies[3]; //For now
+            this.scanStuff();
+    }
+
+    //check if selected target is alive
+    if(target != undefined && target.getAlive() == false){
+        console.log("cannot choose this target cuz they're dead")
+        target = undefined;
+    }
+
+
+
+} 
+else if(STATUS_STATE == 'fight'){
 
     attacker = party[CURR_TURN];
     target = enemies[0]; 
@@ -213,6 +256,8 @@ else {
         else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ //SCAN. TO DO
             console.log('down Is Down')
             this.#combatMenu.playerInput('SCAN')
+            STATUS_STATE = 'scanning';
+            return;
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.right)){ //ITEM
             console.log('Right Is Down')
@@ -486,7 +531,22 @@ enemyTurn(){
     }
 }
 
+scanStuff()
+{
+    this.#combatMenu.targetOptionsOff();
+ console.log("YOU SCANNED!")
+ STATUS_STATE = 'nothing';
 
+var stats = []
+
+stats = target.getStats;
+
+this.#combatMenu.showScan(target)//to make
+//this.#combatMenu.battleOptionsOn()
+
+ return
+
+}
 
 
 
