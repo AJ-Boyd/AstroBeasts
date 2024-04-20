@@ -1,4 +1,4 @@
-//Base class for alienz!
+//Base class for aliens
 import { HPBar } from "./healthbar.js";
 import { Move } from "./moves.js";
 
@@ -144,7 +144,7 @@ const hpTxt = this._scene.add.text (140, 5, out ,
     }
     );
 
-    var out = up +'/' + low
+
 
     this._HPContainer = this._scene.add.container(550, 440, 
     [
@@ -165,7 +165,7 @@ NameandHPon()
 
     this._HPContainer.setAlpha(1);
 }
-NameandHPOff()
+NameandHPoff()
 {
 
     this._HPContainer.setAlpha(0);

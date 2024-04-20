@@ -1,14 +1,6 @@
-
+import { Enemies } from "./enemies.js";
 
 //BATTLE Options - TO DO: Make this reference the list of moves available
-const ATTACK_LIST = Object.freeze({
-    MOVE_1: 'Slash',
-    MOVE_2: 'CrossSlash',
-    MOVE_3: 'Bite',
-    MOVE_4: 'Tackle',
-});
-
-
 
 //Run/Fight/Item/Scan - Should be CONSTANT?
 const PLAYER_OPTIONS = Object.freeze({
@@ -18,17 +10,22 @@ const PLAYER_OPTIONS = Object.freeze({
     SCAN: 'SCAN',
 });
 
-
+//UI positioning constants
+const optCoords =  [
+    [170, 15],
+    [55, 43],
+    [220, 43],
+    [170, 70],
+]
+    
+//text styles
 const MessageTextStyle = {
-
     color:'Blue',
     fontSize: '22px',
     fontStyle: 'bold',
 }
 
-
 const MenuOptionsTextStyle = {
-
     color: 'red',
     fontSize: '20px',
     fontStyle: 'bold',
@@ -38,24 +35,20 @@ var lName
 var lMoves = []
 
 export class CombatMenu {
+    //member variables
     #scene;
     #battleOpt;
     #fightOpt;
-
     #BattleText;
     #FightText;
-
-
     #fightSlash;
     #fightMessage;
-   
+    #targetOpt;
+    #targetText;
 
-    #RenderMessage
-
-  
+    #RenderMessage  
     //_astromoves
 
-    
     constructor(scene, alien)    
         {
         this.#scene = scene;
@@ -66,9 +59,8 @@ export class CombatMenu {
 
         this.#createDialog();
         this.#createBattleOptions();
-        this.#createFightOptions();
-
- 
+        this.createFightOptions();
+        this.createTargetOptions();
         this.#promptItem();
        // this.#Slashfight();
 
@@ -117,19 +109,10 @@ export class CombatMenu {
  }
 
  //Create options for Player Moves
- #createFightOptions()
+ createFightOptions()
  {
-
-
- //var astromoves =  this.#LocalAlien.getMoves();
-    const atkOptCoords =  [
-        [170, 15],
-        [55, 43],
-        [220, 43],
-        [170, 70],
-        ]
-
-        lMoves = this.lAlien.getMoves()
+    lMoves = this.lAlien.getMoves()
+    console.log(this.lAlien.getName())
 
   this.#FightText = this.#scene.add.text(55,540, `Select a Move for ${this.lAlien.getName()}`, MessageTextStyle)
 
@@ -138,8 +121,6 @@ export class CombatMenu {
   this.#scene.add.image(285,52, 'rightkey').setScale(0.5),
   this.#scene.add.image(150,20,'upkey').setScale(0.5),
   this.#scene.add.image(150,80,'downkey').setScale(0.5),
-
-
 
    this.#scene.add.text(170,15, lMoves[0], MenuOptionsTextStyle),
    this.#scene.add.text(55,43, lMoves[1],  MenuOptionsTextStyle),
@@ -150,6 +131,56 @@ export class CombatMenu {
    this.fightOptionsOff();
  
  }
+
+//UI for selecting targets
+
+createTargetOptions()
+{
+    this.#targetText = this.#scene.add.text(55,540, "Select a target!", MessageTextStyle);
+    
+    this.#targetOpt = this.#scene.add.container(400, 500,
+    [
+        this.#scene.add.image(40,52, 'leftkey').setScale(0.5),
+        this.#scene.add.image(285,52, 'rightkey').setScale(0.5),
+        this.#scene.add.image(150,20,'upkey').setScale(0.5),
+        this.#scene.add.image(150,80,'downkey').setScale(0.5),
+    ]);
+
+     for(var i = 0; i < 4; i++){
+         const text = this.#scene.add.text(
+             optCoords[i][0], optCoords[i][1], "", MenuOptionsTextStyle
+         )
+         this.#targetOpt.add(text)
+     }
+    this.targetOptionsOff();
+}
+
+setTargetOptions(targets){
+    console.log(targets)
+   
+
+    var j = 0;
+    for(var i = 0; i < this.#targetOpt.list.length; i++){
+        var elem = this.#targetOpt.getAt(i);
+        if(elem.type == "Text"){    
+            console.log(targets[j])
+            elem.setText(targets[j].getName())
+            console.log(elem.text)
+            j++;
+            if(j == targets.length)
+                return;
+        }
+    }
+}
+targetOptionsOff(){
+    this.#targetOpt.setAlpha(0);
+    this.#targetText.setAlpha(0);
+}
+targetOptionsOn(){
+    console.log("ARE THEY ON")
+    this.#targetOpt.setAlpha(1);
+    this.#targetText.setAlpha(1);
+}
 
 //Show Item Used Text
  #promptItem()
@@ -186,7 +217,25 @@ fightOptionsOff()
  this.#FightText.setAlpha(0);
 
 }
-
+setFightText(text){
+    this.#FightText.setText(text)
+}
+//updates the arrow-key options
+setFightOptions(newTexts){
+    var j = 0;
+    for(var i = 0; i < this.#fightOpt.list.length; i++){
+        var elem = this.#fightOpt.getAt(i);
+        console.log(elem.type)
+        if(elem.type == "Text"){    
+            console.log(newTexts[j])
+            elem.setText(newTexts[j])
+            console.log(elem.text)
+            j++;
+            if(j == newTexts.length)
+                return;
+        }
+    }
+}
 
 managedInFightScene()
 {
@@ -229,7 +278,7 @@ playerInput(entry)
     {
         console.log("YOU are FLEEING")
         //Return to main battle menu?
-        this.scene.start("MainMenu")
+        this.#scene.scene.start("LoadHub")
         return;
         
     }
@@ -326,50 +375,10 @@ deathnotice(name)
         this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
     }
 
-
-// #Slashfight()
-// {
-//     var hit = this.getRand(0,100);
-//     console.log("hit:", hit)
-//     if(hit <= 95){
-//         console.log("attack lands!")
-//         //attack target
-//         // attack(attacker, target, move){
-//         //     var d = this.calcDamage(attacker, move); //raw damage a move can do
-//         //     var m = this.calcMitigation(target); //the percentage of damage that the target can mitigate
-//         //     d *= 1-m;
-//         //     return d;
-//         // }
-        
-//         //this will have a fully fleshed out formula but for now this should always return 95
-//         var d = this.attack(attacker, target, move);
-        
-//         //check critical
-//         //this is also purely random; this will depend on player LUK later
-//         var crit = this.getRand(0,100);
-//         if(crit <= 5){
-//             d *= 2; //if there's a critical hit, double the damage
-//         }
-// }
-
-// slashOff()
-// {
-//     this.#fightSlash.setAlpha(0);
-// }
-// slashOn()
-// {
-//     this.#fightSlash.setAlpha(1);
-// }
+setAlien(alien){
+    this.lAlien = alien;
+}
 
 
 
-
-
-// //returns a random number between min and max, both inclusinve
-
-
-
-  
-
-// }
 }

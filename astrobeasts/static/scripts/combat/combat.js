@@ -19,6 +19,7 @@ export class CombatScene extends Phaser.Scene {
     #EnemyAlien;
     #PlayerAlien1;
     #PlayerAlien2;
+    #player;
 
     constructor() {
         super({
@@ -37,27 +38,20 @@ preload()
         ['../static/assets/Music/OrbitalColossus.mp3']
     );
 
+    //get the player object
+    this.#player = this.registry.get("player");
 
 }
 
 
-create() {
-   
-   
+create() {  
     console.log('create - Combat');
-
  //accept keyboard input
     cursors = this.input.keyboard.createCursorKeys();
-    
-    
-
- 
 
 //background
   const background = new RenderBackground(this);
   background.showFire();
-
-
 
 //create enemy alien and idle
  this.#EnemyAlien = new Enemies({
@@ -76,7 +70,7 @@ create() {
 
     }
     
- }, {x: 600, y: 310})
+ }, {x: 100, y: 310})
 
 //create our alien and idle
 
@@ -95,7 +89,7 @@ this.#PlayerAlien1 = new Aliens({
 
     }
     
- }, {x: 200, y: 310})
+ }, {x: 720, y: 340})
  
  this.#PlayerAlien2 = new Aliens({
     scene:this,
@@ -106,80 +100,115 @@ this.#PlayerAlien1 = new Aliens({
         maxHP: 100,
         currentHP: 100,
         stats: [100, 100, 100, 100],
-        moves: ["Strike", "Slash","Sting","Pray"] ,
+        moves: ["Punch", "Kick","",""] ,
         level: 1,
         isAlive: true,
 
     }
     
- }, {x: 200, y: 200})
+ }, {x: 600, y: 330})
  
- 
- //
- 
-     
-     
-
 //Create box on the bottom
 this.#combatMenu = new CombatMenu(this, this.#PlayerAlien1);// this.#PlayerAlien);
-this.#combatMenu.battleOptionsOn()
+this.#combatMenu.battleOptionsOn();
 
 party = [this.#PlayerAlien1, this.#PlayerAlien2];
 enemies = [this.#EnemyAlien]
-
 }
 
 
 update() {
-
-    console.log('update - Combat');
-     
-
-   if(STATUS_STATE == 'fight'){
+    
+console.log('update - Combat');
+  
+if(STATUS_STATE == 'fight'){
 
     attacker = party[CURR_TURN];
     target = enemies[0]; 
     attacker.NameandHPon();
     target.NameandHPon();
 
+    //updates UI for moves
+    this.#combatMenu.setFightText("Select a Move for " + attacker.getName());
+    this.#combatMenu.setFightOptions(attacker.getMoves())
+
+    console.log("it's " + attacker.getName() + "'s turn!")
+    
+   
+
     strList = attacker.getMoves();
 
         if(Phaser.Input.Keyboard.JustDown(cursors.up)) { //Option Up
            move = strList[0]
-           this.battlestuff();
+           STATUS_STATE = 'targeting';
+           //this.battlestuff();
         }
-        else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ //Option Down
-            move = strList[3]
-            this.battlestuff();
-
-        }
-        else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //Option Left
+        else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //Option left
             move = strList[1]
-            this.battlestuff();
-
-
+            STATUS_STATE = 'targeting';
+            //this.battlestuff();
+        }
+        else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ //Option down
+            move = strList[2]
+            STATUS_STATE = 'targeting';
+            //this.battlestuff();
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.right)){  ////Option Right
-            move = strList[2]
-            this.battlestuff();
-
-
+            move = strList[3]
+            STATUS_STATE = 'targeting';
+            return;
+            //this.battlestuff();
         }
         else {
             //Nothing here for now.
         }   
-       
+        
+}
+else if(STATUS_STATE == 'targeting') {
+        //list of possible (living) targets
+        console.log("In Target")
+        var livE = enemies.filter(e => e.getAlive())
 
-       
+        //show UI for targeting
+        this.#combatMenu.fightOptionsOff();
+        this.#combatMenu.setTargetOptions(livE)
+        this.#combatMenu.targetOptionsOn();
+
+        //get input for choosing target
+        if(Phaser.Input.Keyboard.JustDown(cursors.up)){
+            target = enemies[0]; //For now
+            this.battlestuff();
+        }else if(Phaser.Input.Keyboard.JustDown(cursors.left)){
+            if(enemies.length >= 2)
+                target = enemies[1]; //For now
+                this.battlestuff();
+        }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
+            if(enemies.length >= 3)
+                target = enemies[2]; //For now
+                this.battlestuff();
+        }else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
+            if(enemies.length >= 4)
+                target = enemies[3]; //For now
+                this.battlestuff();
+        }
+
+        //check if selected target is alive
+        if(target != undefined && target.getAlive() == false){
+            console.log("cannot choose this target cuz they're dead")
+            target = undefined;
+        }
+
+        // if(target != undefined){
+        //     this.battlestuff();
+        // }        
     }
-    else{
+else {
 
         if(Phaser.Input.Keyboard.JustDown(cursors.up)){ //FIGHT
             console.log('Up Is Down')
             this.#combatMenu.playerInput('FIGHT')
             STATUS_STATE = 'fight';
-            return;
-           
+            return;  
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ //SCAN. TO DO
             console.log('down Is Down')
@@ -287,69 +316,75 @@ update() {
     */
 
     battlestuff(){
-    var hit = this.getRand(0,100);
-    console.log("hit:", hit)
-    if(hit <= 50){
-        console.log("attack lands!")
-        //attack target
-      //  console.log("attacker:",attacker.alienDetails);
-        //console.log("target:", target);
-        console.log("move:",move)
-        
-        //this will have a fully fleshed out formula but for now this should always return 95
-        var d = this.attack(attacker, target, move);
-        
-        //check critical
-        //this is also purely random; this will depend on player LUK later
-        var crit = this.getRand(0,100);
-        if(crit <= 5){
-            d *= 2; //if there's a critical hit, double the damage
-        }
-        var strhit
-        var remains
-
-        //reduce health
-        //strhit = hit.toString();
-        
-        target.takeDamage(d)
-        var remains = target.getCurrentHP();
-
-        this.#combatMenu.playerFightInputSelect(move, hit, remains);
-        STATUS_STATE = 'rest';
-
-        if(target.getCurrentHP() <= 0){
-            console.log("Someone Died")
-            target.setAlive(false);
-            this.#combatMenu.deathnotice(target.getName())
+        this.#combatMenu.targetOptionsOff();
+        var hit = this.getRand(0,100);
+        console.log("hit:", hit)
+        if(hit <= 80){
+            console.log("attack lands!")
+            //attack target
+        //  console.log("attacker:",attacker.alienDetails);
+            //console.log("target:", target);
+            console.log("move:",move)
             
-        }
-        
-        return;
+            //this will have a fully fleshed out formula but for now this should always return 95
+            var d = this.attack(attacker, target, move);
+            
+            //check critical
+            //this is also purely random; this will depend on player LUK later
+            var crit = this.getRand(0,100);
+            if(crit <= 5){
+                d *= 2; //if there's a critical hit, double the damage
+            }
+            var strhit
+            var remains
 
-    }else{
+            //reduce health
+            //strhit = hit.toString();
+            
+            target.takeDamage(d)
+            var remains = target.getCurrentHP();
+
+            this.#combatMenu.playerFightInputSelect(move, hit, remains);
+            STATUS_STATE = 'rest';
+
+            if(target.getCurrentHP() <= 0){
+                console.log("Someone Died")
+                target.setAlive(false);
+                this.#combatMenu.deathnotice(target.getName())
+                
+            }
+            
+
+         }
+         else
+         {
         //if the attack misses
         console.log("MISS")
         this.#combatMenu.missRender(attacker.getName());            
 
         STATUS_STATE = 'rest';
         
-    }
-    STATUS_STATE = "checking"
+        }
     
-    if(target.getCurrentHP() <= 0){
-        console.log("Someone Died")
-        target.setAlive(false);
-        this.#combatMenu.deathnotice(target.getName())
+        STATUS_STATE = "checking"
+    
+        if(target.getCurrentHP() <= 0){
+            console.log("Someone Died")
+            target.setAlive(false);
+            this.#combatMenu.deathnotice(target.getName())
         
-    }
-    var condition = this.checkBattle() //see if one side is completely dead
+        }
+    
+        var condition = this.checkBattle() //see if one side is completely dead
            
-    if(condition != -1)
-        this.endBattle(condition); //if battle is over, end the battle
-    else{    
-        STATUS_STATE = "nothing"; //reset state
-        this.changeTurn();
-    }
+        if(condition != -1){
+            this.endBattle(condition); //if battle is over, end the battle
+        }
+        else
+        {    
+            STATUS_STATE = "nothing"; //reset state
+            this.changeTurn();
+        }
     
     //reset global vars and state
     //target = undefined;
@@ -359,27 +394,32 @@ update() {
 
 changeTurn(){
     CURR_TURN++; //increment CURR_TURN counter
-
     var livP = party.filter(ab => ab.getAlive())
     var livE = enemies.filter(e => e.getAlive())
 
     if(CURR_PARTY == "player"){
         if(CURR_TURN >= livP.length){
             //if finished with player party, change to enemy's turn
+            alert("enemy's turn!")
+            //attacker.NameandHPoff();
+            //target.NameandHPoff();
             CURR_PARTY = "enemy";
             CURR_TURN = 0;
-            //alert("enemy's turn!")
             STATUS_STATE = "enemy"; //change state to enemy turn 
+           
         }
     }else if(CURR_PARTY == "enemy"){
         //if finished with enemy party, change to player's turn
         if(CURR_TURN >= livE.length){
             CURR_PARTY = "player";
             CURR_TURN = 0;
-            //alert("player's turn!")
+            alert("player's turn!");
+            attacker.NameandHPoff();
+            target.NameandHPoff();
             STATUS_STATE = "nothing";
         }
     }
+    //alert("changing turn")
 }
 
 endBattle(condition){
@@ -432,7 +472,7 @@ enemyTurn(){
     //check if target is dead
     if(target.alienDetails.currentHP <= 0){
         target.alienDetails.isAlive = false;
-        this.time.delayedCall(10000, this.updateUConsole, [target.alienDetails.name + " has been defeated!"], this)
+        //this.time.delayedCall(10000, this.updateUConsole, [target.alienDetails.name + " has been defeated!"], this)
         console.log(target.alienDetails.name + " has been defeated!")
 
     }
