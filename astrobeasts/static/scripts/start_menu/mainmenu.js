@@ -51,15 +51,15 @@ export class MainMenuScene extends Phaser.Scene {
         ]);
 
         this.registry.set('shop_items', [
-        { key: 'cookies', name: 'CosmoCookies', description: 'Restores 15 HP', quantity: 1, cost: 20, isSelected: false },
-        { key: 'ade', name: 'AstroAde', description: 'Restores 30 HP', quantity: 1, cost: 35, isSelected: false },
-        { key: 'sequid', name: 'SequidSando', description: 'Restores 60 HP', quantity: 1, cost: 60, isSelected: false },
-        { key: 'claws', name: 'Titanium Claws', description: '+10 ATK for the fight duration', quantity: 1, cost: 60, isSelected: false },
-        { key: 'boosters', name: 'Sonic Boosters', description: '+10 SPD for fight duration', quantity: 1, cost: 60, isSelected: false },
-        { key: 'shell', name: 'Hardlight Shell', description: '+10 DEF for fight duration', quantity: 1, cost: 60, isSelected: false },
-        { key: 'stim', name: 'Stim Beacon', description: '+10 DEX, LUK for fight duration', quantity: 1, cost: 60, isSelected: false },
-        { key: 'shield', name: 'Photon Shield', description: '+10 DEX, LUK for fight duration', quantity: 1, cost: 60, isSelected: false },
-        { key: 'gravnet', name: 'Grav Net', description: '+10 DEX, LUK for fight duration', quantity: 1, cost: 80, isSelected: false }
+        { key: 'cookies', name: 'CosmoCookies', description: 'Restores 15 HP', quantity: 1, HP: 15, cost: 20, isSelected: false },
+        { key: 'ade', name: 'AstroAde', description: 'Restores 30 HP', quantity: 1, HP: 30, cost: 35, isSelected: false },
+        { key: 'sequid', name: 'SequidSando', description: 'Restores 60 HP', quantity: 1, HP: 60, cost: 60, isSelected: false },
+        { key: 'claws', name: 'Titanium Claws', description: '+10 ATK for the fight duration', quantity: 1, ATK: 10, cost: 60, isSelected: false },
+        { key: 'boosters', name: 'Sonic Boosters', description: '+10 SPD for fight duration', quantity: 1, SPD: 10, cost: 60, isSelected: false },
+        { key: 'shell', name: 'Hardlight Shell', description: '+10 DEF for fight duration', quantity: 1, DEF: 10, cost: 60, isSelected: false },
+        { key: 'stim', name: 'Stim Beacon', description: '+10 DEX, LUK for fight duration', quantity: 1, DEX: 10, cost: 60, isSelected: false },
+        { key: 'shield', name: 'Photon Shield', description: '+10 DEX, LUK for fight duration', quantity: 1, DEX: 10, cost: 60, isSelected: false },
+        { key: 'gravnet', name: 'Grav Net', description: '+10 DEX, LUK for fight duration', quantity: 1, DEX: 10, cost: 80, isSelected: false }
         ]); 
        
        

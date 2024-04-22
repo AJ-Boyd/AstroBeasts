@@ -14,9 +14,19 @@ export class TourneyScene extends Phaser.Scene {
 
         let Title = this.add.text(100, 100, 'Tourney');  //, { fill: '#fff' } might have to load 3rd party text fillers
         // add load game functionality here
+        let GoFightText = this.add.text(480, 550, "To the Tournament >", { color: 'white' })
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => this.scene.start('Preload')); 
+            GoFightText.on('pointerover', () => {
+                GoFightText.setStyle({ fill: '#0f0'}); // when you hover, changes to white
+            });
+            GoFightText.on('pointerout', () => {
+                GoFightText.setStyle({ fill: 'white'}); 
+            });
+            ////
         let GoBackText = this.add.text(100, 550, '< Back', { color: 'white' })
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('LoadHub'));
+            .on('pointerdown', () => this.scene.start('LoadHub')); 
             GoBackText.on('pointerover', () => {
                 GoBackText.setStyle({ fill: '#0f0'}); // when you hover, changes to white
             });
@@ -32,6 +42,7 @@ export class TourneyScene extends Phaser.Scene {
             active: () => {
                 Title.setFontFamily('"Press Start 2P"')
                 GoBackText.setFontFamily('"Press Start 2P"')
+                GoFightText.setFontFamily('"Press Start 2P"')
             }
         }) 
     }
