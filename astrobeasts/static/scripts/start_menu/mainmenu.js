@@ -6,7 +6,7 @@ export class MainMenuScene extends Phaser.Scene {
         super('MainMenu');
     }
     preload() {
-        this.load.image('sky', 'static/assets/Backgrounds/bPlanets.jpg');
+        this.load.image('sky', 'static/assets/Backgrounds/bPlanets.png');
         this.load.audio('bg-music', 'static/assets/Music/FrozenJamSeamlessLoop.mp3');
     }
     init() {
