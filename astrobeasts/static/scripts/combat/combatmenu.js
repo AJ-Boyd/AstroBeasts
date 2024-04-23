@@ -108,6 +108,15 @@ export class CombatMenu {
  
  }
  
+ initialize(attacker)
+ {
+    attacker.getName()
+    this.#RenderMessage.setText(`${attacker.getName()}'s Turn!`).setFontSize('25px').setDisplayOrigin(0, -10); 
+    this.RenderMessageOn();
+    this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+    this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
+}
+ 
  //Create Run/Fight/Scan options. 
  #createBattleOptions()
  {
@@ -469,13 +478,13 @@ showScan(enemy)
 
 }
 
-attackerError()
+attackerError(text)
 {
  
         this.fightOptionsOff(),
         
        
-        this.#RenderMessage.setText(`You must have started battle to use an item`); 
+        this.#RenderMessage.setText(text); 
         this.RenderMessageOn();
         this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
         this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )

@@ -18,7 +18,7 @@ import { Move } from "./moves.js";
  * @property {string} assetAnim
  * @property {number} maxHP
  * @property {number} currentHP
- * @property {number[]} stats //[ATK, DEF, SPD]
+ * @property {number[]} stats //[ATK, DEF, SPD, LUK]
  * @property {string[]} moves // moves
  * @property {number} level
  * @property {boolean} isAlive
@@ -178,7 +178,45 @@ NameandHPoff()
     this._HPContainer.setAlpha(0);
 }
 
+//[ATK, DEF, SPD, LUK]
 
+
+setATK(increment)
+{
+var st = []
+st = this._alienDetails.stats
+
+this._alienDetails.stats[0] = st+increment
+
+
+}
+
+setDEF(increment){
+    var st = []
+    st = this._alienDetails.stats
+    
+    this._alienDetails.stats[1] = st+increment
+
+
+}
+
+setSPD(increment)
+{
+
+    var st = []
+    st = this._alienDetails.stats
+
+    this._alienDetails.stats[2] = st+increment
+}
+
+setLUK(increment)
+{
+
+    var st = []
+    st = this._alienDetails.stats
+    this._alienDetails.stats[2] = st+increment
+
+}
 
 
 }

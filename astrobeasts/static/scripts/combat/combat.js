@@ -11,6 +11,7 @@ var enemies = [];
 var STATUS_STATE = 'default'
 var CURR_TURN = 0;
 var CURR_PARTY = 'player';
+var flag = 0;
 
 //var combat1, combat2;
 
@@ -161,7 +162,7 @@ this.#PlayerAlien1 = new Aliens({
         assetAnim: "idle_Strikoh",
         maxHP: 100,
         currentHP: 100,
-        stats: [100, 100, 100, 100],
+        stats: [100, 100, 100, 100],  //[ATK, DEF, SPD, LUK]
         moves: ["Strike", "Slash","Bite","Sleep"] ,
         level: 1,
         isAlive: true,
@@ -189,10 +190,16 @@ this.#PlayerAlien1 = new Aliens({
  
 //Create box on the bottom
 this.#combatMenu = new CombatMenu(this, this.#PlayerAlien1, this.#items);// this.#PlayerAlien);
-this.#combatMenu.battleOptionsOn();
+
+//
+//this.#combatMenu.battleOptionsOn();
 
 party = [this.#PlayerAlien1, this.#PlayerAlien2];
 enemies = [this.#EnemyAlien1, this.#EnemyAlien2, this.#EnemyAlien3, this.#EnemyAlien4]
+
+attacker = party[0];
+this.#combatMenu.initialize(attacker)
+//this.#combatMenu.battleOptionsOn()
 }
 
 
@@ -295,7 +302,7 @@ else if(STATUS_STATE =='scanning'){
 } 
 else if(STATUS_STATE == 'fight'){
  
-      attacker = party[CURR_TURN];
+    attacker = party[CURR_TURN];
     console.log("current turn:", CURR_TURN)
     attacker.NameandHPon();
     attacker.takeDamage(0) //renders correct HPBat
@@ -382,6 +389,7 @@ else if(STATUS_STATE == 'targeting') {
         // }        
     }
 else {
+    
 
         if(Phaser.Input.Keyboard.JustDown(cursors.up)){ //FIGHT
             console.log('Up Is Down')
@@ -574,6 +582,7 @@ changeTurn(){
     CURR_TURN++; //increment CURR_TURN counter
     var livP = party.filter(ab => ab.getAlive())
     var livE = enemies.filter(e => e.getAlive())
+    
 
     if(CURR_PARTY == "player"){
         if(CURR_TURN >= livP.length){
@@ -585,7 +594,12 @@ changeTurn(){
             CURR_PARTY = "enemy";
             CURR_TURN = 0;
             STATUS_STATE = "enemy"; //change state to enemy turn 
-           
+             
+        }
+        else {
+            attacker = party[CURR_TURN];
+            this.#combatMenu.initialize(attacker)
+            attacker.NameandHPon();
         }
     }else if(CURR_PARTY == "enemy"){
         //if finished with enemy party, change to player's turn
@@ -701,16 +715,71 @@ itemHandler(selected)
         attacker.takeDamage(-num);
 
         console.log("Prev Val:", selected.quantity)
-        selected.quantity -= 1;
+        var flag = 1;
         console.log("New Val:", selected.quantity)
-        if(selected.quantity == 0)
+          
+    }
+    else if(selected.ATK)  //[ATK, DEF, SPD, LUK]
+    {
+        var num = selected.ATK
+        console.log("Gained ATK:", selected.ATK)
+        attacker.setATK(num);
+
+        console.log("Prev Val:", selected.quantity)
+        var flag = 1;
+        console.log("New Val:", selected.quantity)
+
+    }
+    else if(selected.DEF)
+    {
+        var num = selected.DEF
+        console.log("Gained DEF:", selected.ATK)
+        attacker.setDEF(num);
+
+        console.log("Prev Val:", selected.quantity)
+        var flag = 1;
+        console.log("New Val:", selected.quantity)
+
+    }
+    else if (selected.SPD)
+    {
         {
-            console.log("Sad" )
-            selected.isEquipped = false;
-        }    
+            var num = selected.SPD
+            console.log("Gained ATK:", selected.ATK)
+            attacker.setSPD(num);
+    
+            console.log("Prev Val:", selected.quantity)
+           var flag = 1;
+            console.log("New Val:", selected.quantity)
+    
+        }
+    }
+    else if (selected.LUK)
+    {
+        {
+            var num = selected.LUK
+            console.log("Gained ATK:", selected.ATK)
+            attacker.setLUK(num);
+    
+            console.log("Prev Val:", selected.quantity)
+           var flag = 1;
+            console.log("New Val:", selected.quantity)
+    
+        }
+    }
+    else{
+
+
     }
 
 
+
+    if(flag ==1)
+    {
+        var flag = 1;
+        selected.isEquipped = false;
+        flag = 0;
+    }
     
     this.#combatMenu.battleOptionsOn();
  //Nothing here for now
