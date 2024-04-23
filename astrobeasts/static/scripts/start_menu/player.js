@@ -20,5 +20,6 @@ export class Player{
         this.battlesWon = battlesWon;
         /**@public @type {number} */
         this.score = s; //a sum of exp earned and credits earned
+        this.astrobeasts = party;
     }
 }

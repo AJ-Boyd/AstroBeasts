@@ -1,4 +1,4 @@
-import { Enemies } from "./enemies.js";
+import { Enemy } from "./enemies.js";
 
 //BATTLE Options - TO DO: Make this reference the list of moves available
 
@@ -122,10 +122,10 @@ export class CombatMenu {
   this.#scene.add.image(150,20,'upkey').setScale(0.5),
   this.#scene.add.image(150,80,'downkey').setScale(0.5),
 
-   this.#scene.add.text(170,15, lMoves[0], MenuOptionsTextStyle),
-   this.#scene.add.text(55,43, lMoves[1],  MenuOptionsTextStyle),
-   this.#scene.add.text(220,43, lMoves[2], MenuOptionsTextStyle),
-   this.#scene.add.text(170,70, lMoves[3],MenuOptionsTextStyle),
+   this.#scene.add.text(170,15, "lMoves[0].name", MenuOptionsTextStyle),
+   this.#scene.add.text(55,43, "lMoves[1].name", MenuOptionsTextStyle),
+   this.#scene.add.text(220,43, "lMoves[2].name", MenuOptionsTextStyle),
+   this.#scene.add.text(170,70, "lMoves[3].name", MenuOptionsTextStyle),
   ]);
 
    this.fightOptionsOff();
@@ -157,13 +157,16 @@ setTargetOptions(targets){
     for(var i = 0; i < this.#targetOpt.list.length; i++){
         var elem = this.#targetOpt.getAt(i);
         console.log(elem.type)
-        if(elem.type == "Text"){    
-            console.log(targets[j])
-            elem.setText(targets[j].getName())
-            console.log(elem.text)
+        if(elem.type == "Text"){   
+            if(targets[j] != undefined){
+                console.log(targets[j])
+                elem.setText(targets[j].getName())
+                console.log(elem.text)
+            }else{
+                elem.setText("")
+            }
             j++;
-            if(j == targets.length)
-                return;
+            
         }
     }
 }
@@ -215,18 +218,22 @@ setFightText(text){
     this.#FightText.setText(text)
 }
 //updates the arrow-key options
-setFightOptions(newTexts){
+setFightOptions(moveObjs){
     var j = 0;
+    console.log("setting move options")
     for(var i = 0; i < this.#fightOpt.list.length; i++){
         var elem = this.#fightOpt.getAt(i);
         console.log(elem.type)
+
         if(elem.type == "Text"){    
-            console.log(newTexts[j])
-            elem.setText(newTexts[j])
-            console.log(elem.text)
+            if(moveObjs[j] != undefined){
+                console.log(moveObjs[j].name)
+                elem.setText(moveObjs[j].name)
+                console.log(elem.text)
+            }else{
+                elem.setText("")
+            }
             j++;
-            if(j == newTexts.length)
-                return;
         }
     }
 }
@@ -256,6 +263,12 @@ RenderMessageOn()
 {
     this.#RenderMessage.setAlpha(1);
 }
+//prints message to console
+setRenderMessage(text){
+    this.RenderMessageOn();
+    this.#RenderMessage.setText(text);
+    this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this)
+}
 
 getRand(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
@@ -272,7 +285,7 @@ playerInput(entry)
     {
         console.log("YOU are FLEEING")
         //Return to main battle menu?
-        this.#scene.start("MainMenu")
+        this.#scene.scene.start("MainMenu")
         return;
         
     }
@@ -292,7 +305,7 @@ playerInput(entry)
         this.#scene.time.delayedCall(2500, this.RenderMessageOff, null, this)
 
         this.item = this.#scene.add.sprite(615, 200, 'blueitem').setScale(3);
-        this.item.anims.play('blueitem',true)
+        this.item.anims.play('blueitem', true)
         
         return;
             
@@ -302,7 +315,7 @@ playerInput(entry)
 }
 
 
-playerFightInputSelect(name, hit, remains)  
+playerFightInputSelect(move, hit, remains)  
 {
 
   //Step 1: Player Attacks
@@ -310,7 +323,7 @@ playerFightInputSelect(name, hit, remains)
         this.fightOptionsOff(),
         
        
-        this.#RenderMessage.setText(`${this.lAlien.getName()} Used ${name} \n and Dealt ${hit} Damage! ${remains} HP Left`); 
+        this.#RenderMessage.setText(`${this.lAlien.getName()} Used ${move.name} \n and Dealt ${hit} Damage! ${remains} HP Left`); 
         this.RenderMessageOn();
         this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this )
     

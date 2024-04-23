@@ -19,7 +19,7 @@ import { Move } from "./moves.js";
  * @property {number} maxHp
  * @property {number} currentHP
  * @property {number[]} stats //[ATK, DEF, SPD]
- * @property {string[]} moves // moves
+ * @property {Move[]} moves // moves
  * @property {number} level
  * @property {boolean} isAlive
  * 
@@ -62,7 +62,6 @@ export class Aliens {
 
         this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(2);
         this.AlienGuy.anims.play(this._alienDetails.assetAnim)
-        
     }
 
 

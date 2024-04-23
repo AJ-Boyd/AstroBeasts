@@ -7,12 +7,12 @@ import { Move } from "./moves.js";
  * @typedef EnemyConfig
  * @type {Object}
  * @property {Phaser.Scene} scene
- * @property {Enemy} EnemyDetails
+ * @property {EnemyDetails} EnemyDetails
  * */
 
 
 /** Define Object "EnemyDetails"
- * @typedef Enemy
+ * @typedef EnemyDetails
  * @type {Object}
  * @property {string} name
  * @property {string} assets
@@ -35,13 +35,13 @@ import { Move } from "./moves.js";
 
 
  
-export class Enemies {
+export class Enemy {
 
     //identify with underscore as "should be private/protected"
 
     /** @protected @type {Phaser.Scene} */ 
     _scene;
-    /** @public @type {Enemy} */ 
+    /** @public @type {EnemyDetails} */ 
     _enemyDetails;
      /** @protected @type {Phaser.GameObjects.Image} */ 
     _EnemyGuy;
