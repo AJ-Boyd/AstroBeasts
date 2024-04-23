@@ -18,7 +18,7 @@ export class DojoScene extends Phaser.Scene {
         Title.setFontSize(32).setAlign('center').setColor('white'); 
 
         // Enter
-        let EnterText = this.add.text(320, 430, 'FIGHT')
+        let EnterText = this.add.text(310, 450, 'FIGHT')
             .setInteractive({ useHandCursor: true }).setPadding(16)
             .on('pointerdown', () => this.scene.start('LoadSemi'));
             EnterText.setBackgroundColor('black').setFontSize(32);
