@@ -17,7 +17,7 @@ export class FinalScene extends Phaser.Scene {
         const Naut = this.add.image(200,330, 'astronaut'); Naut.setScale(.7);
 
         // Title
-        let Title = this.add.text(140, 90, "Quarter-Finals\nPlayer vs Napkin");
+        let Title = this.add.text(140, 90, "Grand Finals\nPlayer vs Napkin");
         //Title.setBackgroundColor('black').setPadding(14);
         Title.setFontSize(32).setAlign('center').setColor('white'); 
 
