@@ -24,7 +24,7 @@ export class QuarterScene extends Phaser.Scene {
         // Enter
         let EnterText = this.add.text(320, 430, 'FIGHT')
             .setInteractive({ useHandCursor: true }).setPadding(16)
-            .on('pointerdown', () => this.scene.start('LoadHub'));
+            .on('pointerdown', () => this.scene.start('LoadSemi'));
             EnterText.setBackgroundColor('black').setFontSize(32);
             // EnterText.on('pointerdown', () => Title.setVisible(false).setVisible(false));
             EnterText.on('pointerover', () => {
