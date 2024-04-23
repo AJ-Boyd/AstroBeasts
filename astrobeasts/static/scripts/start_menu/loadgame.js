@@ -4,8 +4,17 @@ export class LoadGameScene extends Phaser.Scene {
     constructor() {
         super('LoadGame');
     }
+    preload() {
+        // Load all possible inventory images even if user doesn't have them at the moment
+        this.load.image('bgLoad', '/static/assets/Backgrounds/bStars.jpg');
+    }
 
     create () {
+        this.add.image(0, 0, 'bgLoad').setOrigin(0, 0).setScale(1.5);
+        this.add.image(0, 300, 'bgLoad').setOrigin(0, 0).setScale(1.5);
+        this.add.image(350, 0, 'bgLoad').setOrigin(0, 0).setScale(1.5);
+        this.add.image(350, 300, 'bgLoad').setOrigin(0, 0).setScale(1.5);
+
         const centerX = this.cameras.main.width / 2;
         const centerY = this.cameras.main.height / 2;
 
