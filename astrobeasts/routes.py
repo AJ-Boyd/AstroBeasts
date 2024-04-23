@@ -14,6 +14,7 @@ from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from .models import Base, Player, InventoryItem, AstroBeast,Move
+import json
 
 router = Blueprint("router", __name__)
 src = 'mydatabase.db'
@@ -49,6 +50,7 @@ def save_game():
         session.add(player)
     else:
         player.name = playerName  # Update player's name
+        player.walletTotal = gameState.get('walletTotal', 0) 
 
     session.query(InventoryItem).filter_by(Player_Name=playerName).delete()
     session.query(AstroBeast).delete()
@@ -71,10 +73,15 @@ def save_game():
             name=beast['name'],
             key = beast['key'],  
             description=beast['description'],
-            isEquipped=beast.get('isEquipped', False)  # Safely get isEquipped
+            isEquipped=beast.get('isEquipped', False),  # Safely get isEquipped
+            maxHP = beast.get("maxHP", 100),
+            currentHP = beast.get("currentHP", beast.get("maxHP", 100)),
+            stats=",".join(map(str, beast.get("stats", [100, 100, 100, 100]))),  # Storing stats as a comma-separated string or JSON could be an option
+            level = beast.get("level",1),
+            isAlive = beast.get("isAlive",True)
         )
         session.add(astro_beast)
-    print(gameState.get('inventory_moves'))
+    # print(gameState.get('inventory_moves'))
     for move in gameState.get('inventory_moves', []):
         move_entry = Move(
             Player_Name=playerName,
@@ -104,9 +111,18 @@ def check_name():
         myBeasts = session.query(AstroBeast).filter(AstroBeast.Player_Name == player_name).all()
         myMoves = session.query(Move).filter(Move.Player_Name == player_name).all()
         player_data = {
+            'walletTotal':player.walletTotal,
             'playerName': player.name,
             'inventory_items': [{'name': item.name, 'description': item.description, 'quantity': item.quantity, 'isEquipped': item.isEquipped, 'key': item.key} for item in inventory_items],
-            'inventory_astrobeasts': [{'name': beast.name, 'description': beast.description, 'isEquipped': beast.isEquipped,  'key': beast.key} for beast in myBeasts],
+            'inventory_astrobeasts': [{'name': beast.name,
+            'description': beast.description,
+            'isEquipped': beast.isEquipped,
+            'key': beast.key,
+            'maxHP': beast.maxHP,
+            'currentHP': beast.currentHP,
+            'stats': list(map(int, beast.stats.split(','))),
+            'level': beast.level,
+            'isAlive': beast.isAlive} for beast in myBeasts],
             'inventory_moves': [{'name': move.name, 'description': move.description, 'quantity': move.quantity, 'cost': move.cost, 'isEquipped': move.isEquipped, 'key': move.key} for move in myMoves]
         }
         # If a player with the given name exists
