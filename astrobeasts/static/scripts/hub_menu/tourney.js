@@ -5,17 +5,34 @@ export class TourneyScene extends Phaser.Scene {
     }
     preload() {
         // Load all possible inventory images even if user doesn't have them at the moment
-        this.load.image('bgTourney', '/static/assets/Backgrounds/bCombat2.jpg');
+        this.load.image('bgTourney', '/static/assets/Backgrounds/bTourney.png');
     }
 
     create() {
         // Background Image
-        const bgTourney = this.add.image(0, 0, 'my').setOrigin(0, 0);
+        const bgTourney = this.add.image(0, 0, 'bgTourney').setOrigin(0, 0);
 
-        let Title = this.add.text(100, 100, 'Tourney');  //, { fill: '#fff' } might have to load 3rd party text fillers
-        // add load game functionality here
+        // Title
+        let Title = this.add.text(70, 90, 'Welcome to the\nGalactic Astrobeast\nTournament!').setPadding(14);
+        Title.setBackgroundColor('black').setFontSize(34).setAlign('center'); 
+
+        // Enter
+        let EnterText = this.add.text(300, 400, 'ENTER')
+            .setInteractive({ useHandCursor: true }).setPadding(16)
+            .on('pointerdown', () => this.scene.start('LoadQuarter'));
+            EnterText.setBackgroundColor('black').setFontSize(32);
+            EnterText.on('pointerover', () => {
+                EnterText.setStyle({ fill: '#13b2f3'}); // when you hover, changes to white
+            });
+            EnterText.on('pointerout', () => {
+                EnterText.setStyle({ fill: 'white'}); 
+            });
+            // EnterText.on('pointerdown', () => Title.setVisible(false).setVisible(false));
+        
+
+        // Back
         let GoBackText = this.add.text(100, 550, '< Back', { color: 'white' })
-            .setInteractive({ useHandCursor: true })
+            .setInteractive({ useHandCursor: true }).setBackgroundColor('black')
             .on('pointerdown', () => this.scene.start('LoadHub'));
             GoBackText.on('pointerover', () => {
                 GoBackText.setStyle({ fill: '#0f0'}); // when you hover, changes to white
@@ -32,6 +49,7 @@ export class TourneyScene extends Phaser.Scene {
             active: () => {
                 Title.setFontFamily('"Press Start 2P"')
                 GoBackText.setFontFamily('"Press Start 2P"')
+                EnterText.setFontFamily('"Press Start 2P"')
             }
         }) 
     }
