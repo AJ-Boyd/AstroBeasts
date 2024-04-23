@@ -1,4 +1,4 @@
-//Base class for alienz!
+//Base class for alienz!!
 import { HPBar } from "./healthbar.js";
 import { Move } from "./moves.js";
 

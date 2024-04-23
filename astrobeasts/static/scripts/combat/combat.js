@@ -255,7 +255,7 @@ console.log('update - Combat');
             this.battlestuff();
         }        
     }else if(STATUS_STATE == "enemy"){
-        //this.time.delayedCall(2000, this.enemyTurn, null, this);
+        //this.time.delayedCall(2000, this.enemyTurn, null, this);;
         this.enemyTurn();
         return;
     }else if(STATUS_STATE == "enemy-waiting"){
