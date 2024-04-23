@@ -55,7 +55,10 @@ export class HubScene extends Phaser.Scene {
         let DojoText = this.add.text(startXFirstRow + 2 * gap, firstRowY, ' > Dojo', { font: '15px', color: 'crimson' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
-            .on('pointerdown', () => this.scene.start('LoadDojo'));
+            .on('pointerdown', () => {
+                this.registry.set('isTournament', false);
+                this.scene.start('LoadDojo');
+            });
             DojoText.on('pointerover', () => {
                 DojoText.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
             });
@@ -67,7 +70,10 @@ export class HubScene extends Phaser.Scene {
         let TournamentText = this.add.text(startXSecondRow, secondRowY, ' > Tournament', { font: '15px', color: 'gold' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
-            .on('pointerdown', () => this.scene.start('LoadTourney'));
+            .on('pointerdown', () => {
+                this.registry.set('isTournament', true);
+                this.scene.start('LoadTourney');
+            });
             TournamentText.on('pointerover', () => {
                 TournamentText.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
             });

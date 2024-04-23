@@ -72,6 +72,8 @@ export class MainMenuScene extends Phaser.Scene {
        this.registry.set('currentAstrobeastsEquipped', 0);
        this.registry.set('currentMovesEquipped', 0);
        this.registry.set('walletTotal', 1000);  
+
+       this.registry.set('isTournament', false);
     }
     create() {
         this.add.image(0, 0, 'sky').setOrigin(0, 0);
