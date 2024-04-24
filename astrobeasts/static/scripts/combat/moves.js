@@ -12,7 +12,7 @@ export class Move {
       this._level = lvl;
     }
 
-// getters (don't know if already implemented elsewhere)
+// getters (don't know if already implemented elsewhere)...
   get name() {
     return this._name;
   }
