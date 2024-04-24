@@ -1,15 +1,15 @@
 export class Move {
-    constructor(name, desc, base, lvl, splash) {
+    constructor(name, desc, base, acc, lvl) {
       /** @protected @type {string} */
       this._name = name;
       /** @protected @type {string} */
       this._description = desc;
       /** @protected @type {number} */
       this._baseAttack = base;
+      /**@protacted @type {number} */
+      this._accuracy = acc;
       /** @protected @type {number} */
       this._level = lvl;
-      /** @protected @type {boolean} */
-      this._isSplash = splash;
     }
 
 // getters (don't know if already implemented elsewhere)
@@ -29,8 +29,8 @@ export class Move {
     return this._level;
   }
 
-  get isSplash() {
-    return this._isSplash;
+  get accuracy() {
+    return this._accuracy;
   }
 
 // setters (don't know if already implemented elsewhere)
