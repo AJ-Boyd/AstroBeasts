@@ -18,7 +18,7 @@ import { Move } from "./moves.js";
  * @property {string} assetAnim
  * @property {number} maxHp
  * @property {number} currentHP
- * @property {number[]} stats //[ATK, DEF, SPD]
+ * @property {number[]} stats //[ATK, DEF, SPD, DEX, LUK]
  * @property {Move[]} moves // moves
  * @property {number} level
  * @property {boolean} isAlive
@@ -94,6 +94,21 @@ getMoves(){
 getStats()
 {
     return this._alienDetails.stats;
+}
+getATK(){
+    return this._alienDetails.stats[0];
+}
+getDEF(){
+    return this._alienDetails.stats[1];
+}
+getSPD(){
+    return this._alienDetails.stats[2];
+}
+getDEX(){
+    return this._alienDetails.stats[3];
+}
+getLUK(){
+    return this._alienDetails.stats[4];
 }
 takeDamage(damage, callback)
 {

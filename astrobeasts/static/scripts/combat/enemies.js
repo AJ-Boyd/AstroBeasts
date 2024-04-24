@@ -96,6 +96,15 @@ getStats()
 {
     return this._enemyDetails.stats;
 }
+getATK(){
+    return this._enemyDetails.stats[0];
+}
+getDEF(){
+    return this._enemyDetails.stats[1];
+}
+getSPD(){
+    return this._enemyDetails.stats[2];
+}
 takeDamage(damage, callback)
 {
     console.log("It is", this._enemyDetails.currentHP)
