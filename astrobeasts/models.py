@@ -22,6 +22,7 @@ class Player(Base):
     
     PlayerID = Column(Integer, primary_key=True)
     name = Column(String)
+    walletTotal = Column(Integer, default=0)
     inventoryItems = relationship('InventoryItem', secondary=player_inventory_association, back_populates='players')
     astroBeasts = relationship('AstroBeast', secondary=player_astrobeast_association, back_populates='players')
     leaderboard = relationship('LeaderBoard', back_populates='player')
@@ -69,7 +70,9 @@ class AlienInventory(Base):
 
 
 class AstroBeast(Base): #need to adjust to include relationship with stats. stats are not implemented in game yet.
+   
     __tablename__ = 'AstroBeasts'
+
     AstroBeastID = Column(Integer, primary_key=True)
     name = Column(String)
     description = Column(String)
@@ -77,9 +80,21 @@ class AstroBeast(Base): #need to adjust to include relationship with stats. stat
     isEquipped = Column(Boolean)
     key = Column(String)
     Player_Name = Column(String, ForeignKey('Players.name'))
-    players = relationship('Player', secondary=player_astrobeast_association, back_populates='astroBeasts')
 
-# Define the Aliens table
+    # Adding stats directly to the AstroBeasts table
+    maxHP = Column(Integer)
+    currentHP = Column(Integer)
+    stats = Column(String)  # Storing stats as a comma-separated string or JSON could be an option
+    level = Column(Integer)
+    isAlive = Column(Boolean)
+
+    players = relationship('Player', secondary='player_astrobeast_association', back_populates='astroBeasts')
+
+    # Relationship with players, assuming there is an association table for many-to-many relationship
+    player_astrobeast_association = Table('player_astrobeast_association', Base.metadata,
+                                    Column('Player_Name', String, ForeignKey('Players.name')),
+                                    Column('AstroBeastID', Integer, ForeignKey('AstroBeasts.AstroBeastID')))
+    # Define the Aliens table
 class Alien(Base):
     __tablename__ = 'Aliens'
     
@@ -96,7 +111,6 @@ class AlienStats(Base):
     StatsID = Column(Integer, primary_key=True)
     AliensID = Column(Integer, ForeignKey('Aliens.AliensID'))
     HP = Column(Integer)
-    XP = Column(Integer)
     Level = Column(Integer)
     
     alien = relationship('Alien', back_populates='alien_stats')
@@ -120,7 +134,6 @@ class LeaderBoard(Base):
     LeaderID = Column(Integer, primary_key=True)
     PlayerID = Column(Integer, ForeignKey('Players.PlayerID'))
     score = Column(Integer)
-    
     player = relationship('Player', back_populates='leaderboard')
 
 # Define the AlienAttributes table

@@ -16,12 +16,38 @@ export class MainMenuScene extends Phaser.Scene {
         // Inventory contains dictionary items, where each dictionary represents an item. it has the following variables:
         // 1. key (image name), 2. name (item's name), 3. description, 4. quantity, 5. isEquipped (has the player equipped this item for battle?)
         this.registry.set('inventory_items', []); // should be list of dicts with the item name and its key that cooresponds to it's png path
-       
-        // Astrobeasts contain dictionaries, where each dictionary represents an astrobeast. it has the following variables:
-        // 1. key (image name), 2. name (astrobeast name), 3. description (it's affinity), 4. quantity (always 1), 5. isEquipped (has the player equipped this beast for battle?)
-        this.registry.set('inventory_astrobeasts', [{ key: 'skol', name: 'Skol', description: 'Fire AstroBeast', quantity: 1, cost: 50, isEquipped: false },
-        { key: 'tarkeel', name: 'Tarkeel', description: 'Water AstroBeast', quantity: 1, cost: 51, isEquipped: false }]); // similar as above. showing starter astrobeasts
-       
+        this.registry.set('inventory_astrobeasts', [ { 
+            key: 'skol', 
+            name: 'Skol',
+            assets: 'Skol', 
+            assetAnim: "idle_Skol",
+            description: 'Fire AstroBeast', 
+            quantity: 1, 
+            cost: 50, 
+            isEquipped: false,
+            maxHP: 100,
+            currentHP: 100,
+            stats: [100, 100, 100, 100],
+            level: 1,
+            isAlive: true
+
+        },
+        { 
+            key: 'tarkeel', 
+            name: 'Tarkeel',
+            assets: 'Tarkeel', 
+            assetAnim: "idle_Tarkeel",
+            description: 'Water AstroBeast', 
+            quantity: 1, 
+            cost: 51, 
+            isEquipped: false,
+            maxHP: 120,
+            currentHP: 120,
+            stats: [100, 100, 100, 100],
+            level: 1,
+            isAlive: true
+        }
+       ]);
         // Moves contain dictionaries, where each dictionary represents a move. it has the following variables:
         // 1. key (image name), 2. name (move name), 3. description (what it does), 4. quantity, 5. isEquipped (has the player equipped this  for battle?)
         this.registry.set('inventory_moves', [
