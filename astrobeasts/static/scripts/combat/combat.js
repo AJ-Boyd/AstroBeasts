@@ -15,13 +15,6 @@ var CURR_PARTY = 'player';
 var flag = 0;
 const FLEE_CHANCE = 40;
 
-const punch = new Move("Punch", "throw a haymaker", 40, 80, 1); //low damage, high acc
-const strike = new Move("Strike", "cuts", 50, 75, 1); //mid damage, mid acc
-const bite = new Move("Bite", "chomp!", 100, 70, 2); //high damage, mid acc
-const sleep = new Move("Sleep", "", 20, 100, 5); //low damage, high acc
-const slash = new Move("Slash", "", 80, 60, 5,); //high damage, low acc
-const kick = new Move("Kick", "", 45, 90, 5); //low damage, high acc
-
 //var combat1, combat2;
 
 
@@ -29,16 +22,6 @@ const kick = new Move("Kick", "", 45, 90, 5); //low damage, high acc
 export class CombatScene extends Phaser.Scene {
     #combatMenu;
     #EnemyAlien;
-    #EnemyAlien2;
-    #EnemyAlien3;
-    #EnemyAlien4;
-
-    #RandomAlien;
-    #RandomAlien2;
-    #RandomAlien3;
-    #RandomAlien4;
-
-
     #PlayerAlien1;
     #PlayerAlien2;
     #player;
@@ -78,13 +61,6 @@ preload()
 
 
 create() {  
-    this.registry.set('isTournament', true); // JUST FOR TESTING. REMOVE AFTER MERGE WITH MAIN
-    const isTournament = this.registry.get('isTournament');
-    if (isTournament) {
-        this.createTournamentEnemies();
-    } else {
-       this.createRandomEnemies();
-    }
   
     console.log('create - Combat');
  //accept keyboard input
@@ -95,44 +71,102 @@ create() {
   const background = new RenderBackground(this);
   background.showFire();
 
+const punch = new Move("Punch", "throw a haymaker", 40, 80, 1); //low damage, high acc
+const strike = new Move("Strike", "cuts", 50, 75, 1); //mid damage, mid acc
+const bite = new Move("Bite", "chomp!", 100, 70, 2); //high damage, mid acc
+const sleep = new Move("Sleep", "", 20, 100, 5); //low damage, high acc
+const slash = new Move("Slash", "", 80, 60, 5,); //high damage, low acc
+const kick = new Move("Kick", "", 45, 90, 5); //low damage, high acc
+
+
+//create enemy alien and idle
+
+
+ this.#EnemyAlien = new Enemy({
+    scene:this,
+    EnemyDetails: {
+        name: "Tarkeel",
+        assets: 'Tarkeel',
+        assetAnim: "idle_Radrock",
+        maxHP: 10000,
+        currentHP: 10000,
+        stats: [250, 250, 250], //ATK, DEF, SPD
+        moves: [punch, strike],
+        level: 1,
+        isAlive: true,
+    }
+    
+ }, {x: 600, y: 310})
+
 //create our alien and idle
+let directions = [[200,310] , [200,200], [100,310], [100,200]];
+let temp = this.registry.get('inventory_astrobeasts');
+let count = 0;
+for (let i = 0; i < temp.length; i++){
+    if (temp[i]['isEquipped'] && count < directions.length){
+        console.log(temp[i]['assetAnim'])
+        this.#PlayerAlien1 = new Aliens({
+            scene:this,
+            AlienDetails: {
+                name: temp[i]['name'],
+                assets: temp[i]['assets'],
+                assetAnim: temp[i]['assetAnim'],
+                maxHP: temp[i]['maxHP'],
+                currentHP: temp[i]['currentHP'],
+                maxExp: temp[i]['maxExp'],
+                currentExp: temp[i]['currentExp'],
+                stats: temp[i]['stats'], //ATK, DEF, SPD, DEX, LUK
+                moves: [punch, slash, bite],
+                level: temp[i]['level'],
+                isAlive: temp[i]['isAlive'],
+            }
+            
+         }, {x: directions[count][0], y: directions[count][1]})
 
-this.#PlayerAlien1 = new Aliens({
-    scene:this,
-    AlienDetails: {
-        name: "Strikoh",
-        assets: 'Strikoh',
-        assetAnim: "idle_Strikoh",
-        maxHP: 2000,
-        currentHP: 2000,
-        maxExp: 1000,
-        currentExp: 0,
-        stats: [632, 408, 474, 468, 418], //ATK, DEF, SPD, DEX, LUK
-        moves: [punch, slash, bite],
-        level: 1,
-        isAlive: true,
+        party.push(this.#PlayerAlien1);
+         
+        count+=1;
     }
     
- }, {x: 200, y: 310})
+    
+}
+
+// this.#PlayerAlien1 = new Aliens({
+//     scene:this,
+//     AlienDetails: {
+//         name: "Strikoh",
+//         assets: 'Strikoh',
+//         assetAnim: "idle_Strikoh",
+//         maxHP: 2000,
+//         currentHP: 2000,
+//         maxExp: 1000,
+//         currentExp: 0,
+//         stats: [632, 408, 474, 468, 418], //ATK, DEF, SPD, DEX, LUK
+//         moves: [punch, slash, bite],
+//         level: 1,
+//         isAlive: true,
+//     }
+    
+//  }, {x: 200, y: 310})
  
- this.#PlayerAlien2 = new Aliens({
-    scene:this,
-    AlienDetails: {
-        name: "Hotu",
-        assets: 'Hotu',
-        assetAnim: "idle_Hotu",
-        maxHP: 1000,
-        currentHP: 1000,
-        maxExp: 1000,
-        currentExp: 0,
-        stats: [476, 342, 144, 226, 212], //ATK, DEF, SPD, DEX, LUK
-        moves: [sleep, kick],
-        level: 1,
-        isAlive: true,
+//  this.#PlayerAlien2 = new Aliens({
+//     scene:this,
+//     AlienDetails: {
+//         name: "Hotu",
+//         assets: 'Hotu',
+//         assetAnim: "idle_Hotu",
+//         maxHP: 1000,
+//         currentHP: 1000,
+//         maxExp: 1000,
+//         currentExp: 0,
+//         stats: [476, 342, 144, 226, 212], //ATK, DEF, SPD, DEX, LUK
+//         moves: [sleep, kick],
+//         level: 1,
+//         isAlive: true,
 
-    }
+//     }
     
- }, {x: 200, y: 200})
+//  }, {x: 200, y: 200})
  
  
  //
@@ -198,85 +232,11 @@ this.#combatMenu = new CombatMenu(this, this.#PlayerAlien1, this.#items);// this
 //
 //this.#combatMenu.battleOptionsOn();
 
-party = [this.#PlayerAlien1, this.#PlayerAlien2];
-enemies = [this.#EnemyAlien, this.#EnemyAlien2, this.#EnemyAlien3, this.#EnemyAlien4];
+enemies = [this.#EnemyAlien];
 
 attacker = party[0];
 this.#combatMenu.initialize(attacker)
 //this.#combatMenu.battleOptionsOn()
-}
-createTournamentEnemies() {
-//create enemy alien and idle
-    console.log("Adding Tarkeel");
-    this.#EnemyAlien = new Enemy({
-        scene:this,
-        EnemyDetails: {
-            name: "Tarkeel",
-            assets: 'Tarkeel',
-            assetAnim: "idle_Tarkeel",
-            maxHP: 10000,
-            currentHP: 10000,
-            stats: [250, 250, 250], //ATK, DEF, SPD
-            moves: [punch, strike, slash, sleep],
-            level: 1,
-            isAlive: true,
-        }
-        
-    }, {x: 600, y: 310}), 
-    //create enemy alien and idle
-    console.log("Adding Arquam");
-    this.#EnemyAlien2 = new Enemy({
-        scene:this,
-        EnemyDetails: {
-            name: "Arquam",
-            assets: 'Arquam',
-            assetAnim: "idle_Aquam",
-            maxHP: 300,
-            currentHP: 300,
-            stats: [200, 200, 200],
-            moves: [strike, slash,bite,sleep] ,
-            level: 2,
-            isAlive: true,
-        }
-        
-    }, {x: 600, y: 310}), 
-    //create enemy alien and idle
-    console.log("Adding Icell");
-    this.#EnemyAlien3 = new Enemy({
-        scene:this,
-        EnemyDetails: {
-            name: "Icell",
-            assets: 'Icell',
-            assetAnim: "idle_Icell",
-            maxHP: 350,
-            currentHP: 350,
-            stats: [300, 300, 300],
-            moves: [strike, slash,bite,sleep] ,
-            level: 3,
-            isAlive: true,
-        }
-        
-    }, {x: 600, y: 310}),
-    //create enemy alien and idle
-    console.log("Adding Scourge");
-    this.#EnemyAlien4 = new Enemy({
-        scene:this,
-        EnemyDetails: {
-            name: "Scourge",
-            assets: 'Scourge',
-            assetAnim: "idle_Scourge",
-            maxHP: 400,
-            currentHP: 400,
-            stats: [400, 400, 400],
-            moves: [strike, slash,bite,sleep] ,
-            level: 4,
-            isAlive: true,
-        }
-        
-    }, {x: 600, y: 310})
-}
-createRandomEnemies() {
-
 }
 
 
@@ -964,4 +924,3 @@ itemHandler(selected)
 
 
 }
-

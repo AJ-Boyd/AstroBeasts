@@ -78,6 +78,7 @@ def save_game():
             currentHP = beast.get("currentHP", beast.get("maxHP", 100)),
             stats=",".join(map(str, beast.get("stats", [100, 100, 100, 100]))),  # Storing stats as a comma-separated string or JSON could be an option
             level = beast.get("level",1),
+            assetAnim = "idle_" + beast['name'].strip(),
             isAlive = beast.get("isAlive",True)
         )
         session.add(astro_beast)
