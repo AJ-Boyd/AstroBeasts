@@ -12,6 +12,7 @@ var enemies = [];
 var STATUS_STATE = 'default'
 var CURR_TURN = 0;
 var CURR_PARTY = 'player';
+const FLEE_CHANCE = 40;
 
 //var combat1, combat2;
 export class CombatScene extends Phaser.Scene {
@@ -216,7 +217,7 @@ console.log('update - Combat');
             move = strList[2]
             // STATUS_STATE = "targeting";
         }
-        else if(Phaser.Input.Keyboard.JustDown(cursors.left)){  ////Option down
+        else if(Phaser.Input.Keyboard.JustDown(cursors.down)){  ////Option down
             move = strList[3]
             // STATUS_STATE = "targeting";
         }
@@ -292,8 +293,8 @@ console.log('update - Combat');
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //FLEE. TO DO...
             console.log('Left Is Down')
-            this.#combatMenu.playerInput('FLEE')
-            this.flee()
+            //this.#combatMenu.playerInput('FLEE')
+            this.flee();
             return;
         } 
         else
@@ -516,8 +517,8 @@ console.log('update - Combat');
         else if(condition == 1){
             //you earn 1/10 exp for each point of damage you did
             expGain = Math.round(damageDone / 10);
-            //and 1/25 of credits
-            moneyGain = Math.round(damageDone / 25);
+            //and lose 1000 credits
+            moneyGain = -1000;
             this.time.delayedCall(2000, this.#combatMenu.showEndMsg, ["DEFEAT\nYou earned " + expGain + " EXP and " + moneyGain + " credits.\nPress Spacebar to exit."], this.#combatMenu);
             this.checkLevelUp(expGain);
             STATUS_STATE = "conclusion";
@@ -525,8 +526,8 @@ console.log('update - Combat');
         //end scene in fleeing
         else if(condition == 2){
             alert("coward!")
-            STATUS_STATE = "nothing";
-            this.scene.start("MainMenu")
+            this.time.delayedCall(500, this.#combatMenu.showEndMsg, ["You have successfully fled the battle.\nPress Spacebar to exit."], this.#combatMenu);
+            STATUS_STATE = "conclusion";
         }
     }
 
@@ -609,6 +610,24 @@ console.log('update - Combat');
         STATUS_STATE = state;
     }
 
-    
+    //when attempting to flee battle
+    flee(){
+        var flee = this.getRand(0, 100)
+        console.log(flee)
+        if(flee < FLEE_CHANCE){
+            //flee is successful
+            this.endBattle(2)
+        }else{
+            //flee fails
+            this.#combatMenu.battleOptionsOff();
+            this.#combatMenu.setRenderMessage("You fail to escape");
+            this.time.delayedCall(2100, this.changeTurn, null, this);
+            this.time.delayedCall(2101, this.#combatMenu.battleOptionsOn, null, this.#combatMenu)
+            attacker = undefined;
+            target = undefined;
+            move = undefined;
+            STATUS_STATE = "nothing";
+        }
+    }
 }
 
