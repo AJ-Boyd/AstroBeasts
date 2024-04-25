@@ -658,6 +658,8 @@ changeTurn(){
             this.time.delayedCall(2000, this.#combatMenu.showEndMsg, ["VICTORY!\nYou earned " + expGain + " EXP and " + moneyGain + " credits.\nPress Spacebar to exit."], this.#combatMenu);
             this.checkLevelUp(expGain);
             STATUS_STATE = "conclusion";
+            this.#player.updateExpGained(expGain); //update exp earned and credits earned
+            this.#player.updateCredits(moneyGain)
         }
         //end scene in defeat
         else if(condition == 1){
@@ -668,6 +670,8 @@ changeTurn(){
             this.time.delayedCall(2000, this.#combatMenu.showEndMsg, ["DEFEAT\nYou earned " + expGain + " EXP and " + moneyGain + " credits.\nPress Spacebar to exit."], this.#combatMenu);
             this.checkLevelUp(expGain);
             STATUS_STATE = "conclusion";
+            this.#player.updateExpGained(expGain); //update exp earned and credits earned
+            this.#player.updateCredits(moneyGain)
         }
         //end scene in fleeing
         else if(condition == 2){
