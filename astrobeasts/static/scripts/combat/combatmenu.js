@@ -156,7 +156,7 @@ export class CombatMenu {
  }
 
 //UI for selecting targets
-#createTargetOptions(targets = []){
+createTargetOptions(targets = []){
     this.#targetText = this.#scene.add.text(55,540, "Select a target!", MessageTextStyle);
     this.#targetOpt = this.#scene.add.container(400, 500,
     [

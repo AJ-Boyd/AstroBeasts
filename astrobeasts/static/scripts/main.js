@@ -22,7 +22,7 @@ const config = {
     height: 600,
     parent: 'gameContainer',
     scene: [MainMenuScene, NewGameScene, NameInputScene, PickYourStarterScene, TutorialScene, LoadGameScene, OptionsScene, 
-            HubScene, InventoryScene, DojoScene, ShopScene, TourneyScene, SaveScene, HighScoreScene, CreditsScene, FleeScene],
+            HubScene, InventoryScene, DojoScene, ShopScene, TourneyScene, SaveScene, HighScoreScene, CreditsScene, FleeScene, Preload, CombatScene],
     dom: {
         createContainer: true
     },

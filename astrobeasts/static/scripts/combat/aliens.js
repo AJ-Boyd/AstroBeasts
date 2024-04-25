@@ -62,7 +62,7 @@ export class Aliens {
         this._scene = config.scene;
         this._alienDetails = config.AlienDetails;
 
-        this._HPBar = new  HPBar(this._scene, 10, 22);
+        this.#createHPBar();
 
         this.AlienGuy = this._scene.add.sprite(position.x, position.y, this._alienDetails.assets).setScale(2);
         this.AlienGuy.anims.play(this._alienDetails.assetAnim)
@@ -124,7 +124,113 @@ export class Aliens {
         this._HPBar.animateHP(dam/this._alienDetails.maxHP, {callback});
         //this.updateHP(dam);
 
-    }
+        var up = String(this._alienDetails.currentHP)
+        var low = String(this._alienDetails.maxHP)
+        var out = up + "/"+low;
+        
+        
+            this.#hpText.setText(out)
+            this._HPBar.animateHP(dam/this._alienDetails.maxHP, {callback});
+           
+        
+     }
+        
+        
+        #createHPBar()
+        {
+        this._HPBar = new HPBar(this._scene, 10, 22);
+        
+        var up = String(this._alienDetails.currentHP)
+        var low = String(this._alienDetails.maxHP)
+        var out = up + "/"+low;
+        
+        const playerAlienName = this._scene.add.text(5,0, this._alienDetails.name,
+                {
+                    color: '#045eda',
+                    fontSize: '28px',
+                    fontStyle: 'bold italic',
+                }
+        );
+        
+        const hpImg = this._scene.add.image(0, 0,"healthback").setOrigin(0)
+        
+        this.#hpText = this._scene.add.text (140, 5, out ,
+            
+            {
+                color:'red',
+                fontSize: '18px',
+                fontStyle: 'Bold',
+            }
+            );
+        
+        
+        
+            this._HPContainer = this._scene.add.container(550, 440, 
+            [
+                hpImg,
+                playerAlienName,
+                this._HPBar.container,
+                this.#hpText,
+            ]                        
+            ).setAlpha(0);
+        
+        
+        
+        
+        }
+        
+        NameandHPon()
+        {
+        
+            this._HPContainer.setAlpha(1);
+        }
+        NameandHPoff()
+        {
+        
+            this._HPContainer.setAlpha(0);
+        }
+        
+        //[ATK, DEF, SPD, LUK]
+        
+        
+        setATK(increment)
+        {
+        var st = []
+        st = this._alienDetails.stats
+        
+        this._alienDetails.stats[0] = st+increment
+        
+        
+        }
+        
+        setDEF(increment){
+            var st = []
+            st = this._alienDetails.stats
+            
+            this._alienDetails.stats[1] = st+increment
+        
+        
+        }
+        
+        setSPD(increment)
+        {
+        
+            var st = []
+            st = this._alienDetails.stats
+        
+            this._alienDetails.stats[2] = st+increment
+        }
+        
+        setLUK(increment)
+        {
+        
+            var st = []
+            st = this._alienDetails.stats
+            this._alienDetails.stats[2] = st+increment
+        
+        }
+        
+        
     gainExp(exp){
         this._alienDetails.currentExp += exp;
         //on level up
@@ -158,4 +264,5 @@ export class Aliens {
     getRand(min, max) {
         return Math.floor(Math.random() * (max - min + 1) ) + min;
     }
+    
 }
