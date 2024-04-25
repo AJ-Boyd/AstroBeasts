@@ -15,6 +15,7 @@ import { CreditsScene } from './options_menu/rollcredits.js';
 import { QuarterScene } from './tourney_scenes/quarter.js';
 import { SemiScene } from './tourney_scenes/semi.js';
 import { FinalScene } from './tourney_scenes/final.js';
+import { CongratsScene } from './tourney_scenes/congrats.js';
 
 import { FleeScene } from './combat_menu/flee.js';
 
@@ -26,7 +27,7 @@ const config = {
     parent: 'gameContainer',
     scene: [MainMenuScene, NewGameScene, NameInputScene, PickYourStarterScene, TutorialScene, LoadGameScene, OptionsScene, 
             HubScene, InventoryScene, DojoScene, ShopScene, TourneyScene, SaveScene, HighScoreScene, CreditsScene, FleeScene,
-            QuarterScene, SemiScene, FinalScene],
+            QuarterScene, SemiScene, FinalScene, CongratsScene],
     dom: {
         createContainer: true
     },
