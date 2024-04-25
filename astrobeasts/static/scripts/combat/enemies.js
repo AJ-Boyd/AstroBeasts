@@ -84,6 +84,10 @@ getCurrentHP(){
     return this._enemyDetails.currentHP;
 }
 
+getMaxHP(){
+    return this._enemyDetails.maxHP;
+}
+
 getLevel(){
     return this._enemyDetails.level;
 }

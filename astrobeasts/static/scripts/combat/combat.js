@@ -6,7 +6,7 @@ import { RenderBackground } from './renderbackground.js';
 import { Move } from './moves.js';
 //import { Enemies } from './enemy.js';
 
-var cursors, attacker, move, target,  strList =[];
+var cursors, attacker, move, target, spacebar, strList =[];
 var party = [];
 var enemies = [];
 var STATUS_STATE = 'default'
@@ -52,17 +52,18 @@ create() {
     console.log('create - Combat');
  //accept keyboard input
     cursors = this.input.keyboard.createCursorKeys();
+    spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
 //background
   const background = new RenderBackground(this);
   background.showFire();
 
-const punch = new Move("Punch", "throw a haymaker", 40, 1, false);
-const strike = new Move("Strike", "cuts", 50, 1, false);
-const bite = new Move("Bite", "chomp!", 100, 2, false);
-const sleep = new Move("Sleep", "", 20, 5, false);
-const slash = new Move("Slash", "", 80, 5, false);
-const kick = new Move("Kick", "", 45, 5, false)
+const punch = new Move("Punch", "throw a haymaker", 40, 80, 1); //low damage, high acc
+const strike = new Move("Strike", "cuts", 50, 75, 1); //mid damage, mid acc
+const bite = new Move("Bite", "chomp!", 100, 70, 2); //high damage, mid acc
+const sleep = new Move("Sleep", "", 20, 100, 5); //low damage, high acc
+const slash = new Move("Slash", "", 80, 60, 5,); //high damage, low acc
+const kick = new Move("Kick", "", 45, 90, 5); //low damage, high acc
 
 
 //create enemy alien and idle
@@ -72,9 +73,9 @@ const kick = new Move("Kick", "", 45, 5, false)
         name: "Tarkeel",
         assets: 'Tarkeel',
         assetAnim: "idle_Tarkeel",
-        maxHP: 250,
-        currentHP: 250,
-        stats: [100, 100, 100], //ATK, DEF, SPD
+        maxHP: 10000,
+        currentHP: 10000,
+        stats: [250, 250, 250], //ATK, DEF, SPD
         moves: [punch, strike],
         level: 1,
         isAlive: true,
@@ -90,9 +91,11 @@ this.#PlayerAlien1 = new Aliens({
         name: "Strikoh",
         assets: 'Strikoh',
         assetAnim: "idle_Strikoh",
-        maxHp: 100,
-        currentHP: 100,
-        stats: [100, 100, 100, 100],
+        maxHP: 2000,
+        currentHP: 2000,
+        maxExp: 1000,
+        currentExp: 0,
+        stats: [632, 408, 474, 468, 418], //ATK, DEF, SPD, DEX, LUK
         moves: [punch, slash, bite],
         level: 1,
         isAlive: true,
@@ -106,9 +109,11 @@ this.#PlayerAlien1 = new Aliens({
         name: "Hotu",
         assets: 'Hotu',
         assetAnim: "idle_Hotu",
-        maxHp: 100,
-        currentHP: 100,
-        stats: [100, 100, 100, 100],
+        maxHP: 1000,
+        currentHP: 1000,
+        maxExp: 1000,
+        currentExp: 0,
+        stats: [476, 342, 144, 226, 212], //ATK, DEF, SPD, DEX, LUK
         moves: [sleep, kick],
         level: 1,
         isAlive: true,
@@ -188,6 +193,7 @@ update() {
 console.log('update - Combat');
    if(STATUS_STATE == 'fight'){
     attacker = party[CURR_TURN];
+    console.log("attacker's moves: ", attacker.getMoves())
 
     //updates UI for moves
     this.#combatMenu.setFightText("Select a Move for " + attacker.getName());
@@ -200,28 +206,23 @@ console.log('update - Combat');
 
         if(Phaser.Input.Keyboard.JustDown(cursors.up)) { //Option Up
            move = strList[0]
-           STATUS_STATE = "targeting";
-           //this.battlestuff();
+        //    STATUS_STATE = "targeting";
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //Option left
             move = strList[1]
-            STATUS_STATE = "targeting";
-            //this.battlestuff();
+            // STATUS_STATE = "targeting";
         }
-        else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ //Option down
+        else if(Phaser.Input.Keyboard.JustDown(cursors.right)){ //Option right
             move = strList[2]
-            STATUS_STATE = "targeting";
-            //this.battlestuff();
+            // STATUS_STATE = "targeting";
         }
-        else if(Phaser.Input.Keyboard.JustDown(cursors.right)){  ////Option Right
+        else if(Phaser.Input.Keyboard.JustDown(cursors.left)){  ////Option down
             move = strList[3]
-            STATUS_STATE = "targeting";
-            //this.battlestuff();
+            // STATUS_STATE = "targeting";
         }
-        else {
-            //Nothing here for now.
-        }   
-        
+        if(move != undefined)
+            STATUS_STATE = "targeting"
+
     }else if(STATUS_STATE == "targeting"){
         //list of possible (living) targets
         var livE = enemies.filter(e => e.getAlive())
@@ -255,7 +256,7 @@ console.log('update - Combat');
             this.battlestuff();
         }        
     }else if(STATUS_STATE == "enemy"){
-        //this.time.delayedCall(2000, this.enemyTurn, null, this);;
+        //this.time.delayedCall(2000, this.enemyTurn, null, this);
         this.enemyTurn();
         return;
     }else if(STATUS_STATE == "enemy-waiting"){
@@ -264,6 +265,11 @@ console.log('update - Combat');
         }, 2000)
     }else if(STATUS_STATE == "enemy-continue"){
         this.time.delayedCall(4000, this.enemyTurnCont, null, this);
+    }else if(STATUS_STATE == "conclusion"){
+        //guess it's over
+        if(spacebar.isDown){
+            this.scene.start("MainMenu")
+        }
     }else{
 
         if(Phaser.Input.Keyboard.JustDown(cursors.up)){ //FIGHT
@@ -287,7 +293,7 @@ console.log('update - Combat');
         else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //FLEE. TO DO...
             console.log('Left Is Down')
             this.#combatMenu.playerInput('FLEE')
-            //this.flee()
+            this.flee()
             return;
         } 
         else
@@ -295,32 +301,7 @@ console.log('update - Combat');
         //Nothing here for now. 
         }
     }
-    
-   // while(this.#combatMenu.STATUS_STATE === 'battle'){
-    // if(Phaser.Input.Keyboard.JustDown(cursors.up)){
-    //    console.log('In Fight Up Is Down')
-    //    this.#combatMenu.playerFightInputSelect('HELLO'')
-     //   return;
-    //}
-
-    
-   // else if(cursors.down.isDown){
-    //    console.log('In Fight DOWN Is Down')
-    //    this.#combatMenu.playerFightInputSelect(this.#combatMenu.MOVE_2)
-    //    return;
-   // }
-   // else if(cursors.right.isDown){
-    //    console.log('Right Is Down')
-    //    this.#combatMenu.playerInput('ITEM')
-   // }
-    //else if(cursors.left.isDown){
-      //  console.log('Left Is Down')
-        //this.#combatMenu.playerInput('FLEE')
-    //} 
-    
-
 }
-
 
     /*
     returns the total damage an attacker does to a target with a given move
@@ -330,8 +311,12 @@ console.log('update - Combat');
     */
     attack(attacker, target, move){
         var d = this.calcDamage(attacker, move); //raw damage a move can do
+        console.log("raw damage: " + d)
         var m = this.calcMitigation(target); //the percentage of damage that the target can mitigate
+        console.log("percentage of mitigation: " + m)
         d *= 1-m;
+        d = Math.round(d);
+        console.log("final damage: " + d)
 
         return d;
     }
@@ -341,34 +326,27 @@ console.log('update - Combat');
     attacker ATK stat, move baseATK stat, and a random number
     */
     calcDamage(attacker, move){
-        var stats = []
-        stats = attacker.getStats();
-        var a = (1.05 * //move.level 
-        10 + 1.08 * attacker.getLevel()) * Math.pow(stats[0], 1.6);
-        var b = //move.baseATK / 100;
-        10/100;
-        var c = 70 + this.getRand(-10, 25);
+        var rand = this.getRand(16, 24);
+        console.log("random coef: " + rand)
+        var d = (Math.pow(attacker.getATK(), 1.18) / 1.5) + (rand * move.getBaseAttack()) + (10 * move.getLevel()) - 900
 
-        var d = Math.floor(b + (a/c)); 
-
-        return 100;
+        return d;
     }
 
     /*
     formula to calculate the percentage of damage that a target mitigates. this is based on the target's
     DEF stat and a random number
+
+    the exact formula for m(defense) = sqrt(defense / 1.1) - 6 + randN9-5, 5)
     */
     calcMitigation(target){
-
         var stats = [];
         stats = target.getStats();
-        var a = 1.9 * stats[1] + 0.5 * this.getRand(-10, 25);
-        var b = 55;
+        
+        var m = Math.sqrt(stats[1] / 1.1) - 6 + this.getRand(-5,5)
+        m /= 100; // convert into percentage
 
-        var c = Math.floor(a / b);
-        c /= 100;
-
-        return 0.05;
+        return m; // return percentage
     }
 
     /*
@@ -403,13 +381,12 @@ console.log('update - Combat');
 
     battlestuff(){
         this.#combatMenu.targetOptionsOff();
+        this.#combatMenu.setAlien(attacker);
         var hit = this.getRand(0,100);
         console.log("hit:", hit)
-        if(hit <= 80){
+        if(hit <= this.getHitChance(attacker, move)){
             console.log("attack lands!")
             //attack target
-        //  console.log("attacker:",attacker.alienDetails);
-            //console.log("target:", target);
             console.log("move:",move)
             
             //this will have a fully fleshed out formula but for now this should always return 95
@@ -457,7 +434,7 @@ console.log('update - Combat');
         // }
 
         var condition = this.checkBattle(); //see if one side is completely dead
-        alert(condition)
+        // alert(condition)
         if(condition != -1)
             this.endBattle(condition); //if battle is over, end the battle
         else{    
@@ -466,10 +443,27 @@ console.log('update - Combat');
         }
     
     //reset global vars and state
-    //target = undefined;
-    //move = undefined;
-    //attacker = undefined;
-}
+    target = undefined;
+    move = undefined;
+    attacker = undefined;
+    }
+
+    /**
+     * @param {Aliens} atk
+     * @param {Move} move
+     */
+    getHitChance(atk, move){
+        console.log(move)
+        var dex = 30 * Math.pow(atk.getDEX(), (1/6))
+        console.log("astrobeast dex: " + atk.getDEX() + " --> " + dex)
+        var acc = move.getAccuracy();
+        console.log("move accuracy: " + acc)
+        var hitChance = ((1.2 * dex + acc) / 2) + this.getRand(-10,5);
+        hitChance = Math.round(hitChance);
+
+        console.log("total hit chance:" + hitChance)
+        return hitChance;
+    }
 
     changeTurn(){
         CURR_TURN++; //increment CURR_TURN counter
@@ -498,23 +492,50 @@ console.log('update - Combat');
     endBattle(condition){
         var expGain = 0;
         var moneyGain = 0;
+        var damageDone = 0;
+
+        //sum up how much damage you did overall
+        for(var i = 0; i < enemies.length; i++){
+            damageDone += enemies[i].getMaxHP() - enemies[i].getCurrentHP();
+            console.log("damage done: " + damageDone);
+        }
 
         //these end the scene
         //end scene in victory
         if(condition == 0){
-            alert("YOU WON!!!!")
-            STATUS_STATE = "nothing";
+            //you earn 1/3 exp for each point of damage you did
+            expGain = Math.round(damageDone / 3);
+            //and 1/5 credits 
+            moneyGain = Math.round(damageDone / 5);
+            console.log("exp: " + expGain + " credits: " + moneyGain);
+            this.time.delayedCall(2000, this.#combatMenu.showEndMsg, ["VICTORY!\nYou earned " + expGain + " EXP and " + moneyGain + " credits.\nPress Spacebar to exit."], this.#combatMenu);
+            this.checkLevelUp(expGain);
+            STATUS_STATE = "conclusion";
         }
         //end scene in defeat
         else if(condition == 1){
-            alert("YOU LOSE :((((")
-            STATUS_STATE = "nothing";
+            //you earn 1/10 exp for each point of damage you did
+            expGain = Math.round(damageDone / 10);
+            //and 1/25 of credits
+            moneyGain = Math.round(damageDone / 25);
+            this.time.delayedCall(2000, this.#combatMenu.showEndMsg, ["DEFEAT\nYou earned " + expGain + " EXP and " + moneyGain + " credits.\nPress Spacebar to exit."], this.#combatMenu);
+            this.checkLevelUp(expGain);
+            STATUS_STATE = "conclusion";
         }
         //end scene in fleeing
         else if(condition == 2){
             alert("coward!")
             STATUS_STATE = "nothing";
             this.scene.start("MainMenu")
+        }
+    }
+
+    checkLevelUp(exp){
+        for(var i = 0; i < party.length; i++){
+            let ab = party[i];
+            console.log(ab.getName() + " earned " + Math.round(exp / party.length))
+            ab.gainExp(Math.round(exp / party.length)) //each astrobeast in the party gets an equal share of exp gained
+            console.log(ab.getStats())
         }
     }
 
@@ -532,6 +553,7 @@ console.log('update - Combat');
 
         //get available targets (living friendlies)
         var targets = party.filter(ab => ab._alienDetails.isAlive)
+        console.log(targets)
         target = party[this.getRand(0, targets.length - 1)] //get random living target
         
         //enemy attack
@@ -541,7 +563,7 @@ console.log('update - Combat');
         //update console to show enemy attack, its damage, and how much HP the target has
         //this.time.delayedCall(1000, this.#combatMenu.setRenderMessage, [attacker.getName() + " used " + move + " on " + target.getName() + " and dealt " + dmg +" damage!"], this.#combatMenu); 
         //this.time.delayedCall(1500, this.setState, ["enemy-waiting"], this); //we need to pause here before continuing
-        alert(attacker.getName() + " used " + move.name + " on " + target.getName() + " and dealt " + dmg +" damage!")
+        alert(attacker.getName() + " used " + move.getName() + " on " + target.getName() + " and dealt " + dmg +" damage!")
         if(target._alienDetails.currentHP <= 0){
             target._alienDetails.isAlive = false;
             alert(target.getName() + " has been defeated!");
@@ -562,9 +584,7 @@ console.log('update - Combat');
             //STATUS_STATE = "nothing"; //reset state
             //this.time.delayedCall(10000, this.changeTurn, [], this);
             this.changeTurn();
-        }
-    
-    
+        } 
     }
 
     enemyTurnCont(){
@@ -588,5 +608,7 @@ console.log('update - Combat');
     setState(state){
         STATUS_STATE = state;
     }
+
+    
 }
 
