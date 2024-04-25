@@ -1,40 +1,36 @@
 import * as WebFontLoader from '../webfontloader.js'
-export class FinalScene extends Phaser.Scene {
+export class CongratsScene extends Phaser.Scene {
     constructor() {
-        super('LoadFinal');
+        super('LoadCongrats');
     }
     preload() {
         // Load all possible inventory images even if user doesn't have them at the moment
-        this.load.image('bgTourney', '/static/assets/Backgrounds/bTourney.png');
-        this.load.image('jumbo', '/static/assets/Backgrounds/jumbotron.png')
-        this.load.image('astronaut', '/static/assets/Objects/astronaut.png')
-        this.load.image('boss3', '/static/assets/Objects/boss3.png')
+        this.load.image('bgCongrats', '/static/assets/Backgrounds/bSimpleComet.jpg');
+        this.load.image('trophy', '/static/assets/Objects/trophy.png')
     }
 
     create() {
         // Background Image
-        const bgTourney = this.add.image(0, 0, 'bgTourney').setOrigin(0, 0);
-        const jumbotron = this.add.image(-4,0,'jumbo').setOrigin(0,0); jumbotron.setScale(1.4);
-        const Naut = this.add.image(200,330, 'astronaut'); Naut.setScale(.7);
-        const Wiz = this.add.image(575, 330, 'boss3'); Wiz.setScale(.85);
+        const bgTourney = this.add.image(0, 0, 'bgCongrats').setOrigin(0, 0);
+        const trophy = this.add.image(575, 330, 'trophy'); trophy.setScale(.85);
 
         // Title
-        let Title = this.add.text(150, 90, "Grand Finals\nPlayer vs Dahram");
-        //Title.setBackgroundColor('black').setPadding(14);
-        Title.setFontSize(32).setAlign('center').setColor('white'); 
+        let Title = this.add.text(70, 90, "Congratulations!!!\nYou're the\nGalaxy Champion!").setPadding(14);
+        Title.setBackgroundColor('black').setFontSize(34).setAlign('center'); 
 
         // Enter
-        let EnterText = this.add.text(300, 430, 'FIGHT')
+        let EnterText = this.add.text(300, 400, 'CLAIM')
             .setInteractive({ useHandCursor: true }).setPadding(16)
-            .on('pointerdown', () => this.scene.start('LoadCongrats'));
+            .on('pointerdown', () => this.scene.start('LoadHub'));
             EnterText.setBackgroundColor('black').setFontSize(32);
-            // EnterText.on('pointerdown', () => Title.setVisible(false).setVisible(false));
             EnterText.on('pointerover', () => {
-                EnterText.setStyle({ fill: 'yellow'}); // when you hover, changes to white
+                EnterText.setStyle({ fill: '#13b2f3'}); // when you hover, changes to white
             });
             EnterText.on('pointerout', () => {
                 EnterText.setStyle({ fill: 'white'}); 
             });
+            // EnterText.on('pointerdown', () => Title.setVisible(false).setVisible(false));
+        
 
         // Back
         let GoBackText = this.add.text(100, 550, '< Back', { color: 'white' })
