@@ -140,7 +140,7 @@ takeDamage(damage, callback)
 const hpImg = this._scene.add.image(0, 0,"healthback").setOrigin(0)
 
 
-this._HPContainer = this._scene.add.container(20, 440, [
+this._HPContainer = this._scene.add.container(550, 440, [
 
     hpImg,
     enemyAlienName,

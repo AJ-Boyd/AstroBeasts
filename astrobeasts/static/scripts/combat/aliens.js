@@ -165,7 +165,7 @@ export class Aliens {
         
         
         
-            this._HPContainer = this._scene.add.container(550, 440, 
+            this._HPContainer = this._scene.add.container(20, 440, 
             [
                 hpImg,
                 playerAlienName,
