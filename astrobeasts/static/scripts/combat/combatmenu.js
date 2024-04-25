@@ -223,13 +223,10 @@ setFightOptions(moveObjs){
     console.log("setting move options")
     for(var i = 0; i < this.#fightOpt.list.length; i++){
         var elem = this.#fightOpt.getAt(i);
-        console.log(elem.type)
 
         if(elem.type == "Text"){    
             if(moveObjs[j] != undefined){
-                console.log(moveObjs[j].name)
-                elem.setText(moveObjs[j].name)
-                console.log(elem.text)
+                elem.setText(moveObjs[j].getName())
             }else{
                 elem.setText("")
             }
@@ -323,7 +320,7 @@ playerFightInputSelect(move, hit, remains)
         this.fightOptionsOff(),
         
        
-        this.#RenderMessage.setText(`${this.lAlien.getName()} Used ${move.name} \n and Dealt ${hit} Damage! ${remains} HP Left`); 
+        this.#RenderMessage.setText(`${this.lAlien.getName()} Used ${move.getName()} \n and Dealt ${hit} Damage! ${remains} HP Left`); 
         this.RenderMessageOn();
         this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this )
     
@@ -388,7 +385,7 @@ missRender(name)
 deathnotice(name)
 {
  
-        this.fightOptionsOff(),
+        this.fightOptionsOff();
         
        
         this.#RenderMessage.setText(`${name} is defeated`); 
@@ -396,6 +393,13 @@ deathnotice(name)
         this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
         this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
     }
+
+showEndMsg(msg){
+    this.fightOptionsOff();
+    this.battleOptionsOff();
+    this.#RenderMessage.setText(msg);
+    this.RenderMessageOn();
+}
 
 setAlien(alien){
     this.lAlien = alien;
