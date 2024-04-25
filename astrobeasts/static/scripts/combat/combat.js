@@ -40,7 +40,7 @@ preload()
     );
 
     //get the player object
-    // this.#player = this.registry.get("player");
+    this.#player = this.registry.get("player");
     // for(var i = 0; i < this.registry.get("inventory_astrobeasts").length; i++){
     //     if(this.registry.get("inventory_astrobeasts")[i].isEquipped){
     //         const alien = new Aliens()
@@ -512,6 +512,8 @@ console.log('update - Combat');
             this.time.delayedCall(2000, this.#combatMenu.showEndMsg, ["VICTORY!\nYou earned " + expGain + " EXP and " + moneyGain + " credits.\nPress Spacebar to exit."], this.#combatMenu);
             this.checkLevelUp(expGain);
             STATUS_STATE = "conclusion";
+            this.#player.updateExpGained(expGain); //update exp earned and credits earned
+            this.#player.updateCredits(moneyGain)
         }
         //end scene in defeat
         else if(condition == 1){
@@ -522,6 +524,8 @@ console.log('update - Combat');
             this.time.delayedCall(2000, this.#combatMenu.showEndMsg, ["DEFEAT\nYou earned " + expGain + " EXP and " + moneyGain + " credits.\nPress Spacebar to exit."], this.#combatMenu);
             this.checkLevelUp(expGain);
             STATUS_STATE = "conclusion";
+            this.#player.updateExpGained(expGain); //update exp earned and credits earned
+            this.#player.updateCredits(moneyGain)
         }
         //end scene in fleeing
         else if(condition == 2){
