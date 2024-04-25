@@ -8,6 +8,7 @@ export class SemiScene extends Phaser.Scene {
         this.load.image('bgTourney', '/static/assets/Backgrounds/bTourney.png');
         this.load.image('jumbo', '/static/assets/Backgrounds/jumbotron.png')
         this.load.image('astronaut', '/static/assets/Objects/astronaut.png')
+        this.load.image('boss2', '/static/assets/Objects/boss2.png')
     }
 
     create() {
@@ -15,14 +16,15 @@ export class SemiScene extends Phaser.Scene {
         const bgTourney = this.add.image(0, 0, 'bgTourney').setOrigin(0, 0);
         const jumbotron = this.add.image(-4,0,'jumbo').setOrigin(0,0); jumbotron.setScale(1.4);
         const Naut = this.add.image(200,330, 'astronaut'); Naut.setScale(.7);
+        const Wiz = this.add.image(575, 330, 'boss2'); Wiz.setScale(.85);
 
         // Title
-        let Title = this.add.text(140, 90, "Semi-Finals\nPlayer vs Bum");
+        let Title = this.add.text(150, 90, "Semi-Finals\nPlayer vs Teresa");
         //Title.setBackgroundColor('black').setPadding(14);
         Title.setFontSize(32).setAlign('center').setColor('white'); 
 
         // Enter
-        let EnterText = this.add.text(320, 430, 'FIGHT')
+        let EnterText = this.add.text(300, 430, 'FIGHT')
             .setInteractive({ useHandCursor: true }).setPadding(16)
             .on('pointerdown', () => this.scene.start('LoadFinal'));
             EnterText.setBackgroundColor('black').setFontSize(32);
