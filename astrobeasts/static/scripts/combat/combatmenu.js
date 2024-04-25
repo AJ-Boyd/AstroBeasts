@@ -39,17 +39,27 @@ export class CombatMenu {
     #scene;
     #battleOpt;
     #fightOpt;
+    #itemOpt;
+    #targetOpt;
+
+
     #BattleText;
     #FightText;
-    #fightSlash;
-    #fightMessage;
-    #targetOpt;
+    #itemText;
     #targetText;
 
-    #RenderMessage  
+    #fightSlash;
+    #fightMessage;
+    
+    
+
+    #RenderMessage
+
+    
+    
     //_astromoves
 
-    constructor(scene, alien)    
+    constructor(scene, alien, items)    
         {
         this.#scene = scene;
 
@@ -57,17 +67,21 @@ export class CombatMenu {
            
         lMoves = []
 
+        this.lItems = items;
+
         this.#createDialog();
         this.#createBattleOptions();
+
         this.createFightOptions();
-        this.#createTargetOptions();
+        this.createTargetOptions();
+        this.createItemOptions();
+
         this.#promptItem();
+
        // this.#Slashfight();
+       
 
     }
-
-
-
 
  //Create the Dialog Box.
  #createDialog()
@@ -86,6 +100,15 @@ export class CombatMenu {
          .setStrokeStyle(6,0x00b2e3,1) //sets border on text box (6 pixels, color)
  
  }
+ 
+ initialize(attacker)
+ {
+    attacker.getName()
+    this.#RenderMessage.setText(`${attacker.getName()}'s Turn!`).setFontSize('25px').setDisplayOrigin(0, -10); 
+    this.RenderMessageOn();
+    this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+    this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
+}
  
  //Create Run/Fight/Scan options. 
  #createBattleOptions()
@@ -112,7 +135,7 @@ export class CombatMenu {
  createFightOptions()
  {
     lMoves = this.lAlien.getMoves()
-    console.log(this.lAlien.getName())
+  
 
   this.#FightText = this.#scene.add.text(55,540, `Select a Move for ${this.lAlien.getName()}`, MessageTextStyle)
 
@@ -133,7 +156,7 @@ export class CombatMenu {
  }
 
 //UI for selecting targets
-#createTargetOptions(targets = []){
+createTargetOptions(targets = []){
     this.#targetText = this.#scene.add.text(55,540, "Select a target!", MessageTextStyle);
     this.#targetOpt = this.#scene.add.container(400, 500,
     [
@@ -152,24 +175,76 @@ export class CombatMenu {
     this.targetOptionsOff();
 }
 setTargetOptions(targets){
-    console.log(targets)
+   
+
     var j = 0;
     for(var i = 0; i < this.#targetOpt.list.length; i++){
         var elem = this.#targetOpt.getAt(i);
-        console.log(elem.type)
-        if(elem.type == "Text"){   
-            if(targets[j] != undefined){
-                console.log(targets[j])
-                elem.setText(targets[j].getName())
-                console.log(elem.text)
-            }else{
-                elem.setText("")
-            }
+       
+        if(elem.type == "Text"){    
+           
+            elem.setText(targets[j].getName())
+         
             j++;
+            if(j == targets.length)
+                return;
             
         }
     }
 }
+
+createItemOptions()
+{
+    this.#itemText = this.#scene.add.text(55,540, "Select an Item", MessageTextStyle);
+   
+    this.#itemOpt = this.#scene.add.container(400, 500,
+    [
+        this.#scene.add.text(170,15, " -- ", MenuOptionsTextStyle),
+        this.#scene.add.text(55,43, " -- ",  MenuOptionsTextStyle),
+        this.#scene.add.text(220,43, "--", MenuOptionsTextStyle),
+        this.#scene.add.text(170,70, "--", MenuOptionsTextStyle),
+        
+        this.#scene.add.image(40,52, 'leftkey').setScale(0.5),
+        this.#scene.add.image(320,52, 'rightkey').setScale(0.5),
+        this.#scene.add.image(150,20,'upkey').setScale(0.5),
+        this.#scene.add.image(150,80,'downkey').setScale(0.5),
+   
+    ]);
+    // for(var i = 0; i < 4; i++){
+    //     const text = this.#scene.add.text(
+    //         optCoords[i][0], optCoords[i][1], " ", MenuOptionsTextStyle
+    //     )
+    //     this.#itemOpt.add(text)
+    // }
+    this.itemOptionsOff();
+}
+
+setItemOptions()
+{
+    const items = this.#scene.registry.get('inventory_items')
+
+    const equippedItems = items.filter(items => items.isEquipped);
+    const equippedItemsCount = equippedItems.length
+    var j = 0;
+    for(var j = 0; j < 4; j++)
+    {
+        var elem = this.#itemOpt.getAt(j);
+        var dis = " -- ";
+
+        if( j < equippedItemsCount)
+        {
+            dis = equippedItems[j].name
+        }
+
+        if(elem.type == "Text"){    
+             elem.setText(dis)        
+        }
+        
+    }
+    return
+}
+   
+
 targetOptionsOff(){
     this.#targetOpt.setAlpha(0);
     this.#targetText.setAlpha(0);
@@ -179,15 +254,22 @@ targetOptionsOn(){
     this.#targetText.setAlpha(1);
 }
 
-//Show Item Used Text
- #promptItem()
- {    
 
-    this.#RenderMessage = this.#scene.add.text(300, 540, "blank", MessageTextStyle);
-    this.RenderMessageOff();
-
+itemOptionsOff(){
+    this.#itemOpt.setAlpha(0);
+    this.#itemText.setAlpha(0);
+}
+itemOptionsOn(){
+   this.#itemOpt.setAlpha(1);
+   this.#itemText.setAlpha(1);
 }
 
+//Show Text
+ #promptItem()
+ {    
+    this.#RenderMessage = this.#scene.add.text(300, 510, "blank", MessageTextStyle); 
+    this.RenderMessageOff();
+}
 battleOptionsOn()
 {
      //Add MenuOptions - Player Options container
@@ -293,18 +375,8 @@ playerInput(entry)
     if (entry == 'ITEM')
     {
         console.log("ITEM")
-        
-        this.battleOptionsOff();
-        this.#RenderMessage.setText(`You Used An Item`)
-        this.RenderMessageOn();
-        
-        this.#scene.time.delayedCall(2500, this.battleOptionsOn, null, this )
-        this.#scene.time.delayedCall(2500, this.RenderMessageOff, null, this)
-
-        this.item = this.#scene.add.sprite(615, 200, 'blueitem').setScale(3);
-        this.item.anims.play('blueitem', true)
-        
-        return;
+        this.battleOptionsOff();       
+        return
             
     }
 
@@ -323,28 +395,7 @@ playerFightInputSelect(move, hit, remains)
         this.#RenderMessage.setText(`${this.lAlien.getName()} Used ${move.getName()} \n and Dealt ${hit} Damage! ${remains} HP Left`); 
         this.RenderMessageOn();
         this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this )
-    
-     
-
-
-    //     var attack = "WHOMP"
-    //     this.#RenderMessage.setText(`Your Enemy Uses ${attack}`); 
-    //     this.RenderMessageOn();      
-    //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
-
-    //     //Step 5: Reduce Player Life
-
-    //     this.#RenderMessage.setText(`You have lost HP`); 
-    //     this.RenderMessageOn();      
-    //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
-        
-    //     //Step6: Check Player is still alive
-
-    // // Step 7Return
-    this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
-    // return;
-    
-
+        this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
 }
 
 enemyAttacks(attackerName, attackerMove, friendlyName, damage, friendlyHP)
@@ -378,9 +429,7 @@ missRender(name)
         this.RenderMessageOn();
         this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
         this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
-    }
-    
-
+}
     
 deathnotice(name)
 {
@@ -405,50 +454,46 @@ setAlien(alien){
     this.lAlien = alien;
 }
 
+showScan(enemy)
+{
+    enemy.NameandHPon(); //This is not working for some reason
+    var stats = [];
+    stats = enemy.getStats();
+    this.targetOptionsOff()
+    this.#RenderMessage.setText(`${enemy.getName()} is being scanned!`); 
+    this.RenderMessageOn();
+    this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+    //[ATK, DEF, SPD, LUK]
+    this.#RenderMessage.setText(`${enemy.getName()}'s Stats: 
+                 ATK: ${stats[0]}       DEF: ${stats[1]}       
+                 SPD: ${stats[2]}       LVL: ${enemy.getLevel()}
+                 LUK: ${stats[3]}       HP:  ${enemy.getCurrentHP()}
+                 
+     `) .setFontSize('25px')
+        .setScale(0.8)
+        .setDisplayOrigin(0,0);
 
-// #Slashfight()
-// {
-//     var hit = this.getRand(0,100);
-//     console.log("hit:", hit)
-//     if(hit <= 95){
-//         console.log("attack lands!")
-//         //attack target
-//         // attack(attacker, target, move){
-//         //     var d = this.calcDamage(attacker, move); //raw damage a move can do
-//         //     var m = this.calcMitigation(target); //the percentage of damage that the target can mitigate
-//         //     d *= 1-m;
-//         //     return d;
-//         // }
+    this.RenderMessageOn();
+    this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+    this.#scene.time.delayedCall(1500, enemy.NameandHPoff(), null, this)
+    this.#scene.time.delayedCall(1600, this.battleOptionsOn, null, this )
+
+}
+
+attackerError(text)
+{
+ 
+        this.fightOptionsOff(),
         
-//         //this will have a fully fleshed out formula but for now this should always return 95
-//         var d = this.attack(attacker, target, move);
-        
-//         //check critical
-//         //this is also purely random; this will depend on player LUK later
-//         var crit = this.getRand(0,100);
-//         if(crit <= 5){
-//             d *= 2; //if there's a critical hit, double the damage
-//         }
-// }
-
-// slashOff()
-// {
-//     this.#fightSlash.setAlpha(0);
-// }
-// slashOn()
-// {
-//     this.#fightSlash.setAlpha(1);
-// }
+       
+        this.#RenderMessage.setText(text); 
+        this.RenderMessageOn();
+        this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+        this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
+}
 
 
 
 
 
-// //returns a random number between min and max, both inclusinve
-
-
-
-  
-
-// }
 }

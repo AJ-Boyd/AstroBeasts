@@ -12,15 +12,22 @@ var enemies = [];
 var STATUS_STATE = 'default'
 var CURR_TURN = 0;
 var CURR_PARTY = 'player';
+var flag = 0;
 const FLEE_CHANCE = 40;
 
 //var combat1, combat2;
+
+
+
 export class CombatScene extends Phaser.Scene {
     #combatMenu;
     #EnemyAlien;
     #PlayerAlien1;
     #PlayerAlien2;
     #player;
+    #items;
+
+
 
     constructor() {
         super({
@@ -41,15 +48,20 @@ preload()
 
     //get the player object
     this.#player = this.registry.get("player");
-    // for(var i = 0; i < this.registry.get("inventory_astrobeasts").length; i++){
-    //     if(this.registry.get("inventory_astrobeasts")[i].isEquipped){
-    //         const alien = new Aliens()
-    //     }
-    // }
+    this.#items = this.registry.get('inventory_items');
+    
 }
 
 
+//this.registry.get('inventory_items', playerData['inventory_items']);
+//this.registry.set('inventory_astrobeasts', playerData['inventory_astrobeasts']);
+//this.registry.set('inventory_moves', playerData['inventory_moves']);
+//this.registry.set('playerName', playerData.playerName)
+
+
+
 create() {  
+  
     console.log('create - Combat');
  //accept keyboard input
     cursors = this.input.keyboard.createCursorKeys();
@@ -131,70 +143,174 @@ this.#PlayerAlien1 = new Aliens({
     //this.player.anims.play("idle_Strikoh", true)
 
 
-//Enemy Name formatting. TO DO to make this change based on  and Move into HP container, below
-    const enemyAlien = this.add.text(40,0, this.#EnemyAlien.getName(), 
-            {
-            color: '#31b1e0',
-            fontSize: '28px',
-            fontStyle: 'bold italic',
-            }
-    );
+// //Enemy Name formatting. TO DO to make this change based on  and Move into HP container, below
+//     const enemyAlien = this.add.text(40,0, this.#EnemyAlien.getName(), 
+//             {
+//             color: '#31b1e0',
+//             fontSize: '28px',
+//             fontStyle: 'bold italic',
+//             }
+//     );
 
- //Player Name formatting. TO DO to make this change based on alien. Move into HP container, below
-    const playerAlien = this.add.text(40,0,this.#PlayerAlien1.getName(),
-        {
-            color: '#045eda',
-            fontSize: '28px',
-            fontStyle: 'bold italic',
-        }
-    );
+//  //Player Name formatting. TO DO to make this change based on alien. Move into HP container, below
+//     const playerAlien = this.add.text(40,0,this.#PlayerAlien1.getName(),
+//         {
+//             color: '#045eda',
+//             fontSize: '28px',
+//             fontStyle: 'bold italic',
+//         }
+//     );
 
-//Create container for Player health bar
+// //Create container for Player health bar
 
-const playerHP = this.#PlayerAlien1._HPBar;
-const enemyHP = this.#EnemyAlien._HPBar;
+// const playerHP = this.#PlayerAlien1._HPBar;
+// const enemyHP = this.#EnemyAlien._HPBar;
 
-    this.add.container(550, 400, [
-      this.add
-        .image(0, 0,"healthback")
-        .setOrigin(0),
-        playerAlien,
-        playerHP.container,
+//     this.add.container(550, 400, [
+//       this.add
+//         .image(0, 0,"healthback")
+//         .setOrigin(0),
+//         playerAlien,
+//         playerHP.container,
               
 
-   this.add.text (175, 5,'25/25', {
-        color:'red',
-        fontSize: '18px',
-        fontStyle: 'Bold',
-    })
+//    this.add.text (175, 5,'25/25', {
+//         color:'red',
+//         fontSize: '18px',
+//         fontStyle: 'Bold',
+//     })
 
-]);
+// ]);
 
-//Create container for Enemy health bar
-    this.add.container(1,400, [
-        this.add
-        .image(0, 0,"healthback")
-        .setOrigin(0),
-        enemyAlien,
-        enemyHP.container,
+// //Create container for Enemy health bar
+//     this.add.container(1,400, [
+//         this.add
+//         .image(0, 0,"healthback")
+//         .setOrigin(0),
+//         enemyAlien,
+//         enemyHP.container,
        
-    ]);
+//     ]);
       
 
 //Create box on the bottom
-this.#combatMenu = new CombatMenu(this, this.#PlayerAlien1);// this.#PlayerAlien);
-this.#combatMenu.battleOptionsOn();
+this.#combatMenu = new CombatMenu(this, this.#PlayerAlien1, this.#items);// this.#PlayerAlien);
+
+//
+//this.#combatMenu.battleOptionsOn();
 
 party = [this.#PlayerAlien1, this.#PlayerAlien2];
 enemies = [this.#EnemyAlien]
+
+attacker = party[0];
+this.#combatMenu.initialize(attacker)
+//this.#combatMenu.battleOptionsOn()
 }
 
 
 update() {
 console.log('update - Combat');
-   if(STATUS_STATE == 'fight'){
+  
+if(STATUS_STATE == 'use_item'){
+
+   
+    const items = this.registry.get('inventory_items');
+    const equippedItems = items.filter(items => items.isEquipped);
+    const equippedItemsCount = items.filter(items => items.isEquipped);
+    
+    if(equippedItemsCount ==0)
+    {
+        this.#combatMenu.attackerError('You have no items');
+        STATUS_STATE = 'default'
+        return
+
+    }
+    this.#combatMenu.setItemOptions(items)
+
+    this.#combatMenu.itemOptionsOn();
+
+    console.log(items)
+    //get input for choosing item
+
+    if(Phaser.Input.Keyboard.JustDown(cursors.up)){
+        
+        console.log(equippedItems[0])
+        this.itemHandler(equippedItems[0]);
+        
+    }else if(Phaser.Input.Keyboard.JustDown(cursors.left)){
+        if(equippedItemsCount >= 2)
+           
+            console.log(equippedItems[1])
+            //console.log(selected.key)
+            this.itemHandler(equippedItems[1]);
+            
+    }else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
+        if(equippedItemsCount >= 3)
+        console.log(equippedItems[2])
+            //console.log(selected.key)
+            this.itemHandler(equippedItems[2]);
+            
+    }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
+        if(equippedItemsCount >= 4)
+        console.log(equippedItems[3])
+        //console.log(selected.key)
+        this.itemHandler(equippedItems[3]);
+            
+    }
+
+    // //check if selected target is alive
+    // if(target != undefined && target.getAlive() == false){
+    //     console.log("cannot choose this target cuz they're dead")
+    //     target = undefined;
+    // }
+
+
+
+}
+else if(STATUS_STATE =='scanning'){
+
+    var livE = enemies.filter(e => e.getAlive())
+    this.#combatMenu.setTargetOptions(livE)
+    this.#combatMenu.targetOptionsOn();
+
+    //get input for choosing target
+    if(Phaser.Input.Keyboard.JustDown(cursors.up)){
+        target = enemies[0]; //For now
+        this.scanStuff();
+        
+    }else if(Phaser.Input.Keyboard.JustDown(cursors.left)){
+        if(enemies.length >= 2)
+            target = enemies[1]; //For now
+            this.scanStuff();
+            
+    }else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
+        if(enemies.length >= 3)
+            target = enemies[2]; //For now
+            this.scanStuff();
+            
+    }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
+        if(enemies.length >= 4)
+            target = enemies[3]; //For now
+            this.scanStuff();
+            
+    }
+
+    //check if selected target is alive
+    if(target != undefined && target.getAlive() == false){
+        console.log("cannot choose this target cuz they're dead")
+        target = undefined;
+    }
+
+
+
+} 
+else if(STATUS_STATE == 'fight'){
+ 
     attacker = party[CURR_TURN];
     console.log("attacker's moves: ", attacker.getMoves())
+    console.log("current turn:", CURR_TURN)
+    attacker.NameandHPon();
+    attacker.takeDamage(0) //renders correct HPBat
 
     //updates UI for moves
     this.#combatMenu.setFightText("Select a Move for " + attacker.getName());
@@ -236,15 +352,27 @@ console.log('update - Combat');
         //get input for choosing target
         if(Phaser.Input.Keyboard.JustDown(cursors.up)){
             target = enemies[0]; //For now
+            target.NameandHPon();
+                target.takeDamage(0) //renders correct HPBat
+                this.battlestuff();
         }else if(Phaser.Input.Keyboard.JustDown(cursors.left)){
             if(enemies.length >= 2)
                 target = enemies[1]; //For now
+                target.NameandHPon();
+                target.takeDamage(0) //renders correct HPBat
+                this.battlestuff();
         }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
             if(enemies.length >= 3)
                 target = enemies[2]; //For now
+                target.NameandHPon();
+                target.takeDamage(0) //renders correct HPBat
+                this.battlestuff();
         }else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
             if(enemies.length >= 4)
                 target = enemies[3]; //For now
+                target.NameandHPon();
+                target.takeDamage(0) //renders correct HPBat
+                this.battlestuff();
         }
 
         //check if selected target is alive
@@ -253,9 +381,9 @@ console.log('update - Combat');
             target = undefined;
         }
 
-        if(target != undefined){
-            this.battlestuff();
-        }        
+        // if(target != undefined){
+        //     this.battlestuff();
+        // }        
     }else if(STATUS_STATE == "enemy"){
         //this.time.delayedCall(2000, this.enemyTurn, null, this);
         this.enemyTurn();
@@ -280,15 +408,14 @@ console.log('update - Combat');
             return;
            
         }
-        else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ //SCAN. TO DO
+        else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ 
             console.log('down Is Down')
             this.#combatMenu.playerInput('SCAN')
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.right)){ //ITEM
-            console.log('Right Is Down')
-                    
-            this.#combatMenu.playerInput('ITEM')                            
-            
+            console.log('Right Is Down')     
+            this.#combatMenu.playerInput('ITEM')   
+            STATUS_STATE = 'use_item';                   
             return;
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //FLEE. TO DO...
@@ -372,7 +499,7 @@ console.log('update - Combat');
 
     
     //returns a random number between min and max, both inclusinve
-    getRand(min, max) {
+getRand(min, max) {
         return Math.floor(Math.random() * (max - min + 1) ) + min;
     }
 
@@ -380,7 +507,7 @@ console.log('update - Combat');
     changes the turn after an action has been done
     */
 
-    battlestuff(){
+battlestuff(){
         this.#combatMenu.targetOptionsOff();
         this.#combatMenu.setAlien(attacker);
         var hit = this.getRand(0,100);
@@ -466,29 +593,48 @@ console.log('update - Combat');
         return hitChance;
     }
 
-    changeTurn(){
-        CURR_TURN++; //increment CURR_TURN counter
-        var livP = party.filter(ab => ab.getAlive())
-        var livE = enemies.filter(e => e.getAlive())
+changeTurn(){
+    CURR_TURN++; //increment CURR_TURN counter
+    var livP = party.filter(ab => ab.getAlive())
+    var livE = enemies.filter(e => e.getAlive())
+    
 
-        if(CURR_PARTY == "player"){
-            if(CURR_TURN >= livP.length){
-                //if finished with player party, change to enemy's turn
-                CURR_PARTY = "enemy";
-                CURR_TURN = 0;
-                alert("enemy's turn!")
-                STATUS_STATE = "enemy"; //change state to enemy turn 
-            }
-        }else if(CURR_PARTY == "enemy"){
-            //if finished with enemy party, change to player's turn
-            if(CURR_TURN >= livE.length){
-                CURR_PARTY = "player";
-                CURR_TURN = 0;
-                alert("player's turn!")
-                STATUS_STATE = "";
-            }
+    if(CURR_PARTY == "player"){
+        if(CURR_TURN >= livP.length){
+            //if finished with player party, change to enemy's turn
+            console.log("enemy's turn")
+            alert("enemy's turn!")
+            attacker.NameandHPoff();
+            console.log("Turn off", attacker.getName())
+            target.NameandHPoff();
+            CURR_PARTY = "enemy";
+            CURR_TURN = 0;
+            STATUS_STATE = "enemy"; //change state to enemy turn 
+             
+        }
+        else {
+            attacker.NameandHPoff();
+            console.log("Turn off", attacker.getName())
+            attacker = party[CURR_TURN]
+            console.log("It is turn",CURR_TURN)
+            this.#combatMenu.initialize(attacker)
+            attacker.NameandHPon();
+        }
+    }else if(CURR_PARTY == "enemy"){
+        //if finished with enemy party, change to player's turn
+        if(CURR_TURN >= livE.length){
+            CURR_PARTY = "player";
+           // console.log("Turn off", attacker.getName())
+           // attacker.NameandHPoff();
+           // console.log("Turn off", target.getName())
+           // target.NameandHPoff();
+            CURR_TURN = 0;
+            alert("player's turn!");
+            STATUS_STATE = "nothing";
         }
     }
+    //alert("changing turn")
+}
 
     endBattle(condition){
         var expGain = 0;
@@ -586,8 +732,7 @@ console.log('update - Combat');
            // this.time.delayedCall(100000, this.endBattle, [condition], this); //if battle is over, end the battle
             this.endBattle(condition)
         }else{    
-            //STATUS_STATE = "nothing"; //reset state
-            //this.time.delayedCall(10000, this.changeTurn, [], this);
+      
             this.changeTurn();
         } 
     }
@@ -633,5 +778,118 @@ console.log('update - Combat');
             STATUS_STATE = "nothing";
         }
     }
+
+    
+scanStuff()
+{
+    this.#combatMenu.targetOptionsOff();
+
+    STATUS_STATE = 'nothing';
+
+    this.#combatMenu.showScan(target)
+
+ return
+
+}
+
+itemHandler(selected)
+{
+    if(!attacker)
+    {
+        this.#combatMenu.itemOptionsOff();
+        this.#combatMenu.attackerError('You must have started battle to use an item');
+        STATUS_STATE = 'default';
+        return
+        
+    }
+    
+    console.log("USED ITEM", selected.key)
+    this.#combatMenu.itemOptionsOff();
+
+    if(selected.HP)
+    {
+        var num = selected.HP
+        console.log("Gained HP:", selected.HP)
+        attacker.takeDamage(-num);
+
+        console.log("Prev Val:", selected.quantity)
+        var flag = 1;
+        console.log("New Val:", selected.quantity)
+          
+    }
+    else if(selected.ATK)  //[ATK, DEF, SPD, LUK]
+    {
+        var num = selected.ATK
+        console.log("Gained ATK:", selected.ATK)
+        attacker.setATK(num);
+
+        console.log("Prev Val:", selected.quantity)
+        var flag = 1;
+        console.log("New Val:", selected.quantity)
+
+    }
+    else if(selected.DEF)
+    {
+        var num = selected.DEF
+        console.log("Gained DEF:", selected.ATK)
+        attacker.setDEF(num);
+
+        console.log("Prev Val:", selected.quantity)
+        var flag = 1;
+        console.log("New Val:", selected.quantity)
+
+    }
+    else if (selected.SPD)
+    {
+        {
+            var num = selected.SPD
+            console.log("Gained ATK:", selected.ATK)
+            attacker.setSPD(num);
+    
+            console.log("Prev Val:", selected.quantity)
+           var flag = 1;
+            console.log("New Val:", selected.quantity)
+    
+        }
+    }
+    else if (selected.LUK)
+    {
+        {
+            var num = selected.LUK
+            console.log("Gained ATK:", selected.ATK)
+            attacker.setLUK(num);
+    
+            console.log("Prev Val:", selected.quantity)
+           var flag = 1;
+            console.log("New Val:", selected.quantity)
+    
+        }
+    }
+    else{
+
+
+    }
+
+
+
+    if(flag ==1)
+    {
+        var flag = 1;
+        selected.isEquipped = false;
+        flag = 0;
+    }
+    
+    this.#combatMenu.battleOptionsOn();
+ //Nothing here for now
+     STATUS_STATE = 'default';
+    return
+
+
+}
+
+
+
+
+
 }
 
