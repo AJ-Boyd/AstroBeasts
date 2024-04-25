@@ -63,13 +63,16 @@ preload()
 
 
 create() {  
+  
     console.log('create - Combat');
  //accept keyboard input
     cursors = this.input.keyboard.createCursorKeys();
 
+
 //background
   const background = new RenderBackground(this);
   background.showFire();
+
 
 //create enemy alien and idle
  this.#EnemyAlien1 = new Enemies({
