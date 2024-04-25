@@ -5,31 +5,31 @@ export class Move {
       /** @protected @type {string} */
       this._description = desc;
       /** @protected @type {number} */
-      this._baseAttack = base;
+      this._baseAttack = base; //this is a number bewteen 30 and 100
       /**@protacted @type {number} */
-      this._accuracy = acc;
+      this._accuracy = acc; //this is a number between 50 and 100
       /** @protected @type {number} */
       this._level = lvl;
     }
 
 // getters (don't know if already implemented elsewhere)...
-  get name() {
+  getName() {
     return this._name;
   }
 
-  get description() {
+  getDescription() {
     return this._description;
   }
 
-  get baseAttack() {
+  getBaseAttack() {
     return this._baseAttack;
   }
 
-  get level() {
+  getLevel() {
     return this._level;
   }
 
-  get accuracy() {
+  getAccuracy() {
     return this._accuracy;
   }
 
