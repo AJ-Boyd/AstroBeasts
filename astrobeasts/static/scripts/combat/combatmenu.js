@@ -1,4 +1,4 @@
-import { Enemies } from "./enemies.js";
+import { Enemy } from "./enemies.js";
 
 //BATTLE Options - TO DO: Make this reference the list of moves available
 
@@ -12,10 +12,10 @@ const PLAYER_OPTIONS = Object.freeze({
 
 //UI positioning constants
 const optCoords =  [
-    [170, 15], //up
-    [55, 43], //left
-    [220, 43], //right
-    [170, 70], //down
+    [170, 15],
+    [55, 43],
+    [220, 43],
+    [170, 70],
 ]
     
 //text styles
@@ -24,13 +24,6 @@ const MessageTextStyle = {
     fontSize: '22px',
     fontStyle: 'bold',
 }
-
-const StatsTable = {
-    color:'green',
-    fontSize: '20px',
-    fontStyle: 'bold',
-}
-
 
 const MenuOptionsTextStyle = {
     color: 'red',
@@ -67,7 +60,7 @@ export class CombatMenu {
         this.#createDialog();
         this.#createBattleOptions();
         this.createFightOptions();
-        this.createTargetOptions();
+        this.#createTargetOptions();
         this.#promptItem();
        // this.#Slashfight();
 
@@ -129,10 +122,10 @@ export class CombatMenu {
   this.#scene.add.image(150,20,'upkey').setScale(0.5),
   this.#scene.add.image(150,80,'downkey').setScale(0.5),
 
-   this.#scene.add.text(170,15, lMoves[0], MenuOptionsTextStyle),
-   this.#scene.add.text(55,43, lMoves[1],  MenuOptionsTextStyle),
-   this.#scene.add.text(220,43, lMoves[2], MenuOptionsTextStyle),
-   this.#scene.add.text(170,70, lMoves[3], MenuOptionsTextStyle),
+   this.#scene.add.text(170,15, "lMoves[0].name", MenuOptionsTextStyle),
+   this.#scene.add.text(55,43, "lMoves[1].name", MenuOptionsTextStyle),
+   this.#scene.add.text(220,43, "lMoves[2].name", MenuOptionsTextStyle),
+   this.#scene.add.text(170,70, "lMoves[3].name", MenuOptionsTextStyle),
   ]);
 
    this.fightOptionsOff();
@@ -140,41 +133,40 @@ export class CombatMenu {
  }
 
 //UI for selecting targets
-
-createTargetOptions()
-{
+#createTargetOptions(targets = []){
     this.#targetText = this.#scene.add.text(55,540, "Select a target!", MessageTextStyle);
-    
     this.#targetOpt = this.#scene.add.container(400, 500,
     [
         this.#scene.add.image(40,52, 'leftkey').setScale(0.5),
-        this.#scene.add.image(320,52, 'rightkey').setScale(0.5),
+        this.#scene.add.image(285,52, 'rightkey').setScale(0.5),
         this.#scene.add.image(150,20,'upkey').setScale(0.5),
         this.#scene.add.image(150,80,'downkey').setScale(0.5),
     ]);
 
-     for(var i = 0; i < 4; i++){
-         const text = this.#scene.add.text(
-             optCoords[i][0], optCoords[i][1], "", MenuOptionsTextStyle
-         )
-         this.#targetOpt.add(text)
-     }
+    for(var i = 0; i < 4; i++){
+        const text = this.#scene.add.text(
+            optCoords[i][0], optCoords[i][1], "", MenuOptionsTextStyle
+        )
+        this.#targetOpt.add(text)
+    }
     this.targetOptionsOff();
 }
-
 setTargetOptions(targets){
     console.log(targets)
-
     var j = 0;
     for(var i = 0; i < this.#targetOpt.list.length; i++){
         var elem = this.#targetOpt.getAt(i);
-        if(elem.type == "Text"){    
-            console.log(targets[j])
-            elem.setText(targets[j].getName())
-            console.log(elem.text)
+        console.log(elem.type)
+        if(elem.type == "Text"){   
+            if(targets[j] != undefined){
+                console.log(targets[j])
+                elem.setText(targets[j].getName())
+                console.log(elem.text)
+            }else{
+                elem.setText("")
+            }
             j++;
-            if(j == targets.length)
-                return;
+            
         }
     }
 }
@@ -191,7 +183,7 @@ targetOptionsOn(){
  #promptItem()
  {    
 
-    this.#RenderMessage = this.#scene.add.text(300, 510, "blank", MessageTextStyle); 
+    this.#RenderMessage = this.#scene.add.text(300, 540, "blank", MessageTextStyle);
     this.RenderMessageOff();
 
 }
@@ -226,18 +218,19 @@ setFightText(text){
     this.#FightText.setText(text)
 }
 //updates the arrow-key options
-setFightOptions(newTexts){
+setFightOptions(moveObjs){
     var j = 0;
+    console.log("setting move options")
     for(var i = 0; i < this.#fightOpt.list.length; i++){
         var elem = this.#fightOpt.getAt(i);
-        console.log(elem.type)
+
         if(elem.type == "Text"){    
-            console.log(newTexts[j])
-            elem.setText(newTexts[j])
-            console.log(elem.text)
+            if(moveObjs[j] != undefined){
+                elem.setText(moveObjs[j].getName())
+            }else{
+                elem.setText("")
+            }
             j++;
-            if(j == newTexts.length)
-                return;
         }
     }
 }
@@ -267,6 +260,12 @@ RenderMessageOn()
 {
     this.#RenderMessage.setAlpha(1);
 }
+//prints message to console
+setRenderMessage(text){
+    this.RenderMessageOn();
+    this.#RenderMessage.setText(text);
+    this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this)
+}
 
 getRand(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
@@ -283,31 +282,27 @@ playerInput(entry)
     {
         console.log("YOU are FLEEING")
         //Return to main battle menu?
-        this.#scene.scene.start("LoadHub")
+        this.#scene.scene.start("MainMenu")
         return;
         
     }
     if (entry == 'SCAN')
     {
         console.log("YOU are SCANNING")
-        this.battleOptionsOff();
-        return
-
-
     }
     if (entry == 'ITEM')
     {
         console.log("ITEM")
         
         this.battleOptionsOff();
-        this.#RenderMessage.setText(`You Used An Item`).setFontSize('28px')
+        this.#RenderMessage.setText(`You Used An Item`)
         this.RenderMessageOn();
         
         this.#scene.time.delayedCall(2500, this.battleOptionsOn, null, this )
         this.#scene.time.delayedCall(2500, this.RenderMessageOff, null, this)
 
         this.item = this.#scene.add.sprite(615, 200, 'blueitem').setScale(3);
-        this.item.anims.play('blueitem',true)
+        this.item.anims.play('blueitem', true)
         
         return;
             
@@ -317,7 +312,7 @@ playerInput(entry)
 }
 
 
-playerFightInputSelect(name, hit, remains)  
+playerFightInputSelect(move, hit, remains)  
 {
 
   //Step 1: Player Attacks
@@ -325,14 +320,29 @@ playerFightInputSelect(name, hit, remains)
         this.fightOptionsOff(),
         
        
-        this.#RenderMessage.setText(`${this.lAlien.getName()} Used ${name}\nand Dealt ${hit} Damage!\n${remains} HP Left`).setFontSize('25px').setDisplayOrigin(0, -10); 
+        this.#RenderMessage.setText(`${this.lAlien.getName()} Used ${move.getName()} \n and Dealt ${hit} Damage! ${remains} HP Left`); 
         this.RenderMessageOn();
         this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this )
     
      
 
+
+    //     var attack = "WHOMP"
+    //     this.#RenderMessage.setText(`Your Enemy Uses ${attack}`); 
+    //     this.RenderMessageOn();      
+    //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
+
+    //     //Step 5: Reduce Player Life
+
+    //     this.#RenderMessage.setText(`You have lost HP`); 
+    //     this.RenderMessageOn();      
+    //     this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
+        
+    //     //Step6: Check Player is still alive
+
+    // // Step 7Return
     this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
-   
+    // return;
     
 
 }
@@ -375,7 +385,7 @@ missRender(name)
 deathnotice(name)
 {
  
-        this.fightOptionsOff(),
+        this.fightOptionsOff();
         
        
         this.#RenderMessage.setText(`${name} is defeated`); 
@@ -384,36 +394,61 @@ deathnotice(name)
         this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
     }
 
+showEndMsg(msg){
+    this.fightOptionsOff();
+    this.battleOptionsOff();
+    this.#RenderMessage.setText(msg);
+    this.RenderMessageOn();
+}
+
 setAlien(alien){
     this.lAlien = alien;
 }
 
 
+// #Slashfight()
+// {
+//     var hit = this.getRand(0,100);
+//     console.log("hit:", hit)
+//     if(hit <= 95){
+//         console.log("attack lands!")
+//         //attack target
+//         // attack(attacker, target, move){
+//         //     var d = this.calcDamage(attacker, move); //raw damage a move can do
+//         //     var m = this.calcMitigation(target); //the percentage of damage that the target can mitigate
+//         //     d *= 1-m;
+//         //     return d;
+//         // }
+        
+//         //this will have a fully fleshed out formula but for now this should always return 95
+//         var d = this.attack(attacker, target, move);
+        
+//         //check critical
+//         //this is also purely random; this will depend on player LUK later
+//         var crit = this.getRand(0,100);
+//         if(crit <= 5){
+//             d *= 2; //if there's a critical hit, double the damage
+//         }
+// }
 
-showScan(enemy)
-{
-    enemy.NameandHPon(); //This is not working for some reason
-    var stats = [];
-    stats = enemy.getStats();
-    this.targetOptionsOff()
-    this.#RenderMessage.setText(`${enemy.getName()} is being scanned!`); 
-    this.RenderMessageOn();
-    this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
-    //[ATK, DEF, SPD, LUK]
-    this.#RenderMessage.setText(`${enemy.getName()}'s Stats: 
-                 ATK: ${stats[0]}       DEF: ${stats[1]}       
-                 SPD: ${stats[2]}       LVL: ${enemy.getLevel()}
-                 LUK: ${stats[3]}       HP:  ${enemy.getCurrentHP()}
-                 
-     `) .setFontSize('25px')
-        .setScale(0.8)
-        .setDisplayOrigin(0,0);
+// slashOff()
+// {
+//     this.#fightSlash.setAlpha(0);
+// }
+// slashOn()
+// {
+//     this.#fightSlash.setAlpha(1);
+// }
 
-    this.RenderMessageOn();
-    this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
-    this.#scene.time.delayedCall(1500, enemy.NameandHPoff(), null, this)
-    this.#scene.time.delayedCall(1600, this.battleOptionsOn, null, this )
 
-}
 
+
+
+// //returns a random number between min and max, both inclusinve
+
+
+
+  
+
+// }
 }
