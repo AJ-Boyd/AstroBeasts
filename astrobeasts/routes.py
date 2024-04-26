@@ -13,8 +13,9 @@ import os
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .models import Base, Player, InventoryItem, AstroBeast,Move
+from .models import Base, Player, InventoryItem, AstroBeast,Move, LeaderBoard
 import json
+import requests
 
 router = Blueprint("router", __name__)
 src = 'mydatabase.db'
@@ -130,3 +131,26 @@ def check_name():
     else:
         # If no player with the given name exists
         return jsonify({'exists': False, 'message': f'Player {player_name} does not exist.'})
+    
+
+@router.route('/submit_scores', methods=['POST'])
+def submit_scores():
+    session = Session()
+    top_players = session.query(Player).order_by(Player.score.desc()).limit(5).all()
+    data = {
+        "data": [
+            {
+                "Group": "Russian-Blue",
+                "Title": "Top 5 Scores",
+            }
+        ]
+    }
+    for idx, entry in enumerate(top_players, 1):
+        data["data"][0][f"{idx}st Name"] = entry.player.name
+        data["data"][0][f"{idx}st Score"] = entry.score
+
+    response = requests.post("https://eope3o6d7z7e2cc.m.pipedream.net", json=data)
+    if response.status_code == 200:
+        return jsonify({"status": "success", "message": "Scores submitted successfully!"})
+    else:
+        return jsonify({"status": "error", "message": "Failed to submit scores."}), 400

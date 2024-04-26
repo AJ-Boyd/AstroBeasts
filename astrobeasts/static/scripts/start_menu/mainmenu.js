@@ -91,13 +91,13 @@ export class MainMenuScene extends Phaser.Scene {
        
        
        // caps for equipped items/astrobeasts/moves
-       this.registry.set('maxItemsEquipped', 5);
+       this.registry.set('maxItemsEquipped', 4);
        this.registry.set('maxAstrobeastsEquipped', 4);
-       this.registry.set('maxMovesEquipped', 5);
+       this.registry.set('maxMovesEquipped', 4);
        this.registry.set('currentItemsEquipped', 0);
        this.registry.set('currentAstrobeastsEquipped', 0);
        this.registry.set('currentMovesEquipped', 0);
-       this.registry.set('walletTotal', 1000);  
+       this.registry.set('walletTotal', 500); 
 
        this.registry.set('isTournament', false);
     }

@@ -106,7 +106,7 @@ export class InventoryScene extends Phaser.Scene {
         const equippedMovesCount = moves.filter(move => move.isEquipped).length;
 
         // update the text to show the current counts
-        this.equippedText.setText(`Equipped: ${equippedItemsCount}/5 Items, ${equippedAstrobeastsCount}/4 AstroBeasts, ${equippedMovesCount}/5 Moves`);
+        this.equippedText.setText(`Equipped: ${equippedItemsCount}/4 Items, ${equippedAstrobeastsCount}/4 AstroBeasts, ${equippedMovesCount}/4 Moves`);
         // below is using the webfontloader module to use external fonts for the scene
         WebFontLoader.default.load({
             google: {
@@ -167,12 +167,14 @@ export class InventoryScene extends Phaser.Scene {
         const list = this.registry.get(type);
         const item = list.find(item => item.key === key);
 
-        // do not exceed limit
-        if (!item.isEquipped && ((type === 'items' && list.filter(item => item.isEquipped).length > 5) ||
-            (type === 'astrobeasts' && list.filter(item => item.isEquipped).length > 4) || 
-            (type === 'moves' && list.filter(item => item.isEquipped).length > 5))) {
-            alert('Max capacity reached.');
-            return;
+        // check if trying to equip and limit reached for each type
+        if (!item.isEquipped) { // only check the limit if trying to equip a new item
+            const equippedCount = list.filter(item => item.isEquipped).length;
+            const maxAllowed = 4;
+            if (equippedCount >= maxAllowed) {
+                alert(`Max capacity of ${maxAllowed} reached for ${type.replace('inventory_', '')}.`);
+                return; // don't let them do anything else after that
+            }
         }
 
         item.isEquipped = !item.isEquipped;// change equipped status
