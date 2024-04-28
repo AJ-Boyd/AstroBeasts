@@ -87,7 +87,7 @@ const kick = new Move("Kick", "", 45, 90, 5); //low damage, high acc
     EnemyDetails: {
         name: "Tarkeel",
         assets: 'Tarkeel',
-        assetAnim: "idle_Radrock",
+        assetAnim: "idle_Tarkeel",
         maxHP: 10000,
         currentHP: 10000,
         stats: [250, 250, 250], //ATK, DEF, SPD
