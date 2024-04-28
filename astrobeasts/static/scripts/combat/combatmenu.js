@@ -106,14 +106,14 @@ export class CombatMenu {
     attacker.getName()
     this.#RenderMessage.setText(`${attacker.getName()}'s Turn!`).setFontSize('25px').setDisplayOrigin(0, -10); 
     this.RenderMessageOn();
-    this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
-    this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
+    this.#scene.time.delayedCall(1000, this.RenderMessageOff, null, this )
+    this.#scene.time.delayedCall(3000, this.battleOptionsOn, null, this )
 }
  
  //Create Run/Fight/Scan options. 
  #createBattleOptions()
  {
-    this.#BattleText = this.#scene.add.text(400, 540, "Your Orders, Sir?", MessageTextStyle);
+    this.#BattleText = this.#scene.add.text(400, 540, `What will ${this.lAlien.getName()} do?`, MessageTextStyle);
      
     this.#battleOpt = this.#scene.add.container(0,500, [
      this.#scene.add.image(40,52, 'leftkey').setScale(0.5),
@@ -389,13 +389,13 @@ playerFightInputSelect(move, hit, remains)
 
   //Step 1: Player Attacks
    
-        this.fightOptionsOff(),
-        
-       
+        this.fightOptionsOff();
+        this.battleOptionsOff();
         this.#RenderMessage.setText(`${this.lAlien.getName()} Used ${move.getName()} \n and Dealt ${hit} Damage! ${remains} HP Left`); 
         this.RenderMessageOn();
-        this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this )
-        this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
+        this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this)
+        this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this)
+        // this.#scene.time.delayedCall(2000, this.fightOptionsOn, null, this)
 }
 
 enemyAttacks(attackerName, attackerMove, friendlyName, damage, friendlyHP)
@@ -452,6 +452,8 @@ showEndMsg(msg){
 
 setAlien(alien){
     this.lAlien = alien;
+    this.#BattleText.setText(`What will ${this.lAlien.getName()} do?`);
+    
 }
 
 showScan(enemy)
