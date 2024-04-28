@@ -129,7 +129,8 @@ export class HubScene extends Phaser.Scene {
             inventory_astrobeasts: this.registry.get('inventory_astrobeasts'),
             playerName: this.registry.get('playerName'),
             inventory_moves: this.registry.get('inventory_moves'),
-            walletTotal: this.registry.get('walletTotal')
+            walletTotal: this.registry.get('walletTotal'),
+            Score: this.registry.get('Score')
             // will need to include other registry variables
         };
         try {

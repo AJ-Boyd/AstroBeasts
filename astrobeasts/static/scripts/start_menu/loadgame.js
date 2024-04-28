@@ -105,8 +105,9 @@ export class LoadGameScene extends Phaser.Scene {
                 this.registry.set('inventory_items', playerData['inventory_items']);
                 this.registry.set('inventory_astrobeasts', playerData['inventory_astrobeasts']);
                 this.registry.set('inventory_moves', playerData['inventory_moves']);
-                this.registry.set('playerName', playerData.playerName)
-                this.registry.set('walletTotal', playerData.walletTotal)
+                this.registry.set('playerName', playerData.playerName);
+                this.registry.set('walletTotal', playerData.walletTotal);
+                this.registry.set('Score', 0);
 
 
                 this.scene.start('LoadHub');

@@ -23,6 +23,7 @@ class Player(Base):
     PlayerID = Column(Integer, primary_key=True)
     name = Column(String)
     walletTotal = Column(Integer, default=0)
+    Score = Column(Integer, default=0)
     inventoryItems = relationship('InventoryItem', secondary=player_inventory_association, back_populates='players')
     astroBeasts = relationship('AstroBeast', secondary=player_astrobeast_association, back_populates='players')
     leaderboard = relationship('LeaderBoard', back_populates='player')

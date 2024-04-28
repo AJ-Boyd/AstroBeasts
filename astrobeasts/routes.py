@@ -52,6 +52,7 @@ def save_game():
     else:
         player.name = playerName  # Update player's name
         player.walletTotal = gameState.get('walletTotal', 0) 
+        player.Score =  gameState.get('Score', 0) 
 
     session.query(InventoryItem).filter_by(Player_Name=playerName).delete()
     session.query(AstroBeast).delete()
@@ -114,6 +115,7 @@ def check_name():
         player_data = {
             'walletTotal':player.walletTotal,
             'playerName': player.name,
+            'Score': player.Score,
             'inventory_items': [{'name': item.name, 'description': item.description, 'quantity': item.quantity, 'isEquipped': item.isEquipped, 'key': item.key} for item in inventory_items],
             'inventory_astrobeasts': [{'name': beast.name,
             'description': beast.description,

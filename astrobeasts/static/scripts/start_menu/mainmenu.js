@@ -11,6 +11,8 @@ export class MainMenuScene extends Phaser.Scene {
     }
     init() {
         this.registry.set('playerName', '');
+        this.registry.set('Score', 0);
+
 
         //this.registry.set('player', new Player([], 0,  0, 100, 1, 0));
         // Inventory contains dictionary items, where each dictionary represents an item. it has the following variables:
