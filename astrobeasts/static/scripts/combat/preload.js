@@ -1,9 +1,7 @@
 export class Preload extends Phaser.Scene {
     constructor() {
         super({
-            key:Preload.name,
-            active: true,
-           
+            key:Preload.name,         
 
         });
         console.log(Preload.name);
@@ -20,22 +18,52 @@ preload() {
     
     console.log('preload - preload');       
 
-//Background Image
+//Background Images
     this.load.image(
-        'background',
+        'fire',
         '../static/assets/Backgrounds/bCombat3.jpg'
     );
 
+
+    this.load.image(
+        'forest',
+        '../static/assets/Backgrounds/bCombat1.jpg'
+    );
+//Music
+
+//this.load.audio(
+//    'fight1',
+//    '../static/assets/Music/OrbitalColossus.mp3'
+//);
+
+
+//random assets
+
+
+
+
+this.load.image('leftkey', '../static/assets/Objects/leftkey.png');
+this.load.image('rightkey', '../static/assets/Objects/rightkey.png');
+this.load.image('upkey', '../static/assets/Objects/upkey.png');
+this.load.image('downkey', '../static/assets/Objects/downkey.png');
+
 //Spritesheets
+
+//Items
+this.load.spritesheet('item', 
+    '../static/assets/Objects/Item.png',
+    { frameWidth: 24.5, frameHeight: 24.5 }
+    );
+
 
    this.load.spritesheet('Aesun',
         '../static/assets/Sprites/Aesun.png',
-        { frameWidth: 64, frameHeight: 80 }
+        { frameWidth: 64, frameHeight: 90 }
     ); 
 
     this.load.spritesheet('AllWrath',
         '../static/assets/Sprites/aAll Wrath.png',
-        { frameWidth: 64, frameHeight: 80 }
+        { frameWidth: 43, frameHeight:73 }
     ); 
 
     this.load.spritesheet('Arquam',
@@ -51,6 +79,21 @@ preload() {
     this.load.spritesheet('Icell',
     '../static/assets/Sprites/Icell.png',
     { frameWidth: 64, frameHeight: 80 }
+    );
+
+    this.load.spritesheet('Malgrun',
+    '../static/assets/Sprites/Malgrun.png',
+    { frameWidth: 65, frameHeight: 85 }
+    );
+
+    this.load.spritesheet('Ragnex',
+    '../static/assets/Sprites/Ragnex.png',
+    { frameWidth: 68, frameHeight: 88 }
+    );
+
+    this.load.spritesheet('Ruinn',
+    '../static/assets/Sprites/Ruinn.png',
+    { frameWidth: 72, frameHeight: 113 }
     );
     
     this.load.spritesheet('Scourge',
@@ -81,7 +124,7 @@ preload() {
    
     this.load.spritesheet('Tyboar',
     '../static/assets/Sprites/Tyboar.png',
-    { frameWidth: 64, frameHeight: 80 }
+    { frameWidth: 64, frameHeight: 67 }
     ); 
 
     this.load.spritesheet('Zallo',
@@ -115,9 +158,39 @@ console.log('create - preload');
 
 // Animations
 
-//TO DO: All Wrath, Aesun, Malgrun,Ragnex,Ruinn,Tyboar
+//Items:
+
+this.anims.create({
+    key: 'blueitem',
+    frames: this.anims.generateFrameNumbers('item',  { frames: [ 3,4,5,6,12,13,14,15] } ),
+    frameRate: 7,
+    repeat: 1,
+    hideOnComplete: true
+});
 
 
+
+
+
+//All Wrath
+
+
+this.anims.create({
+    key: 'idle_AllWrath',
+    frames: this.anims.generateFrameNumbers('AllWrath',  { frames: [ 0,1 ] } ),
+    frameRate: 3,
+    repeat: -1,
+
+});
+
+
+this.anims.create({
+    key: 'idle_Aesun',
+    frames: this.anims.generateFrameNumbers('Aesun',  { frames: [ 0,6] } ),
+    frameRate: 3,
+    repeat: -1,
+
+});
 
 //Arquam
 
@@ -195,6 +268,37 @@ this.anims.create({
     frameRate: 5,
     repeat: -1
 });
+
+//Malgrun
+
+this.anims.create({
+    key: 'idle_Malgrun',
+    frames: this.anims.generateFrameNumbers('Malgrun',  { frames: [ 0,1] } ),
+    frameRate: 3,
+    repeat: -1
+});
+
+//Ragnex
+
+this.anims.create({
+    key: 'idle_Ragnex',
+    frames: this.anims.generateFrameNumbers('Ragnex',  { frames: [ 0,1] } ),
+    frameRate: 3,
+    repeat: -1
+});
+
+
+//Ruinn
+
+this.anims.create({
+    key: 'idle_Ruinn',
+    frames: this.anims.generateFrameNumbers('Ruinn',  { frames: [ 0,1,3,2] } ),
+    frameRate: 3,
+    repeat: -1
+});
+
+
+
 //Scourge
 
 this.anims.create({
@@ -333,6 +437,15 @@ this.anims.create({
     frameRate: 5,
     repeat: -1
 });
+
+//Tyboar
+this.anims.create({
+    key: 'idle_Tyboar',
+    frames: this.anims.generateFrameNumbers('Tyboar',  { frames: [ 4,5,6,7 ] } ),
+    frameRate: 10,
+    repeat: -1
+});
+
 
 //Zallo
 
