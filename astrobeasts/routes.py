@@ -44,64 +44,84 @@ def save_game():
     # Connect to the copied save slot database
     session = Session()
 
-    # For single player, you can directly work with the first (or only) player record
     player = session.query(Player).filter_by(name=playerName).first()
-    if player:
-        # Update existing player
-        player.walletTotal = gameState.get('walletTotal', player.walletTotal)
-        player.Score = gameState.get('Score', player.Score)
-    else:
-        # Create new player
-        player = Player(name=playerName, walletTotal=gameState.get('walletTotal', 0), Score=gameState.get('Score', 0))
+    if not player:
+        player = Player(name=playerName)
         session.add(player)
+    else:
+        # If player exists, update their details but leave their unique inventory as is
+        player.walletTotal = gameState.get('walletTotal', 0)
+        player.Score = gameState.get('Score', 0)
 
-    # Ensure all associated data is updated as well
-    session.query(InventoryItem).filter_by(Player_Name=playerName).delete()
-    session.query(AstroBeast).filter_by(Player_Name=playerName).delete()
-    session.query(Move).filter_by(Player_Name=playerName).delete()
-    
+        # Clear existing items but only for this player to avoid duplicates
+        player.inventoryItems = []
+        player.astroBeasts = []
+        #player.inventoryMoves = []
 
-    for item in gameState.get('inventory_items', []):
-        inventory_item = InventoryItem(
-            Player_Name=playerName,  # Link by name
-            name=item['name'],
-            key = item['key'], 
-            description=item['description'],
-            quantity=item.get('quantity', 0),
-            isEquipped=item.get('isEquipped', False)
-        )
-        session.add(inventory_item)
+    player.walletTotal = gameState.get('walletTotal', 0)
+    player.Score = gameState.get('Score', 0)
 
-    for beast in gameState.get('inventory_astrobeasts', []):
-        astro_beast = AstroBeast(
+    # Clear existing items and replace them
+    session.query(InventoryItem).filter(InventoryItem.Player_Name == playerName).delete()
+    session.query(AstroBeast).filter(AstroBeast.Player_Name == playerName).delete()
+    session.query(Move).filter(Move.Player_Name == playerName).delete()
+
+    # Inventory Items
+    existing_items = {item.key: item for item in player.inventoryItems}
+    for item_data in gameState.get('inventory_items', []):
+        item = existing_items.get(item_data['key'])
+        if item:
+            item.quantity = item_data.get('quantity', 0)
+            item.isEquipped = item_data.get('isEquipped', False)
+        else:
+            new_item = InventoryItem(
+                Player_Name=playerName,
+                name=item_data['name'],
+                key=item_data['key'],
+                description=item_data['description'],
+                quantity=item_data.get('quantity', 0),
+                isEquipped=item_data.get('isEquipped', False)
+            )
+            session.add(new_item)
+    # AstroBeasts
+    existing_beasts = {beast.key: beast for beast in player.astroBeasts}
+    for beast_data in gameState.get('inventory_astrobeasts', []):
+        beast = existing_beasts.get(beast_data['key'])
+        if beast:
+            beast.isEquipped = beast_data.get('isEquipped', False)
+            beast.currentHP = beast_data.get('currentHP', 100)
+        else:
+            new_beast = AstroBeast(
+                Player_Name=playerName,
+                name=beast_data['name'],
+                key=beast_data['key'],
+                description=beast_data['description'],
+                isEquipped=beast_data.get('isEquipped', False),
+                maxHP=beast_data.get("maxHP", 100),
+                currentHP=beast_data.get("currentHP", 100),
+                stats=",".join(map(str, beast_data.get("stats", [100, 100, 100, 100]))),
+                level=beast_data.get("level", 1),
+                isAlive=beast_data.get("isAlive", True),
+                quantity=beast_data.get('quantity', 0)
+            )
+            session.add(new_beast)
+
+    # Moves
+    for move_data in gameState.get('inventory_moves', []):
+        move = Move(
             Player_Name=playerName,
-            name=beast['name'],
-            key = beast['key'],  
-            description=beast['description'],
-            isEquipped=beast.get('isEquipped', False),  # Safely get isEquipped
-            maxHP = beast.get("maxHP", 100),
-            currentHP = beast.get("currentHP", beast.get("maxHP", 100)),
-            stats=",".join(map(str, beast.get("stats", [100, 100, 100, 100]))),  # Storing stats as a comma-separated string or JSON could be an option
-            level = beast.get("level",1),
-            isAlive = beast.get("isAlive",True)
+            name=move_data['name'],
+            key=move_data['key'],
+            description=move_data['description'],
+            quantity=move_data.get('quantity', 1),
+            cost=move_data.get('cost', 0),
+            isEquipped=move_data.get('isEquipped', False)
         )
-        session.add(astro_beast)
-    # print(gameState.get('inventory_moves'))
-    for move in gameState.get('inventory_moves', []):
-        move_entry = Move(
-            Player_Name=playerName,
-            name=move['name'],
-            key=move['key'],  
-            description=move['description'],
-            quantity=move.get('quantity', 1),  # Default to 1 if not provided
-            cost=move.get('cost', 0),  # Default to 0 if not provided
-            isEquipped=move.get('isEquipped', False)  # Safely get isEquipped
-        )
-        session.add(move_entry)
-    
+        session.add(move)  # Add moves to session directly
+
     session.commit()
-    session.close()  # Make sure to close the session
-    return jsonify({'status': 'success'})
+    session.close()
+    return jsonify({'status': 'success', 'message': 'Game saved successfully!'})
 
 @router.route('/check_name', methods=['POST'])
 def check_name():
@@ -128,7 +148,8 @@ def check_name():
             'currentHP': beast.currentHP,
             'stats': list(map(int, beast.stats.split(','))),
             'level': beast.level,
-            'isAlive': beast.isAlive} for beast in myBeasts],
+            'isAlive': beast.isAlive,
+            'quantity': beast.quantity} for beast in myBeasts],
             'inventory_moves': [{'name': move.name, 'description': move.description, 'quantity': move.quantity, 'cost': move.cost, 'isEquipped': move.isEquipped, 'key': move.key} for move in myMoves]
         }
         # If a player with the given name exists
@@ -142,21 +163,23 @@ def check_name():
 def submit_scores():
     session = Session()
     top_players = session.query(Player).order_by(Player.Score.desc()).limit(5).all()
+    # Initialize a dictionary with placeholders for names and scores
     data = {
-        "data": [
-            {
-                "Group": "Russian-Blue",
-                "Title": "Top 5 Scores",
-            }
-        ]
+        "Group": "Russian-Blue",
+        "Title": "Top 5 Scores"
     }
-    for idx, player in enumerate(top_players, 1):
-        ordinal = {1: '1st', 2: '2nd', 3: '3rd', 4: '4th', 5: '5th'}.get(idx, f"{idx}th")
-        data["data"][0][f"{ordinal} Name"] = player.name
-        data["data"][0][f"{ordinal} Score"] = player.Score
+    
+    for player in top_players:
+        data[player.name] = player.Score
 
-    response = requests.post("https://eope3o6d7z7e2cc.m.pipedream.net", json=data)
+
+    # Ensure the data is wrapped in a list as required
+    response_data = {
+        "data": [data]
+    }
+
+    response = requests.post("https://eope3o6d7z7e2cc.m.pipedream.net", json=response_data)
     if response.status_code == 200:
-        return jsonify({"status": "success", "message": "Scores submitted successfully!"})
+        return jsonify({"here is what is being sent": response_data})
     else:
         return jsonify({"status": "error", "message": "Failed to submit scores."}), 400

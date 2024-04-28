@@ -62,39 +62,12 @@ export class HighScoreScene extends Phaser.Scene {
     }
 
     submitScores() {
-        const topPlayers = [
-            { name: "Alice", score: 120 },
-            { name: "Bob", score: 110 },
-            { name: "Charlie", score: 100 },
-            { name: "David", score: 90 },
-            { name: "Eve", score: 80 }
-        ];
-    
-        const data = {
-            "data": [
-                {
-                    "Group": "Russian-Blue",
-                    "Title": "Top 5 Scores"
-                }
-            ]
-        };
-    
-        topPlayers.forEach((player, index) => {
-            const suffix = ['st', 'nd', 'rd', 'th', 'th'][index]; 
-            data.data[0][`${index+1}${suffix} Name`] = player.name;
-            data.data[0][`${index+1}${suffix} Score`] = player.score;
-        });
-    
-        fetch('https://eope3o6d7z7e2cc.m.pipedream.net', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+        fetch('/submit_scores', {  // This should be the Flask route that handles submitting scores to the public API
+            method: 'POST'
         })
         .then(response => {
             if (response.ok) {
-                return response.text(); 
+                return response.text();
             }
             throw new Error('Network response was not ok.');
         })
