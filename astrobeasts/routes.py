@@ -138,7 +138,7 @@ def check_name():
 @router.route('/submit_scores', methods=['POST'])
 def submit_scores():
     session = Session()
-    top_players = session.query(Player).order_by(Player.score.desc()).limit(5).all()
+    top_players = session.query(Player).order_by(Player.Score.desc()).limit(5).all()
     data = {
         "data": [
             {
@@ -147,9 +147,10 @@ def submit_scores():
             }
         ]
     }
-    for idx, entry in enumerate(top_players, 1):
-        data["data"][0][f"{idx}st Name"] = entry.player.name
-        data["data"][0][f"{idx}st Score"] = entry.score
+    for idx, player in enumerate(top_players, 1):
+        ordinal = {1: '1st', 2: '2nd', 3: '3rd', 4: '4th', 5: '5th'}.get(idx, f"{idx}th")
+        data["data"][0][f"{ordinal} Name"] = player.name
+        data["data"][0][f"{ordinal} Score"] = player.Score
 
     response = requests.post("https://eope3o6d7z7e2cc.m.pipedream.net", json=data)
     if response.status_code == 200:

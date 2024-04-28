@@ -7,37 +7,100 @@ export class HighScoreScene extends Phaser.Scene {
     create() {                      
         // Retrive data from database on high scores with API call
         this.add.image(0, 0, 'my').setOrigin(0, 0);
-        let Title = this.add.text(100, 90, 'High Scores', {font: '34px', color: 'yellow', stroke: 'yellow', strokeThickness: 1 }); 
-        let line1 = this.add.text(100, 150, '1st\t name1: \t\tWins: \n     Exp: \t\tCredits: ', {font: '22px', color: 'yellow'});           
-        let line2 = this.add.text(100, 220, '2nd\t name2: \t\tWins: \n     Exp: \t\tCredits: ', {font: '22px', color: 'yellow'}); 
-        let line3 = this.add.text(100, 290, '3rd\t name3: \t\tWins: \n     Exp: \t\tCredits: ', {font: '22px', color: 'yellow'}); 
-        let line4 = this.add.text(100, 350, '4th\t name4: \t\tWins: \n     Exp: \t\tCredits: ', {font: '22px', color: 'yellow'}); 
-        let line5 = this.add.text(100, 410, '5th\t name5: \t\tWins: \n     Exp: \t\tCredits: ', {font: '22px', color: 'yellow'}); 
-        // add load game functionality here
-        let GoBackText = this.add.text(100, 500, '< Back', { color: 'white' })
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('Options'));
-            GoBackText.on('pointerover', () => {
-                GoBackText.setStyle({ fill: '#0f0'}); // when you hover, changes to white
-            });
-            GoBackText.on('pointerout', () => {
-                GoBackText.setStyle({ fill: 'white'}); 
-            });
-        
-        // below is using the webfontloader module to use external fonts for the scene
-        WebFontLoader.default.load({
+        let title = this.add.text(this.cameras.main.centerX, 50, 'High Scores', {
+            font: '34px Press Start 2P',
+            color: 'yellow'
+        }).setOrigin(0.5);
+
+        this.scoreTexts = [];
+        for (let i = 0; i < 5; i++) {
+            this.scoreTexts.push(this.add.text(100, 150 + 70 * i, '', {
+                font: '22px Press Start 2P',
+                color: 'white'
+            }));
+        }
+
+        this.loadScores();
+
+        let submitButton = this.add.text(this.cameras.main.centerX, 500, 'Submit Scores', {
+            font: '22px Press Start 2P',
+            color: 'yellow'
+        }).setInteractive({ useHandCursor: true })
+          .on('pointerdown', () => this.submitScores())
+          .setOrigin(0.5);
+
+        let backButton = this.add.text(100, 570, '< Back', {
+            font: '22px Press Start 2P',
+            color: 'white'
+        }).setInteractive({ useHandCursor: true })
+          .on('pointerdown', () => this.scene.start('Options'));
+
+          WebFontLoader.default.load({
             google: {
                 families: ['Press Start 2P']
             },
             active: () => {
-                Title.setFontFamily('"Press Start 2P"').setColor('yellow')
-                line1.setFontFamily('"Press Start 2P"').setColor('#ffffff')
-                line2.setFontFamily('"Press Start 2P"').setColor('#ffffff')
-                line3.setFontFamily('"Press Start 2P"').setColor('#ffffff')
-                line4.setFontFamily('"Press Start 2P"').setColor('#ffffff')
-                line5.setFontFamily('"Press Start 2P"').setColor('#ffffff')
-                GoBackText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                title.setFontFamily('"Press Start 2P"').setColor('yellow')
+                submitButton.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                backButton.setFontFamily('"Press Start 2P"').setColor('#ffffff')
             }
         }) 
     }
-}
+
+    loadScores() {
+        // dummy data
+        const scores = [
+            { name: "Alice", score: 120 },
+            { name: "Bob", score: 110 },
+            { name: "Charlie", score: 100 },
+            { name: "David", score: 90 },
+            { name: "Eve", score: 80 }
+        ];
+        scores.forEach((player, index) => {
+            this.scoreTexts[index].setText(`${index + 1}. ${player.name} - ${player.score}`);
+        });
+    }
+
+    submitScores() {
+        const topPlayers = [
+            { name: "Alice", score: 120 },
+            { name: "Bob", score: 110 },
+            { name: "Charlie", score: 100 },
+            { name: "David", score: 90 },
+            { name: "Eve", score: 80 }
+        ];
+    
+        const data = {
+            "data": [
+                {
+                    "Group": "Russian-Blue",
+                    "Title": "Top 5 Scores"
+                }
+            ]
+        };
+    
+        topPlayers.forEach((player, index) => {
+            const suffix = ['st', 'nd', 'rd', 'th', 'th'][index]; 
+            data.data[0][`${index+1}${suffix} Name`] = player.name;
+            data.data[0][`${index+1}${suffix} Score`] = player.score;
+        });
+    
+        fetch('https://eope3o6d7z7e2cc.m.pipedream.net', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text(); 
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(result => console.log('Success:', result))
+        .catch(error => console.error('Error:', error));
+    }
+
+       
+    }
