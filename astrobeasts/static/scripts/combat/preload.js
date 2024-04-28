@@ -101,7 +101,7 @@ this.load.spritesheet('item',
     { frameWidth: 64, frameHeight: 80 }
     );
 
-    this.load.spritesheet('Shamrock',
+    this.load.spritesheet('Radrok',
         '../static/assets/Sprites/Shamrock.png',
         { frameWidth: 64, frameHeight: 80 }
     );
@@ -195,7 +195,7 @@ this.anims.create({
 //Arquam
 
 this.anims.create({
-    key: 'idle_Aquam',
+    key: 'idle_Arquam',
     frames: this.anims.generateFrameNumbers('Arquam',  { frames: [ 9,12 ] } ),
     frameRate: 3,
     repeat: -1
@@ -331,8 +331,8 @@ this.anims.create({
 //Shamrock
 
 this.anims.create({
-    key: 'idle_Shamrock',
-    frames: this.anims.generateFrameNumbers('Shamrock',  { frames: [ 12, 18 ] } ),
+    key: 'idle_Radrok',
+    frames: this.anims.generateFrameNumbers('Radrok',  { frames: [ 12, 18 ] } ),
     frameRate: 3,
     repeat: -1
 });

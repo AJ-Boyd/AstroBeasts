@@ -101,16 +101,29 @@ const kick = new Move("Kick", "", 45, 90, 5); //low damage, high acc
 //create our alien and idle
 let directions = [[200,310] , [200,200], [100,310], [100,200]];
 let temp = this.registry.get('inventory_astrobeasts');
+let shop_beasts = this.registry.get('shop_astrobeasts');
+console.log(temp);
 let count = 0;
 for (let i = 0; i < temp.length; i++){
     if (temp[i]['isEquipped'] && count < directions.length){
-        console.log(temp[i]['assetAnim'])
+        let assetAnime = temp[i]['assetAnim'];
+
+        for (let j = 0; j < shop_beasts.length; j++) {
+            if (shop_beasts[j].name === temp[i].name) {
+                assetAnime = shop_beasts[j].assetAnim; 
+                break; 
+            }
+        }
+
+        console.log(assetAnime);
+
+
         this.#PlayerAlien1 = new Aliens({
             scene:this,
             AlienDetails: {
                 name: temp[i]['name'],
                 assets: temp[i]['assets'],
-                assetAnim: temp[i]['assetAnim'],
+                assetAnim: assetAnime,
                 maxHP: temp[i]['maxHP'],
                 currentHP: temp[i]['currentHP'],
                 maxExp: temp[i]['maxExp'],
