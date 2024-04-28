@@ -45,18 +45,21 @@ def save_game():
     session = Session()
 
     # For single player, you can directly work with the first (or only) player record
-    player = session.query(Player).first()
-    if not player:
-        player = Player(name=playerName)
-        session.add(player)
+    player = session.query(Player).filter_by(name=playerName).first()
+    if player:
+        # Update existing player
+        player.walletTotal = gameState.get('walletTotal', player.walletTotal)
+        player.Score = gameState.get('Score', player.Score)
     else:
-        player.name = playerName  # Update player's name
-        player.walletTotal = gameState.get('walletTotal', 0) 
-        player.Score =  gameState.get('Score', 0) 
+        # Create new player
+        player = Player(name=playerName, walletTotal=gameState.get('walletTotal', 0), Score=gameState.get('Score', 0))
+        session.add(player)
 
+    # Ensure all associated data is updated as well
     session.query(InventoryItem).filter_by(Player_Name=playerName).delete()
-    session.query(AstroBeast).delete()
-    session.query(Move).delete()
+    session.query(AstroBeast).filter_by(Player_Name=playerName).delete()
+    session.query(Move).filter_by(Player_Name=playerName).delete()
+    
 
     for item in gameState.get('inventory_items', []):
         inventory_item = InventoryItem(
