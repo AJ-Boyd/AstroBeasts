@@ -58,12 +58,12 @@ this.load.spritesheet('item',
 
    this.load.spritesheet('Aesun',
         '../static/assets/Sprites/Aesun.png',
-        { frameWidth: 64, frameHeight: 80 }
+        { frameWidth: 64, frameHeight: 90 }
     ); 
 
     this.load.spritesheet('AllWrath',
         '../static/assets/Sprites/aAll Wrath.png',
-        { frameWidth: 64, frameHeight: 80 }
+        { frameWidth: 43, frameHeight:73 }
     ); 
 
     this.load.spritesheet('Arquam',
@@ -79,6 +79,21 @@ this.load.spritesheet('item',
     this.load.spritesheet('Icell',
     '../static/assets/Sprites/Icell.png',
     { frameWidth: 64, frameHeight: 80 }
+    );
+
+    this.load.spritesheet('Malgrun',
+    '../static/assets/Sprites/Malgrun.png',
+    { frameWidth: 65, frameHeight: 85 }
+    );
+
+    this.load.spritesheet('Ragnex',
+    '../static/assets/Sprites/Ragnex.png',
+    { frameWidth: 68, frameHeight: 88 }
+    );
+
+    this.load.spritesheet('Ruinn',
+    '../static/assets/Sprites/Ruinn.png',
+    { frameWidth: 72, frameHeight: 113 }
     );
     
     this.load.spritesheet('Scourge',
@@ -109,7 +124,7 @@ this.load.spritesheet('item',
    
     this.load.spritesheet('Tyboar',
     '../static/assets/Sprites/Tyboar.png',
-    { frameWidth: 64, frameHeight: 80 }
+    { frameWidth: 64, frameHeight: 67 }
     ); 
 
     this.load.spritesheet('Zallo',
@@ -155,9 +170,27 @@ this.anims.create({
 
 
 
-//TO DO: All Wrath, Aesun, Malgrun,Ragnex,Ruinn,Tyboar
 
 
+//All Wrath
+
+
+this.anims.create({
+    key: 'idle_AllWrath',
+    frames: this.anims.generateFrameNumbers('AllWrath',  { frames: [ 0,1 ] } ),
+    frameRate: 3,
+    repeat: -1,
+
+});
+
+
+this.anims.create({
+    key: 'idle_Aesun',
+    frames: this.anims.generateFrameNumbers('Aesun',  { frames: [ 0,6] } ),
+    frameRate: 3,
+    repeat: -1,
+
+});
 
 //Arquam
 
@@ -235,6 +268,37 @@ this.anims.create({
     frameRate: 5,
     repeat: -1
 });
+
+//Malgrun
+
+this.anims.create({
+    key: 'idle_Malgrun',
+    frames: this.anims.generateFrameNumbers('Malgrun',  { frames: [ 0,1] } ),
+    frameRate: 3,
+    repeat: -1
+});
+
+//Ragnex
+
+this.anims.create({
+    key: 'idle_Ragnex',
+    frames: this.anims.generateFrameNumbers('Ragnex',  { frames: [ 0,1] } ),
+    frameRate: 3,
+    repeat: -1
+});
+
+
+//Ruinn
+
+this.anims.create({
+    key: 'idle_Ruinn',
+    frames: this.anims.generateFrameNumbers('Ruinn',  { frames: [ 0,1,3,2] } ),
+    frameRate: 3,
+    repeat: -1
+});
+
+
+
 //Scourge
 
 this.anims.create({
@@ -373,6 +437,15 @@ this.anims.create({
     frameRate: 5,
     repeat: -1
 });
+
+//Tyboar
+this.anims.create({
+    key: 'idle_Tyboar',
+    frames: this.anims.generateFrameNumbers('Tyboar',  { frames: [ 4,5,6,7 ] } ),
+    frameRate: 10,
+    repeat: -1
+});
+
 
 //Zallo
 
