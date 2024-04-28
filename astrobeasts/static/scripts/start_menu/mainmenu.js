@@ -72,11 +72,11 @@ export class MainMenuScene extends Phaser.Scene {
         ]); 
        
         this.registry.set('shop_astrobeasts', [
-        { key: 'skol', name: 'Skol', description: 'Fire AstroBeast', quantity: 1, cost: 350, isSelected: false },
-        { key: 'tarkeel', name: 'Tarkeel', description: 'Electric AstroBeast', quantity: 1, cost: 350, isSelected: false },
-        { key: 'arquam', name: 'Arquam', description: 'Water AstroBeast', quantity: 1, cost: 350, isSelected: false },
-        { key: 'radrok', name: 'Radrok', description: 'Rock AstroBeast', quantity: 1, cost: 350, isSelected: false },
-        { key: 'zallo', name: 'Zallo', description: 'Gravity AstroBeast', quantity: 1, cost: 350, isSelected: false }
+        { key: 'skol',assetAnim: "idle_Skol", name: 'Skol', description: 'Fire AstroBeast', quantity: 1, cost: 350, isSelected: false },
+        { key: 'tarkeel',assetAnim: "idle_Tarkeel", name: 'Tarkeel', description: 'Electric AstroBeast', quantity: 1, cost: 350, isSelected: false },
+        { key: 'arquam',assetAnim: "idle_Arquam", name: 'Arquam', description: 'Water AstroBeast', quantity: 1, cost: 350, isSelected: false },
+        { key: 'radrok',assetAnim: "idle_Radrok", name: 'Radrok', description: 'Rock AstroBeast', quantity: 1, cost: 350, isSelected: false },
+        { key: 'zallo',assetAnim: "idle_Zallo", name: 'Zallo', description: 'Gravity AstroBeast', quantity: 1, cost: 350, isSelected: false }
         ]);
 
         this.registry.set('shop_items', [

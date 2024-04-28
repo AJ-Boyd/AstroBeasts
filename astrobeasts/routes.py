@@ -13,8 +13,9 @@ import os
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .models import Base, Player, InventoryItem, AstroBeast,Move
+from .models import Base, Player, InventoryItem, AstroBeast,Move, LeaderBoard
 import json
+import requests
 
 router = Blueprint("router", __name__)
 src = 'mydatabase.db'
@@ -51,6 +52,7 @@ def save_game():
     else:
         player.name = playerName  # Update player's name
         player.walletTotal = gameState.get('walletTotal', 0) 
+        player.Score =  gameState.get('Score', 0) 
 
     session.query(InventoryItem).filter_by(Player_Name=playerName).delete()
     session.query(AstroBeast).delete()
@@ -78,7 +80,8 @@ def save_game():
             currentHP = beast.get("currentHP", beast.get("maxHP", 100)),
             stats=",".join(map(str, beast.get("stats", [100, 100, 100, 100]))),  # Storing stats as a comma-separated string or JSON could be an option
             level = beast.get("level",1),
-            isAlive = beast.get("isAlive",True)
+            isAlive = beast.get("isAlive",True),
+            assetAnim = "idle_"+ (beast['name'].strip() )
         )
         session.add(astro_beast)
     # print(gameState.get('inventory_moves'))
@@ -113,6 +116,7 @@ def check_name():
         player_data = {
             'walletTotal':player.walletTotal,
             'playerName': player.name,
+            'Score': player.Score,
             'inventory_items': [{'name': item.name, 'description': item.description, 'quantity': item.quantity, 'isEquipped': item.isEquipped, 'key': item.key} for item in inventory_items],
             'inventory_astrobeasts': [{'name': beast.name,
             'description': beast.description,
@@ -130,3 +134,27 @@ def check_name():
     else:
         # If no player with the given name exists
         return jsonify({'exists': False, 'message': f'Player {player_name} does not exist.'})
+    
+
+@router.route('/submit_scores', methods=['POST'])
+def submit_scores():
+    session = Session()
+    top_players = session.query(Player).order_by(Player.Score.desc()).limit(5).all()
+    data = {
+        "data": [
+            {
+                "Group": "Russian-Blue",
+                "Title": "Top 5 Scores",
+            }
+        ]
+    }
+    for idx, player in enumerate(top_players, 1):
+        ordinal = {1: '1st', 2: '2nd', 3: '3rd', 4: '4th', 5: '5th'}.get(idx, f"{idx}th")
+        data["data"][0][f"{ordinal} Name"] = player.name
+        data["data"][0][f"{ordinal} Score"] = player.Score
+
+    response = requests.post("https://eope3o6d7z7e2cc.m.pipedream.net", json=data)
+    if response.status_code == 200:
+        return jsonify({"status": "success", "message": "Scores submitted successfully!"})
+    else:
+        return jsonify({"status": "error", "message": "Failed to submit scores."}), 400

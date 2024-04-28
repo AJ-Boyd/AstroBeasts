@@ -83,6 +83,7 @@ class AstroBeast(Base): #need to adjust to include relationship with stats. stat
 
     # Adding stats directly to the AstroBeasts table
     maxHP = Column(Integer)
+    assetAnim = Column(String)
     currentHP = Column(Integer)
     stats = Column(String)  # Storing stats as a comma-separated string or JSON could be an option
     level = Column(Integer)

@@ -48,10 +48,8 @@ preload()
 
     //get the player object
     this.#player = this.registry.get("player");
-    console.log("player loaded in: ");
-    console.log(this.#player)
     this.#items = this.registry.get('inventory_items');
-    STATUS_STATE = "nothing"
+    
 }
 
 
@@ -82,6 +80,8 @@ const kick = new Move("Kick", "", 45, 90, 5); //low damage, high acc
 
 
 //create enemy alien and idle
+
+
  this.#EnemyAlien = new Enemy({
     scene:this,
     EnemyDetails: {
@@ -89,7 +89,7 @@ const kick = new Move("Kick", "", 45, 90, 5); //low damage, high acc
         assets: 'Tarkeel',
         assetAnim: "idle_Tarkeel",
         maxHP: 10000,
-        currentHP: 8000,
+        currentHP: 10000,
         stats: [250, 250, 250], //ATK, DEF, SPD
         moves: [punch, strike],
         level: 1,
@@ -99,44 +99,145 @@ const kick = new Move("Kick", "", 45, 90, 5); //low damage, high acc
  }, {x: 600, y: 310})
 
 //create our alien and idle
+let directions = [[200,310] , [200,200], [100,310], [100,200]];
+let temp = this.registry.get('inventory_astrobeasts');
+let shop_beasts = this.registry.get('shop_astrobeasts');
+console.log(temp);
+let count = 0;
+for (let i = 0; i < temp.length; i++){
+    if (temp[i]['isEquipped'] && count < directions.length){
+        let assetAnime = temp[i]['assetAnim'];
 
-this.#PlayerAlien1 = new Aliens({
-    scene:this,
-    AlienDetails: {
-        name: "Strikoh",
-        assets: 'Strikoh',
-        assetAnim: "idle_Strikoh",
-        maxHP: 2000,
-        currentHP: 2000,
-        maxExp: 1000,
-        currentExp: 0,
-        stats: [632, 408, 474, 468, 418], //ATK, DEF, SPD, DEX, LUK
-        moves: [punch, slash, bite],
-        level: 1,
-        isAlive: true,
+        for (let j = 0; j < shop_beasts.length; j++) {
+            if (shop_beasts[j].name === temp[i].name) {
+                assetAnime = shop_beasts[j].assetAnim; 
+                break; 
+            }
+        }
+
+        console.log(assetAnime);
+
+
+        this.#PlayerAlien1 = new Aliens({
+            scene:this,
+            AlienDetails: {
+                name: temp[i]['name'],
+                assets: temp[i]['assets'],
+                assetAnim: assetAnime,
+                maxHP: temp[i]['maxHP'],
+                currentHP: temp[i]['currentHP'],
+                maxExp: temp[i]['maxExp'],
+                currentExp: temp[i]['currentExp'],
+                stats: temp[i]['stats'], //ATK, DEF, SPD, DEX, LUK
+                moves: [punch, slash, bite],
+                level: temp[i]['level'],
+                isAlive: temp[i]['isAlive'],
+            }
+            
+         }, {x: directions[count][0], y: directions[count][1]})
+
+        party.push(this.#PlayerAlien1);
+         
+        count+=1;
     }
     
- }, {x: 200, y: 310})
+    
+}
+
+// this.#PlayerAlien1 = new Aliens({
+//     scene:this,
+//     AlienDetails: {
+//         name: "Strikoh",
+//         assets: 'Strikoh',
+//         assetAnim: "idle_Strikoh",
+//         maxHP: 2000,
+//         currentHP: 2000,
+//         maxExp: 1000,
+//         currentExp: 0,
+//         stats: [632, 408, 474, 468, 418], //ATK, DEF, SPD, DEX, LUK
+//         moves: [punch, slash, bite],
+//         level: 1,
+//         isAlive: true,
+//     }
+    
+//  }, {x: 200, y: 310})
  
- this.#PlayerAlien2 = new Aliens({
-    scene:this,
-    AlienDetails: {
-        name: "Hotu",
-        assets: 'Hotu',
-        assetAnim: "idle_Hotu",
-        maxHP: 1000,
-        currentHP: 1000,
-        maxExp: 1000,
-        currentExp: 0,
-        stats: [476, 342, 144, 226, 212], //ATK, DEF, SPD, DEX, LUK
-        moves: [sleep, kick],
-        level: 1,
-        isAlive: true,
+//  this.#PlayerAlien2 = new Aliens({
+//     scene:this,
+//     AlienDetails: {
+//         name: "Hotu",
+//         assets: 'Hotu',
+//         assetAnim: "idle_Hotu",
+//         maxHP: 1000,
+//         currentHP: 1000,
+//         maxExp: 1000,
+//         currentExp: 0,
+//         stats: [476, 342, 144, 226, 212], //ATK, DEF, SPD, DEX, LUK
+//         moves: [sleep, kick],
+//         level: 1,
+//         isAlive: true,
 
-    }
+//     }
     
- }, {x: 200, y: 200})
+//  }, {x: 200, y: 200})
+ 
+ 
+ //
+ 
+ //OLD CODE - creating a single instance
+ //this.player = this.add.sprite(200, 310, 'Strikoh').setScale(4);
+    //this.player.anims.play("idle_Strikoh", true)
+
+
+// //Enemy Name formatting. TO DO to make this change based on  and Move into HP container, below
+//     const enemyAlien = this.add.text(40,0, this.#EnemyAlien.getName(), 
+//             {
+//             color: '#31b1e0',
+//             fontSize: '28px',
+//             fontStyle: 'bold italic',
+//             }
+//     );
+
+//  //Player Name formatting. TO DO to make this change based on alien. Move into HP container, below
+//     const playerAlien = this.add.text(40,0,this.#PlayerAlien1.getName(),
+//         {
+//             color: '#045eda',
+//             fontSize: '28px',
+//             fontStyle: 'bold italic',
+//         }
+//     );
+
+// //Create container for Player health bar
+
+// const playerHP = this.#PlayerAlien1._HPBar;
+// const enemyHP = this.#EnemyAlien._HPBar;
+
+//     this.add.container(550, 400, [
+//       this.add
+//         .image(0, 0,"healthback")
+//         .setOrigin(0),
+//         playerAlien,
+//         playerHP.container,
+              
+
+//    this.add.text (175, 5,'25/25', {
+//         color:'red',
+//         fontSize: '18px',
+//         fontStyle: 'Bold',
+//     })
+
+// ]);
+
+// //Create container for Enemy health bar
+//     this.add.container(1,400, [
+//         this.add
+//         .image(0, 0,"healthback")
+//         .setOrigin(0),
+//         enemyAlien,
+//         enemyHP.container,
        
+//     ]);
+      
 
 //Create box on the bottom
 this.#combatMenu = new CombatMenu(this, this.#PlayerAlien1, this.#items);// this.#PlayerAlien);
@@ -144,12 +245,11 @@ this.#combatMenu = new CombatMenu(this, this.#PlayerAlien1, this.#items);// this
 //
 //this.#combatMenu.battleOptionsOn();
 
-party = [this.#PlayerAlien1, this.#PlayerAlien2];
-enemies = [this.#EnemyAlien]
+enemies = [this.#EnemyAlien];
 
 attacker = party[0];
-//this.#combatMenu.initialize(attacker)
-this.#combatMenu.battleOptionsOn()
+this.#combatMenu.initialize(attacker)
+//this.#combatMenu.battleOptionsOn()
 }
 
 
@@ -209,6 +309,8 @@ if(STATUS_STATE == 'use_item'){
     //     target = undefined;
     // }
 
+
+
 }
 else if(STATUS_STATE =='scanning'){
 
@@ -243,9 +345,12 @@ else if(STATUS_STATE =='scanning'){
         console.log("cannot choose this target cuz they're dead")
         target = undefined;
     }
+
+
+
 } 
 else if(STATUS_STATE == 'fight'){
-    move = undefined;
+ 
     attacker = party[CURR_TURN];
     console.log("attacker's moves: ", attacker.getMoves())
     console.log("current turn:", CURR_TURN)
@@ -263,21 +368,24 @@ else if(STATUS_STATE == 'fight'){
 
         if(Phaser.Input.Keyboard.JustDown(cursors.up)) { //Option Up
            move = strList[0]
+        //    STATUS_STATE = "targeting";
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //Option left
             move = strList[1]
+            // STATUS_STATE = "targeting";
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.right)){ //Option right
             move = strList[2]
+            // STATUS_STATE = "targeting";
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.down)){  ////Option down
             move = strList[3]
+            // STATUS_STATE = "targeting";
         }
         if(move != undefined)
             STATUS_STATE = "targeting"
 
     }else if(STATUS_STATE == "targeting"){
-        target = undefined;
         //list of possible (living) targets
         var livE = enemies.filter(e => e.getAlive())
 
@@ -319,18 +427,21 @@ else if(STATUS_STATE == 'fight'){
         }        
     }else if(STATUS_STATE == "enemy"){
         //this.time.delayedCall(2000, this.enemyTurn, null, this);
-        var x = [2000, 7000, 11500, 16000]
-        var livingE = enemies.filter(e => e.getAlive());
-        for(var i = 0; i < livingE.length; i++){
-            this.time.delayedCall(x[i]-5, this.enemyTurn, null, this);
-        }
-        STATUS_STATE = "nothing"
+        this.enemyTurn();
+        return;
+    }else if(STATUS_STATE == "enemy-waiting"){
+        setTimeout(function(){
+            STATUS_STATE = "enemy-continue"
+        }, 2000)
+    }else if(STATUS_STATE == "enemy-continue"){
+        this.time.delayedCall(4000, this.enemyTurnCont, null, this);
     }else if(STATUS_STATE == "conclusion"){
         //guess it's over
         if(spacebar.isDown){
-            this.scene.start("LoadHub")
+            this.scene.start("MainMenu")
         }
     }else{
+
         if(Phaser.Input.Keyboard.JustDown(cursors.up)){ //FIGHT
             console.log('Up Is Down')
             this.#combatMenu.playerInput('FIGHT')
@@ -439,6 +550,7 @@ getRand(min, max) {
 
 battlestuff(){
         this.#combatMenu.targetOptionsOff();
+        this.#combatMenu.setAlien(attacker);
         var hit = this.getRand(0,100);
         console.log("hit:", hit)
         if(hit <= this.getHitChance(attacker, move)){
@@ -452,9 +564,7 @@ battlestuff(){
             //check critical
             //this is also purely random; this will depend on player LUK later
             var crit = this.getRand(0,100);
-            var luck = (Math.sqrt(attacker.getLUK()) / 2) + this.getRand(-5, 25)
-            console.log("crit: " + crit + " luck: " + luck)
-            if(crit <= luck){
+            if(crit <= 5){
                 d *= 2; //if there's a critical hit, double the damage
             }
             var strhit
@@ -475,12 +585,22 @@ battlestuff(){
                 
             }
             
+            //return;
+
         }else{
             //if the attack misses
             console.log("MISS")
             this.#combatMenu.missRender(attacker.getName());
             STATUS_STATE = 'rest';
+            //this.time.delayedCall(1000, this.updateUConsole, ["The " + move.name + " missed..."], this);
         }
+        // STATUS_STATE = "checking"
+        
+        // if(target.getCurrentHP() <= 0){
+        //     console.log("Someone Died")
+        //     target.setAlive(false);
+        //     this.#combatMenu.deathnotice(target.getName())
+        // }
 
         var condition = this.checkBattle(); //see if one side is completely dead
         // alert(condition)
@@ -519,24 +639,26 @@ changeTurn(){
     var livP = party.filter(ab => ab.getAlive())
     var livE = enemies.filter(e => e.getAlive())
     
+
     if(CURR_PARTY == "player"){
         if(CURR_TURN >= livP.length){
             //if finished with player party, change to enemy's turn
             console.log("enemy's turn")
-            // alert("enemy's turn!")
+            alert("enemy's turn!")
             attacker.NameandHPoff();
             console.log("Turn off", attacker.getName())
             target.NameandHPoff();
             CURR_PARTY = "enemy";
             CURR_TURN = 0;
             STATUS_STATE = "enemy"; //change state to enemy turn 
+             
         }
         else {
             attacker.NameandHPoff();
             console.log("Turn off", attacker.getName())
             attacker = party[CURR_TURN]
-            console.log("It is turn",CURR_TURN)     
-            this.#combatMenu.setAlien(attacker);
+            console.log("It is turn",CURR_TURN)
+            this.#combatMenu.initialize(attacker)
             attacker.NameandHPon();
         }
     }else if(CURR_PARTY == "enemy"){
@@ -548,13 +670,11 @@ changeTurn(){
            // console.log("Turn off", target.getName())
            // target.NameandHPoff();
             CURR_TURN = 0;
+            alert("player's turn!");
             STATUS_STATE = "nothing";
-            this.#combatMenu.setAlien(party.filter(ab => ab.getAlive())[0]);
         }
     }
-    move = undefined;
-    attacker = undefined;
-    target = undefined;
+    //alert("changing turn")
 }
 
     endBattle(condition){
@@ -572,37 +692,33 @@ changeTurn(){
         //end scene in victory
         if(condition == 0){
             //you earn 1/3 exp for each point of damage you did
-            expGain = Math.round(damageDone / 3) + this.getRand(0, 500);
+            expGain = Math.round(damageDone / 3);
             //and 1/5 credits 
-            moneyGain = Math.round(damageDone / 5) + this.getRand(0, 4000);
+            moneyGain = Math.round(damageDone / 5);
             console.log("exp: " + expGain + " credits: " + moneyGain);
             this.time.delayedCall(2000, this.#combatMenu.showEndMsg, ["VICTORY!\nYou earned " + expGain + " EXP and " + moneyGain + " credits.\nPress Spacebar to exit."], this.#combatMenu);
             this.checkLevelUp(expGain);
             STATUS_STATE = "conclusion";
             this.#player.updateExpGained(expGain); //update exp earned and credits earned
             this.#player.updateCredits(moneyGain)
-            console.log(this.#player);
-            this.registry.set("player", this.#player); //set the player object to the registry object
         }
         //end scene in defeat
         else if(condition == 1){
             //you earn 1/10 exp for each point of damage you did
-            expGain = Math.round(damageDone / 10) + this.getRand(-10,10);
+            expGain = Math.round(damageDone / 10);
             //and lose 1000 credits
             moneyGain = -1000;
-            this.time.delayedCall(2000, this.#combatMenu.showEndMsg, ["DEFEAT\nYou earned " + expGain + " EXP and lost " + Math.abs(moneyGain) + " credits.\nPress Spacebar to exit."], this.#combatMenu);
+            this.time.delayedCall(2000, this.#combatMenu.showEndMsg, ["DEFEAT\nYou earned " + expGain + " EXP and " + moneyGain + " credits.\nPress Spacebar to exit."], this.#combatMenu);
             this.checkLevelUp(expGain);
             STATUS_STATE = "conclusion";
             this.#player.updateExpGained(expGain); //update exp earned and credits earned
-            this.#player.updateCredits(moneyGain);
-            this.registry.set("player", this.#player); //set the player object to the registry object
+            this.#player.updateCredits(moneyGain)
         }
         //end scene in fleeing
         else if(condition == 2){
             alert("coward!")
             this.time.delayedCall(500, this.#combatMenu.showEndMsg, ["You have successfully fled the battle.\nPress Spacebar to exit."], this.#combatMenu);
             STATUS_STATE = "conclusion";
-            this.registry.set("player", this.#player); //set the player object to the registry object
         }
     }
 
@@ -617,14 +733,11 @@ changeTurn(){
 
     enemyTurn(){
         //get attacker (living enemies)
-        this.#combatMenu.battleOptionsOff();
         var atkrs = enemies.filter(e => e.getAlive())
         attacker = atkrs[CURR_TURN]; //get the attacker
         console.log("enemy attacker", attacker)
-        this.enemyTurnCont();
-    }
+        //this.time.delayedCall(2000, this.updateUConsole,["It's " + attacker.enemyDetails.name + "'s turn"],this);
 
-    enemyTurnCont(){
         //get move list
         var moves = attacker._enemyDetails.moves;
         move = moves[this.getRand(0, moves.length - 1)]; //get random move
@@ -637,10 +750,35 @@ changeTurn(){
         
         //enemy attack
         var dmg = 10;
-        target.takeDamage(dmg);
-        this.#combatMenu.setAlien(attacker);
-        this.#combatMenu.playerFightInputSelect(move, dmg, target.getCurrentHP() - dmg)
+        target.getCurrentHP -= dmg;
 
+        //update console to show enemy attack, its damage, and how much HP the target has
+        //this.time.delayedCall(1000, this.#combatMenu.setRenderMessage, [attacker.getName() + " used " + move + " on " + target.getName() + " and dealt " + dmg +" damage!"], this.#combatMenu); 
+        //this.time.delayedCall(1500, this.setState, ["enemy-waiting"], this); //we need to pause here before continuing
+        alert(attacker.getName() + " used " + move.getName() + " on " + target.getName() + " and dealt " + dmg +" damage!")
+        if(target._alienDetails.currentHP <= 0){
+            target._alienDetails.isAlive = false;
+            alert(target.getName() + " has been defeated!");
+            console.log(target.getName() + " has been defeated!")
+        }
+        
+        //reset vars
+        attacker = undefined;
+        target = undefined;
+        move = undefined;
+
+        //see if one side is completely dead
+        var condition = this.checkBattle() 
+        if(condition != -1){
+           // this.time.delayedCall(100000, this.endBattle, [condition], this); //if battle is over, end the battle
+            this.endBattle(condition)
+        }else{    
+      
+            this.changeTurn();
+        } 
+    }
+
+    enemyTurnCont(){
         //check if target is dead
         if(target._alienDetails.currentHP <= 0){
             target._alienDetails.isAlive = false;
@@ -649,15 +787,13 @@ changeTurn(){
         }
         
         //see if one side is completely dead
-        var condition = this.checkBattle();
-        
+        var condition = this.checkBattle() 
         if(condition != -1)
-            this.time.delayedCall(2000, this.endBattle, [condition], this); //if battle is over, end the battle
+            this.time.delayedCall(100000, this.endBattle, [condition], this); //if battle is over, end the battle
         else{    
-            STATUS_STATE = "nothing"; //reset state
-            this.time.delayedCall(2000, this.changeTurn, [], this);
+            //STATUS_STATE = "nothing"; //reset state
+            this.time.delayedCall(10000, this.changeTurn, [], this);
         }
-
     }
 
     setState(state){
@@ -676,7 +812,10 @@ changeTurn(){
             this.#combatMenu.battleOptionsOff();
             this.#combatMenu.setRenderMessage("You fail to escape");
             this.time.delayedCall(2100, this.changeTurn, null, this);
-            //this.time.delayedCall(2101, this.#combatMenu.battleOptionsOn, null, this.#combatMenu)
+            this.time.delayedCall(2101, this.#combatMenu.battleOptionsOn, null, this.#combatMenu)
+            attacker = undefined;
+            target = undefined;
+            move = undefined;
             STATUS_STATE = "nothing";
         }
     }
@@ -772,6 +911,8 @@ itemHandler(selected)
 
     }
 
+
+
     if(flag ==1)
     {
         var flag = 1;
@@ -792,4 +933,3 @@ itemHandler(selected)
 
 
 }
-
