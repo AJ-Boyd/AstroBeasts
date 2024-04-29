@@ -23,6 +23,7 @@ const MessageTextStyle = {
     color:'Blue',
     fontSize: '22px',
     fontStyle: 'bold',
+    align: "center"
 }
 
 const MenuOptionsTextStyle = {
@@ -258,7 +259,7 @@ itemOptionsOn(){
 //Show Text
  #promptItem()
  {    
-    this.#RenderMessage = this.#scene.add.text(300, 510, "blank", MessageTextStyle); 
+    this.#RenderMessage = this.#scene.add.text(320, 520, "blank", MessageTextStyle); 
     this.RenderMessageOff();
 }
 battleOptionsOn()
@@ -375,18 +376,17 @@ playerInput(entry)
 }
 
 
-playerFightInputSelect(move, hit, remains)  
+playerFightInputSelect(move, target, hit, remains)  
 {
 
   //Step 1: Player Attacks
    
         this.fightOptionsOff();
         this.battleOptionsOff();
-        this.#RenderMessage.setText(`${this.lAlien.getName()} Used ${move.getName()} \n and Dealt ${hit} Damage! ${remains} HP Left`); 
+        this.#RenderMessage.setText(`${this.lAlien.getName()} used ${move.getName()} on ${target.getName()}\n and dealt ${hit} damage! ${remains} HP left`).setDisplayOrigin(190, 0); 
         this.RenderMessageOn();
         this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this)
         this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this)
-        // this.#scene.time.delayedCall(2000, this.fightOptionsOn, null, this)
 }
 
 enemyAttacks(attackerName, attackerMove, friendlyName, damage, friendlyHP)
@@ -426,8 +426,6 @@ deathnotice(name)
 {
  
         this.fightOptionsOff();
-        
-       
         this.#RenderMessage.setText(`${name} is defeated`); 
         this.RenderMessageOn();
         this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
@@ -437,7 +435,7 @@ deathnotice(name)
 showEndMsg(msg){
     this.fightOptionsOff();
     this.battleOptionsOff();
-    this.#RenderMessage.setText(msg);
+    this.#RenderMessage.setText(msg).setFontSize("20px").setDisplayOrigin( 150, 0);
     this.RenderMessageOn();
 }
 

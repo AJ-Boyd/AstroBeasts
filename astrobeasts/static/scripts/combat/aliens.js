@@ -77,6 +77,13 @@ export class Aliens {
     {
         this._alienDetails.isAlive = v;
     }
+    setAnimation(a){
+        this._alienDetails.assetAnim = a;
+        this.AlienGuy.anims.play(this._alienDetails.assetAnim)
+    }
+    getAnimation(){
+        return this._alienDetails.assetAnim;
+    }
     getName(){
         return this._alienDetails.name;
     }
@@ -114,7 +121,7 @@ export class Aliens {
     }
     takeDamage(damage, callback)
     {
-        console.log("It is", this._alienDetails.currentHP)
+        console.log(this.getName(), "'s current HP:", this._alienDetails.currentHP)
         console.log("you are subtracting", damage)
         var dam = this._alienDetails.currentHP -= damage;
         if (dam < 0){
@@ -129,9 +136,9 @@ export class Aliens {
         var out = up + "/"+low;
         
         
-            this.#hpText.setText(out)
-            this._HPBar.animateHP(dam/this._alienDetails.maxHP, {callback});
-           
+        this.#hpText.setText(out)
+        this._HPBar.animateHP(dam/this._alienDetails.maxHP, {callback});
+        console.log(this.getName(), "now has", this.getCurrentHP(), " HP") 
         
      }
         
@@ -239,7 +246,8 @@ export class Aliens {
             if(this._alienDetails.level > 11){
                 this._alienDetails.level = 11;
             }else{
-                console.log(this.getName() + " leveled up!")
+                alert(this.getName() + " leveled up!")
+                console.log(this.getName(), "leveled up!")
                 this.levelUp(); //only level up if they haven't reached max
                 this._alienDetails.currentExp -= this._alienDetails.maxExp; //get remainder of exp points
                 this._alienDetails.maxExp *= 2.1 //update max exp
@@ -258,6 +266,7 @@ export class Aliens {
                 this.getStats()[i] = 2500;
             }
         }
+        alert(this.getName() + "'s new stats: " + this.getStats());
     }
 
     //returns a random number between min and max, both inclusinve
