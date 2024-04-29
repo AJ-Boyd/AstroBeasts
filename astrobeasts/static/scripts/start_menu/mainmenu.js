@@ -26,10 +26,10 @@ export class MainMenuScene extends Phaser.Scene {
             description: 'Fire AstroBeast', 
             quantity: 1, 
             cost: 50, 
-            isEquipped: false,
-            maxHP: 100,
-            currentHP: 100,
-            stats: [100, 100, 100, 100],
+            isEquipped: true,
+            maxHP: 1000,
+            currentHP: 1000,
+            stats: [300, 250, 300, 300, 250],
             level: 1,
             isAlive: true
 
@@ -42,10 +42,10 @@ export class MainMenuScene extends Phaser.Scene {
             description: 'Water AstroBeast', 
             quantity: 1, 
             cost: 51, 
-            isEquipped: false,
-            maxHP: 120,
-            currentHP: 120,
-            stats: [100, 100, 100, 100],
+            isEquipped: true,
+            maxHP: 1000,
+            currentHP: 1000,
+            stats: [194, 128, 448, 500, 130],
             level: 1,
             isAlive: true
         }
