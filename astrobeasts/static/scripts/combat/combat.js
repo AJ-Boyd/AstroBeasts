@@ -15,10 +15,6 @@ var CURR_PARTY = 'player';
 var flag = 0;
 const FLEE_CHANCE = 40;
 
-//var combat1, combat2;
-
-
-
 export class CombatScene extends Phaser.Scene {
     #combatMenu;
     #EnemyAlien;
@@ -26,8 +22,6 @@ export class CombatScene extends Phaser.Scene {
     #PlayerAlien2;
     #player;
     #items;
-
-
 
     constructor() {
         super({
@@ -49,7 +43,6 @@ preload()
     //get the player object
     this.#player = this.registry.get("player");
     this.#items = this.registry.get('inventory_items');
-    
 }
 
 
@@ -63,193 +56,84 @@ preload()
 create() {  
   
     console.log('create - Combat');
- //accept keyboard input
+    //accept keyboard input
     cursors = this.input.keyboard.createCursorKeys();
     spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-//background
-  const background = new RenderBackground(this);
-  background.showFire();
+    //background
+    const background = new RenderBackground(this);
+    background.showFire();
 
-const punch = new Move("Punch", "throw a haymaker", 40, 80, 1); //low damage, high acc
-const strike = new Move("Strike", "cuts", 50, 75, 1); //mid damage, mid acc
-const bite = new Move("Bite", "chomp!", 100, 70, 2); //high damage, mid acc
-const sleep = new Move("Sleep", "", 20, 100, 5); //low damage, high acc
-const slash = new Move("Slash", "", 80, 60, 5,); //high damage, low acc
-const kick = new Move("Kick", "", 45, 90, 5); //low damage, high acc
+    const punch = new Move("Punch", "throw a haymaker", 40, 80, 1); //low damage, high acc
+    const strike = new Move("Strike", "cuts", 50, 75, 1); //mid damage, mid acc
+    const bite = new Move("Bite", "chomp!", 100, 70, 2); //high damage, mid acc
+    const sleep = new Move("Sleep", "", 20, 100, 5); //low damage, high acc
+    const slash = new Move("Slash", "", 80, 60, 5,); //high damage, low acc
+    const kick = new Move("Kick", "", 45, 90, 5); //low damage, high acc
 
-
-//create enemy alien and idle
-
-
- this.#EnemyAlien = new Enemy({
-    scene:this,
-    EnemyDetails: {
-        name: "Tarkeel",
-        assets: 'Tarkeel',
-        assetAnim: "idle_Tarkeel",
-        maxHP: 10000,
-        currentHP: 10000,
-        stats: [250, 250, 250], //ATK, DEF, SPD
-        moves: [punch, strike],
-        level: 1,
-        isAlive: true,
-    }
-    
- }, {x: 600, y: 310})
-
-//create our alien and idle
-let directions = [[200,310] , [200,200], [100,310], [100,200]];
-let temp = this.registry.get('inventory_astrobeasts');
-let shop_beasts = this.registry.get('shop_astrobeasts');
-console.log(temp);
-let count = 0;
-for (let i = 0; i < temp.length; i++){
-    if (temp[i]['isEquipped'] && count < directions.length){
-        let assetAnime = temp[i]['assetAnim'];
-
-        for (let j = 0; j < shop_beasts.length; j++) {
-            if (shop_beasts[j].name === temp[i].name) {
-                assetAnime = shop_beasts[j].assetAnim; 
-                break; 
-            }
+    //create enemy alien and idle
+    this.#EnemyAlien = new Enemy({
+        scene:this,
+        EnemyDetails: {
+            name: "Tarkeel",
+            assets: 'Tarkeel',
+            assetAnim: "idle_Tarkeel",
+            maxHP: 10000,
+            currentHP: 10000,
+            stats: [250, 250, 250], //ATK, DEF, SPD
+            moves: [punch, strike],
+            level: 1,
+            isAlive: true,
         }
+    }, {x: 600, y: 310})
 
-        console.log(assetAnime);
+    //create our alien and idle
+    let directions = [[200,310] , [200,200], [100,310], [100,200]];
+    let temp = this.registry.get('inventory_astrobeasts');
+    let shop_beasts = this.registry.get('shop_astrobeasts');
+    console.log(temp);
+    console.log(temp.length);
+    let count = 0;
+    for (let i = 0; i < temp.length; i++){
+        if (temp[i]['isEquipped'] && count < directions.length){
+            let assetAnime = temp[i]['assetAnim'];
 
-
-        this.#PlayerAlien1 = new Aliens({
-            scene:this,
-            AlienDetails: {
-                name: temp[i]['name'],
-                assets: temp[i]['assets'],
-                assetAnim: assetAnime,
-                maxHP: temp[i]['maxHP'],
-                currentHP: temp[i]['currentHP'],
-                maxExp: temp[i]['maxExp'],
-                currentExp: temp[i]['currentExp'],
-                stats: temp[i]['stats'], //ATK, DEF, SPD, DEX, LUK
-                moves: [punch, slash, bite],
-                level: temp[i]['level'],
-                isAlive: temp[i]['isAlive'],
+            for (let j = 0; j < shop_beasts.length; j++) {
+                if (shop_beasts[j].name === temp[i].name) {
+                    assetAnime = shop_beasts[j].assetAnim; 
+                    break; 
+                }
             }
-            
-         }, {x: directions[count][0], y: directions[count][1]})
 
-        party.push(this.#PlayerAlien1);
-         
-        count+=1;
+            let alien = new Aliens({
+                scene:this,
+                AlienDetails: {
+                    name: temp[i]['name'],
+                    assets: temp[i]['assets'],
+                    assetAnim: assetAnime,
+                    maxHP: temp[i]['maxHP'],
+                    currentHP: temp[i]['currentHP'],
+                    maxExp: temp[i]['maxExp'],
+                    currentExp: temp[i]['currentExp'],
+                    stats: temp[i]['stats'], //ATK, DEF, SPD, DEX, LUK
+                    moves: [punch, slash, bite],
+                    level: temp[i]['level'],
+                    isAlive: temp[i]['isAlive'],
+                }
+                
+            }, {x: directions[count][0], y: directions[count][1]})
+            console.log(alien.getName())
+            party.push(alien);        
+            count++;
+        }
     }
-    
-    
-}
 
-// this.#PlayerAlien1 = new Aliens({
-//     scene:this,
-//     AlienDetails: {
-//         name: "Strikoh",
-//         assets: 'Strikoh',
-//         assetAnim: "idle_Strikoh",
-//         maxHP: 2000,
-//         currentHP: 2000,
-//         maxExp: 1000,
-//         currentExp: 0,
-//         stats: [632, 408, 474, 468, 418], //ATK, DEF, SPD, DEX, LUK
-//         moves: [punch, slash, bite],
-//         level: 1,
-//         isAlive: true,
-//     }
-    
-//  }, {x: 200, y: 310})
- 
-//  this.#PlayerAlien2 = new Aliens({
-//     scene:this,
-//     AlienDetails: {
-//         name: "Hotu",
-//         assets: 'Hotu',
-//         assetAnim: "idle_Hotu",
-//         maxHP: 1000,
-//         currentHP: 1000,
-//         maxExp: 1000,
-//         currentExp: 0,
-//         stats: [476, 342, 144, 226, 212], //ATK, DEF, SPD, DEX, LUK
-//         moves: [sleep, kick],
-//         level: 1,
-//         isAlive: true,
-
-//     }
-    
-//  }, {x: 200, y: 200})
- 
- 
- //
- 
- //OLD CODE - creating a single instance
- //this.player = this.add.sprite(200, 310, 'Strikoh').setScale(4);
-    //this.player.anims.play("idle_Strikoh", true)
-
-
-// //Enemy Name formatting. TO DO to make this change based on  and Move into HP container, below
-//     const enemyAlien = this.add.text(40,0, this.#EnemyAlien.getName(), 
-//             {
-//             color: '#31b1e0',
-//             fontSize: '28px',
-//             fontStyle: 'bold italic',
-//             }
-//     );
-
-//  //Player Name formatting. TO DO to make this change based on alien. Move into HP container, below
-//     const playerAlien = this.add.text(40,0,this.#PlayerAlien1.getName(),
-//         {
-//             color: '#045eda',
-//             fontSize: '28px',
-//             fontStyle: 'bold italic',
-//         }
-//     );
-
-// //Create container for Player health bar
-
-// const playerHP = this.#PlayerAlien1._HPBar;
-// const enemyHP = this.#EnemyAlien._HPBar;
-
-//     this.add.container(550, 400, [
-//       this.add
-//         .image(0, 0,"healthback")
-//         .setOrigin(0),
-//         playerAlien,
-//         playerHP.container,
-              
-
-//    this.add.text (175, 5,'25/25', {
-//         color:'red',
-//         fontSize: '18px',
-//         fontStyle: 'Bold',
-//     })
-
-// ]);
-
-// //Create container for Enemy health bar
-//     this.add.container(1,400, [
-//         this.add
-//         .image(0, 0,"healthback")
-//         .setOrigin(0),
-//         enemyAlien,
-//         enemyHP.container,
-       
-//     ]);
-      
-
-//Create box on the bottom
-this.#combatMenu = new CombatMenu(this, this.#PlayerAlien1, this.#items);// this.#PlayerAlien);
-
-//
-//this.#combatMenu.battleOptionsOn();
-
-enemies = [this.#EnemyAlien];
-
-attacker = party[0];
-this.#combatMenu.initialize(attacker)
-//this.#combatMenu.battleOptionsOn()
+    //Create box on the bottom
+    attacker = party[0];
+    enemies = [this.#EnemyAlien];
+    this.#combatMenu = new CombatMenu(this, attacker, this.#items);// this.#PlayerAlien);
+    this.#combatMenu.initialize(attacker)
+    //this.#combatMenu.battleOptionsOn()
 }
 
 
@@ -257,8 +141,6 @@ update() {
 console.log('update - Combat');
   
 if(STATUS_STATE == 'use_item'){
-
-   
     const items = this.registry.get('inventory_items');
     const equippedItems = items.filter(items => items.isEquipped);
     const equippedItemsCount = items.filter(items => items.isEquipped);
@@ -308,9 +190,6 @@ if(STATUS_STATE == 'use_item'){
     //     console.log("cannot choose this target cuz they're dead")
     //     target = undefined;
     // }
-
-
-
 }
 else if(STATUS_STATE =='scanning'){
 
@@ -321,23 +200,15 @@ else if(STATUS_STATE =='scanning'){
     //get input for choosing target
     if(Phaser.Input.Keyboard.JustDown(cursors.up)){
         target = enemies[0]; //For now
-        this.scanStuff();
-        
     }else if(Phaser.Input.Keyboard.JustDown(cursors.left)){
         if(enemies.length >= 2)
-            target = enemies[1]; //For now
-            this.scanStuff();
-            
+            target = enemies[1]; //For now      
     }else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
         if(enemies.length >= 3)
-            target = enemies[2]; //For now
-            this.scanStuff();
-            
+            target = enemies[2]; //For now        
     }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
         if(enemies.length >= 4)
-            target = enemies[3]; //For now
-            this.scanStuff();
-            
+            target = enemies[3]; //For now      
     }
 
     //check if selected target is alive
@@ -346,12 +217,12 @@ else if(STATUS_STATE =='scanning'){
         target = undefined;
     }
 
-
+    if(target != undefined){
+        this.scanStuff();
+    }
 
 } 
 else if(STATUS_STATE == 'fight'){
- 
-    attacker = party[CURR_TURN];
     console.log("attacker's moves: ", attacker.getMoves())
     console.log("current turn:", CURR_TURN)
     attacker.NameandHPon();
@@ -426,22 +297,30 @@ else if(STATUS_STATE == 'fight'){
             this.battlestuff();
         }        
     }else if(STATUS_STATE == "enemy"){
-        //this.time.delayedCall(2000, this.enemyTurn, null, this);
-        this.enemyTurn();
-        return;
-    }else if(STATUS_STATE == "enemy-waiting"){
-        setTimeout(function(){
-            STATUS_STATE = "enemy-continue"
-        }, 2000)
-    }else if(STATUS_STATE == "enemy-continue"){
-        this.time.delayedCall(4000, this.enemyTurnCont, null, this);
+        var x = [2000, 7000, 11500, 16000]
+        var livingE = enemies.filter(e => e.getAlive());
+        for(var i = 0; i < livingE.length; i++){
+            this.time.delayedCall(x[i]-5, this.enemyTurn, null, this);
+        }
+        STATUS_STATE = "nothing"
     }else if(STATUS_STATE == "conclusion"){
         //guess it's over
         if(spacebar.isDown){
-            this.scene.start("MainMenu")
+            STATUS_STATE = "nothing"
+            this.scene.start("LoadHub")
         }
-    }else{
-
+        //reset important variables
+        party = [];
+        enemies = [];
+        CURR_TURN = 0;
+        CURR_PARTY = 'player';
+        attacker = undefined;
+        target = undefined;
+        move = undefined;
+    }else if(STATUS_STATE == "waiting"){
+    
+    }else{   
+        attacker = party[CURR_TURN];
         if(Phaser.Input.Keyboard.JustDown(cursors.up)){ //FIGHT
             console.log('Up Is Down')
             this.#combatMenu.playerInput('FIGHT')
@@ -461,9 +340,8 @@ else if(STATUS_STATE == 'fight'){
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.left)){ //FLEE. TO DO...
             console.log('Left Is Down')
-            //this.#combatMenu.playerInput('FLEE')
+            STATUS_STATE = "waiting"
             this.flee();
-            return;
         } 
         else
         {
@@ -639,27 +517,29 @@ changeTurn(){
     var livP = party.filter(ab => ab.getAlive())
     var livE = enemies.filter(e => e.getAlive())
     
-
     if(CURR_PARTY == "player"){
         if(CURR_TURN >= livP.length){
             //if finished with player party, change to enemy's turn
+            alert("enemy turn")
             console.log("enemy's turn")
-            alert("enemy's turn!")
             attacker.NameandHPoff();
             console.log("Turn off", attacker.getName())
-            target.NameandHPoff();
+            if(target != undefined){
+                target.NameandHPoff();
+            }
             CURR_PARTY = "enemy";
             CURR_TURN = 0;
             STATUS_STATE = "enemy"; //change state to enemy turn 
-             
-        }
-        else {
+        }else{
             attacker.NameandHPoff();
             console.log("Turn off", attacker.getName())
             attacker = party[CURR_TURN]
             console.log("It is turn",CURR_TURN)
-            this.#combatMenu.initialize(attacker)
+            this.#combatMenu.setAlien(attacker);
+            this.time.delayedCall(2000, this.#combatMenu.battleOptionsOn, null, this.#combatMenu);
+            //this.#combatMenu.initialize(attacker)
             attacker.NameandHPon();
+            STATUS_STATE = "nothing";
         }
     }else if(CURR_PARTY == "enemy"){
         //if finished with enemy party, change to player's turn
@@ -670,11 +550,13 @@ changeTurn(){
            // console.log("Turn off", target.getName())
            // target.NameandHPoff();
             CURR_TURN = 0;
-            alert("player's turn!");
             STATUS_STATE = "nothing";
+            this.#combatMenu.setAlien(party.filter(ab => ab.getAlive())[0]);
         }
     }
-    //alert("changing turn")
+    move = undefined;
+    attacker = undefined;
+    target = undefined;
 }
 
     endBattle(condition){
@@ -716,7 +598,6 @@ changeTurn(){
         }
         //end scene in fleeing
         else if(condition == 2){
-            alert("coward!")
             this.time.delayedCall(500, this.#combatMenu.showEndMsg, ["You have successfully fled the battle.\nPress Spacebar to exit."], this.#combatMenu);
             STATUS_STATE = "conclusion";
         }
@@ -733,11 +614,14 @@ changeTurn(){
 
     enemyTurn(){
         //get attacker (living enemies)
+        this.#combatMenu.battleOptionsOff();
         var atkrs = enemies.filter(e => e.getAlive())
         attacker = atkrs[CURR_TURN]; //get the attacker
         console.log("enemy attacker", attacker)
-        //this.time.delayedCall(2000, this.updateUConsole,["It's " + attacker.enemyDetails.name + "'s turn"],this);
+        this.enemyTurnCont();
+    }
 
+    enemyTurnCont(){
         //get move list
         var moves = attacker._enemyDetails.moves;
         move = moves[this.getRand(0, moves.length - 1)]; //get random move
@@ -750,35 +634,10 @@ changeTurn(){
         
         //enemy attack
         var dmg = 10;
-        target.getCurrentHP -= dmg;
+        target.takeDamage(dmg);
+        this.#combatMenu.setAlien(attacker);
+        this.#combatMenu.playerFightInputSelect(move, dmg, target.getCurrentHP() - dmg)
 
-        //update console to show enemy attack, its damage, and how much HP the target has
-        //this.time.delayedCall(1000, this.#combatMenu.setRenderMessage, [attacker.getName() + " used " + move + " on " + target.getName() + " and dealt " + dmg +" damage!"], this.#combatMenu); 
-        //this.time.delayedCall(1500, this.setState, ["enemy-waiting"], this); //we need to pause here before continuing
-        alert(attacker.getName() + " used " + move.getName() + " on " + target.getName() + " and dealt " + dmg +" damage!")
-        if(target._alienDetails.currentHP <= 0){
-            target._alienDetails.isAlive = false;
-            alert(target.getName() + " has been defeated!");
-            console.log(target.getName() + " has been defeated!")
-        }
-        
-        //reset vars
-        attacker = undefined;
-        target = undefined;
-        move = undefined;
-
-        //see if one side is completely dead
-        var condition = this.checkBattle() 
-        if(condition != -1){
-           // this.time.delayedCall(100000, this.endBattle, [condition], this); //if battle is over, end the battle
-            this.endBattle(condition)
-        }else{    
-      
-            this.changeTurn();
-        } 
-    }
-
-    enemyTurnCont(){
         //check if target is dead
         if(target._alienDetails.currentHP <= 0){
             target._alienDetails.isAlive = false;
@@ -787,12 +646,13 @@ changeTurn(){
         }
         
         //see if one side is completely dead
-        var condition = this.checkBattle() 
+        var condition = this.checkBattle();
+        
         if(condition != -1)
-            this.time.delayedCall(100000, this.endBattle, [condition], this); //if battle is over, end the battle
+            this.time.delayedCall(2000, this.endBattle, [condition], this); //if battle is over, end the battle
         else{    
-            //STATUS_STATE = "nothing"; //reset state
-            this.time.delayedCall(10000, this.changeTurn, [], this);
+            STATUS_STATE = "nothing"; //reset state
+            this.time.delayedCall(2000, this.changeTurn, [], this);
         }
     }
 
@@ -811,12 +671,11 @@ changeTurn(){
             //flee fails
             this.#combatMenu.battleOptionsOff();
             this.#combatMenu.setRenderMessage("You fail to escape");
-            this.time.delayedCall(2100, this.changeTurn, null, this);
-            this.time.delayedCall(2101, this.#combatMenu.battleOptionsOn, null, this.#combatMenu)
-            attacker = undefined;
-            target = undefined;
-            move = undefined;
-            STATUS_STATE = "nothing";
+            this.time.delayedCall(2000, this.changeTurn, null, this);
+            
+            //this.changeTurn();
+            //this.time.delayedCall(2101, this.#combatMenu.battleOptionsOn, null, this.#combatMenu)
+            //STATUS_STATE = "nothing";
         }
     }
 

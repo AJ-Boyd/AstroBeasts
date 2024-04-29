@@ -51,20 +51,14 @@ export class CombatMenu {
     #fightSlash;
     #fightMessage;
     
-    
-
     #RenderMessage
-
-    
-    
-    //_astromoves
 
     constructor(scene, alien, items)    
         {
         this.#scene = scene;
-
         this.lAlien = alien;
-           
+        console.log("lAlien in constructor: " + this.lAlien)
+        
         lMoves = []
 
         this.lItems = items;
@@ -77,10 +71,6 @@ export class CombatMenu {
         this.createItemOptions();
 
         this.#promptItem();
-
-       // this.#Slashfight();
-       
-
     }
 
  //Create the Dialog Box.
@@ -113,6 +103,7 @@ export class CombatMenu {
  //Create Run/Fight/Scan options. 
  #createBattleOptions()
  {
+    console.log("lAlien: " + this.lAlien)
     this.#BattleText = this.#scene.add.text(400, 540, `What will ${this.lAlien.getName()} do?`, MessageTextStyle);
      
     this.#battleOpt = this.#scene.add.container(0,500, [
