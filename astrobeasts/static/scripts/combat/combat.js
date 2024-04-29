@@ -243,6 +243,7 @@ if(STATUS_STATE == 'use_item'){
     // }
 }
 else if(STATUS_STATE =='scanning'){
+    this.#combatMenu.battleOptionsOff();
 
     var livE = enemies.filter(e => e.getAlive())
     this.#combatMenu.setTargetOptions(livE)
@@ -386,6 +387,8 @@ else if(STATUS_STATE == 'fight'){
         else if(Phaser.Input.Keyboard.JustDown(cursors.down)){ 
             console.log('down Is Down')
             this.#combatMenu.playerInput('SCAN')
+            STATUS_STATE = 'scanning';
+            return;
         }
         else if(Phaser.Input.Keyboard.JustDown(cursors.right)){ //ITEM
             console.log('Right Is Down')     

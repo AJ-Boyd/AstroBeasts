@@ -451,18 +451,16 @@ showScan(enemy)
     var stats = [];
     stats = enemy.getStats();
     this.targetOptionsOff()
+    
     this.#RenderMessage.setText(`${enemy.getName()} is being scanned!`); 
     this.RenderMessageOn();
     this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
     //[ATK, DEF, SPD, LUK]
-    this.#RenderMessage.setText(`${enemy.getName()}'s Stats: 
-                 ATK: ${stats[0]}       DEF: ${stats[1]}       
-                 SPD: ${stats[2]}       LVL: ${enemy.getLevel()}
-                 LUK: ${stats[3]}       HP:  ${enemy.getCurrentHP()}
+    this.#RenderMessage.setText(`${enemy.getName()}'s Stats:\n ATK: ${stats[0]}       DEF: ${stats[1]}\nSPD: ${stats[2]}       LVL: ${enemy.getLevel()}\nHP:  ${enemy.getCurrentHP()}
                  
      `) .setFontSize('25px')
         .setScale(0.8)
-        .setDisplayOrigin(0,0);
+        .setDisplayOrigin(50,20);
 
     this.RenderMessageOn();
     this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
