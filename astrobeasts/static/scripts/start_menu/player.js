@@ -36,17 +36,23 @@ export class Player{
         this.credits += c
         this.updateCreditsGained(c)
     }
+    setCredits(c){
+        this.credits = c;
+    }
     incrementLevel(){
         this.level++;
     }
     incrementBattle(){
         this.battlesWon++;
     }
+    
+    //accessors--just the ones we need
+    getName(){
+        return this.name;
+    }
     getScore(){
         return this.getExpGained() + this.getCreditsEarned();
     }
-
-    //accessors--just the ones we need
     getCreditsEarned(){
         return this.creditsGained;
     }
@@ -55,5 +61,8 @@ export class Player{
     }
     getLevel(){
         return this.level
+    }
+    getCredits(){
+        return this.credits;
     }
 }

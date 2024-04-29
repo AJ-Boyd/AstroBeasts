@@ -115,8 +115,8 @@ export class NameInputScene extends Phaser.Scene {
         okButton.on('pointerdown', () => {
             let playerName = nameEntry.text.trim();
             if (playerName.length > 0) {
-                this.registry.set('playerName', playerName);
-                this.registry.get("player").setName(this.registry.get("playerName"))
+                //this.registry.set('playerName', playerName);
+                this.registry.get("player").setName(playerName)
                 this.scene.start('PickYourStarter');  // go to next scene
             } else {
                 namePrompt.setText('Please enter a name:');

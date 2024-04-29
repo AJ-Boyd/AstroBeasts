@@ -37,8 +37,8 @@ export class SaveScene extends Phaser.Scene {
             inventory_items: this.registry.get('inventory_items'),
             inventory_astrobeasts: this.registry.get('inventory_astrobeasts'),
             inventory_moves: this.registry.get('inventory_moves'),
-            playerName: this.registry.get('playerName'),
-            walletTotal: this.registry.get('walletTotal')
+            playerName: this.registry.get('player').getName(),
+            walletTotal: this.registry.get('player').getCredits()
             // will need to include other registry variables
         };
         try {

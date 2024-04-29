@@ -16,7 +16,7 @@ export class TourneyScene extends Phaser.Scene {
         // add load game functionality here
         let GoFightText = this.add.text(480, 550, "To the Tournament >", { color: 'white' })
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('Preload')); 
+            .on('pointerdown', () => {this.registry.set("isTournament", true); this.scene.start('Preload')}); 
             GoFightText.on('pointerover', () => {
                 GoFightText.setStyle({ fill: '#0f0'}); // when you hover, changes to white
             });

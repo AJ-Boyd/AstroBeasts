@@ -109,7 +109,7 @@ export class ShopScene extends Phaser.Scene {
     }
     
     updateEquippedText() {
-        const Wallet = this.registry.get('walletTotal');
+        const Wallet = this.registry.get('player').getCredits();
         this.walletText.setText(`${Wallet} Credits`);
         // below is using the webfontloader module to use external fonts for the scene
         WebFontLoader.default.load({
@@ -167,7 +167,7 @@ export class ShopScene extends Phaser.Scene {
     
     
     buyItem(key, cost, shopType) {
-        let walletTotal = this.registry.get('walletTotal');
+        let walletTotal = this.registry.get('player').getCredits();
     
         // Check if user has enough credits
         if (walletTotal < cost) {
@@ -177,7 +177,7 @@ export class ShopScene extends Phaser.Scene {
     
         // Deduct the cost from the wallet
         walletTotal -= cost;
-        this.registry.set('walletTotal', walletTotal);
+        this.registry.get('player').setCredits(walletTotal);
         this.updateEquippedText();
 
         const inventoryTypeMap = {

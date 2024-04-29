@@ -147,9 +147,9 @@ export class HubScene extends Phaser.Scene {
         const gameState = {
             inventory_items: this.registry.get('inventory_items'),
             inventory_astrobeasts: this.registry.get('inventory_astrobeasts'),
-            playerName: this.registry.get('playerName'),
+            playerName: this.registry.get('player').getName(),
             inventory_moves: this.registry.get('inventory_moves'),
-            walletTotal: this.registry.get('walletTotal')
+            walletTotal: this.registry.get('player').getCredits()
             // will need to include other registry variables
         };
         try {
@@ -164,16 +164,16 @@ export class HubScene extends Phaser.Scene {
             if (data.status === 'success') {
                 console.log('Game saved:', data.message);
                 // update to show feedback
+                //this.add.text(this.cameras.main.width / 2, 380, 'Save successful!', { font: '24px', color: 'green' }).setOrigin(0.5, 0);
                 return true;
-                this.add.text(this.cameras.main.width / 2, 380, 'Save successful!', { font: '24px', color: 'green' }).setOrigin(0.5, 0);
-            } else {
+                 } else {
                 return true;
                 console.error('Save failed:', data.message);
                 this.add.text(this.cameras.main.width / 2, 380, 'Save failed!', { font: '24px', color: 'red' }).setOrigin(0.5, 0);
             }
         } catch (error) {
             console.error('Error saving game:', error);
-            this.add.text(this.cameras.main.width / 2, 380, 'Error saving game.', { font: '24px', color: 'red' }).setOrigin(0.5, 0);
+            //this.add.text(this.cameras.main.width / 2, 380, 'Error saving game.', { font: '24px', color: 'red' }).setOrigin(0.5, 0);
         }
     }
 }

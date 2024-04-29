@@ -11,7 +11,7 @@ export class MainMenuScene extends Phaser.Scene {
     }
     init() {
         this.registry.set('playerName', '');
-        this.registry.set('player', new Player("", [], 0,  0, 1, 0, 0));
+        this.registry.set('player', new Player("", [], 1000,  0, 1, 0, 0));
         // Inventory contains dictionary items, where each dictionary represents an item. it has the following variables:
         // 1. key (image name), 2. name (item's name), 3. description, 4. quantity, 5. isEquipped (has the player equipped this item for battle?)
         this.registry.set('inventory_items', []); // should be list of dicts with the item name and its key that cooresponds to it's png path
@@ -29,10 +29,11 @@ export class MainMenuScene extends Phaser.Scene {
             isEquipped: true,
             maxHP: 1000,
             currentHP: 1000,
+            currentExp: 0,
+            maxExp: 1000,
             stats: [300, 250, 300, 300, 250],
             level: 1,
             isAlive: true
-
         },
         { 
             key: 'tarkeel', 
@@ -41,10 +42,12 @@ export class MainMenuScene extends Phaser.Scene {
             assetAnim: "idle_Tarkeel",
             description: 'Bug AstroBeast', 
             quantity: 1, 
-            cost: 51, 
+            cost: 50, 
             isEquipped: true,
             maxHP: 1000,
             currentHP: 1000,
+            currentExp: 0,
+            maxExp: 1000,
             stats: [194, 128, 448, 500, 130],
             level: 1,
             isAlive: true
@@ -105,7 +108,10 @@ export class MainMenuScene extends Phaser.Scene {
        this.registry.set('currentItemsEquipped', 0);
        this.registry.set('currentAstrobeastsEquipped', 0);
        this.registry.set('currentMovesEquipped', 0);
-       this.registry.set('walletTotal', 1000);  
+       //this.registry.set('walletTotal', 1000);  
+
+       //boolean variable for if we are entering into combat for the Tourney feature or nah
+       this.registry.set('isTournament', false);
     }
     create() {
         this.add.image(0, 0, 'sky').setOrigin(0, 0);

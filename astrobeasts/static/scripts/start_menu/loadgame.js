@@ -66,7 +66,7 @@ export class LoadGameScene extends Phaser.Scene {
         
     }
     async check_name(my_name) {
-        
+        alert(my_name)
         try {
             const response = await fetch('/check_name', {
                 method: 'POST',
@@ -87,8 +87,9 @@ export class LoadGameScene extends Phaser.Scene {
                 this.registry.set('inventory_items', playerData['inventory_items']);
                 this.registry.set('inventory_astrobeasts', playerData['inventory_astrobeasts']);
                 this.registry.set('inventory_moves', playerData['inventory_moves']);
-                this.registry.set('playerName', playerData.playerName)
-                this.registry.set('walletTotal', playerData.walletTotal)
+                //this.registry.set('playerName', playerData.playerName)
+                this.registry.get("player").setName(playerData.playerName)
+                this.registry.get('player').setCredits(playerData.walletTotal)
 
                 this.scene.start('LoadHub');
             } else {
