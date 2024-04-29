@@ -23,7 +23,7 @@ export class MainMenuScene extends Phaser.Scene {
             name: 'Skol',
             assets: 'Skol', 
             assetAnim: "idle_Skol",
-            description: 'Fire AstroBeast', 
+            description: 'Balanced AstroBeast', 
             quantity: 1, 
             cost: 50, 
             isEquipped: true,
@@ -39,7 +39,7 @@ export class MainMenuScene extends Phaser.Scene {
             name: 'Tarkeel',
             assets: 'Tarkeel', 
             assetAnim: "idle_Tarkeel",
-            description: 'Water AstroBeast', 
+            description: 'Bug AstroBeast', 
             quantity: 1, 
             cost: 51, 
             isEquipped: true,
@@ -72,11 +72,17 @@ export class MainMenuScene extends Phaser.Scene {
         ]); 
        
         this.registry.set('shop_astrobeasts', [
-        { key: 'skol',assetAnim: "idle_Skol", name: 'Skol', description: 'Fire AstroBeast', quantity: 1, cost: 350, isSelected: false },
-        { key: 'tarkeel',assetAnim: "idle_Tarkeel", name: 'Tarkeel', description: 'Electric AstroBeast', quantity: 1, cost: 350, isSelected: false },
-        { key: 'arquam',assetAnim: "idle_Arquam", name: 'Arquam', description: 'Water AstroBeast', quantity: 1, cost: 350, isSelected: false },
-        { key: 'radrok',assetAnim: "idle_Radrok", name: 'Radrok', description: 'Rock AstroBeast', quantity: 1, cost: 350, isSelected: false },
-        { key: 'zallo',assetAnim: "idle_Zallo", name: 'Zallo', description: 'Gravity AstroBeast', quantity: 1, cost: 350, isSelected: false }
+        //{ key: 'skol',assetAnim: "idle_Skol", name: 'Skol', description: 'Fire AstroBeast', quantity: 1, cost: 350, isSelected: false },
+        //{ key: 'tarkeel',assetAnim: "idle_Tarkeel", name: 'Tarkeel', description: 'Electric AstroBeast', quantity: 1, cost: 350, isSelected: false },
+        { key: 'arquam',assetAnim: "idle_Arquam", name: 'Arquam', description: 'Water AstroBeast', quantity: 1, cost: 1000, isSelected: false },
+        { key: 'shamrock',assetAnim: "idle_Shamrock", name: 'Shamrock', description: 'Lucky AstroBeast', quantity: 1, cost: 1000, isSelected: false },
+        { key: 'zallo',assetAnim: "idle_Zallo", name: 'Zallo', description: 'Gravity AstroBeast', quantity: 1, cost: 1000, isSelected: false },
+        { key: 'icell',assetAnim: "idle_Icell", name: 'Icell', description: 'The Harbinger of Winter', quantity: 1, cost: 2500, isSelected: false },
+        { key: 'ragnex',assetAnim: "idle_Ragnex", name: 'Ragnex', description: 'The Eternal Dread of the Cosmos', quantity: 1, cost: 2500, isSelected: false },
+        { key: 'strikoh',assetAnim: "idle_Strikoh", name: 'Strikoh', description: 'The Tempest\'s Last Stand', quantity: 1, cost: 2500, isSelected: false },
+        { key: 'scourge',assetAnim: "idle_Scourge", name: 'Scourge', description: 'The Doom of the Red Quesar', quantity: 1, cost: 2500, isSelected: false },
+        { key: 'aesun',assetAnim: "idle_Aesun", name: 'Aesun', description: 'Aesun the Divine and Arcane Light', quantity: 1, cost: 5000, isSelected: false },
+        { key: 'tyboar',assetAnim: "idle_Tyboar", name: 'Tyboar', description: 'Tyboar the Ancient Titan of Thunder', quantity: 1, cost: 5000, isSelected: false }
         ]);
 
         this.registry.set('shop_items', [
