@@ -179,6 +179,13 @@ def check_name():
         return jsonify(
             {"exists": False, "message": f"Player {player_name} does not exist."}
         )
+    
+@router.route('/get_high_scores', methods=['GET'])
+def get_high_scores():
+    session = Session()
+    top_players = session.query(Player).order_by(Player.Score.desc()).limit(5).all()
+    scores = [{'name': player.name, 'score': player.Score} for player in top_players]
+    return jsonify(scores)
 
 
 @router.route("/submit_scores", methods=["POST"])
