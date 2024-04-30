@@ -27,7 +27,7 @@ var STATUS_STATE = 'default'
 var CURR_TURN = 0;
 var CURR_PARTY = 'player';
 var flag = 0;
-const FLEE_CHANCE = 1;
+const FLEE_CHANCE = 40;
 
 export class CombatScene extends Phaser.Scene {
     #combatMenu;
@@ -70,7 +70,7 @@ create() {
     const background = new RenderBackground(this);
     background.showForest();
 
-    //harc-oded moves
+    //hard-coded moves
     const punch = new Move("Punch", "throw a haymaker", 40, 80, 1); //low damage, high acc
     const strike = new Move("Strike", "cuts", 50, 75, 1); //mid damage, mid acc
     const bite = new Move("Bite", "chomp!", 100, 70, 2); //high damage, mid acc
@@ -171,7 +171,7 @@ create() {
     let directions = [[200,310] , [200,200], [100,310], [100,200]];
     let temp = this.registry.get('inventory_astrobeasts');
     let shop_beasts = this.registry.get('shop_astrobeasts');
-    console.log(temp);
+    console.log("temp:", temp);
     let count = 0;
     for (let i = 0; i < temp.length; i++){
         if (temp[i]['isEquipped'] && count < directions.length){
@@ -454,7 +454,7 @@ else if(STATUS_STATE == 'fight'){
                     currentHP: HP,
                     stats: randEnemyDict['stats'],
                     moves: this.genMoves(),
-                    level: this.getRand(1, 10),
+                    level: this.getRand(1, 7),
                     isAlive: true
                 }
             }, {x: directions[i][0], y: directions[i][1]});
@@ -516,18 +516,39 @@ else if(STATUS_STATE == 'fight'){
         return d;
     }
 
+    enemyAttack(attacker, target, move){
+        var d = this.calcEnemyDamage(attacker, move); //raw damage a move can do
+        console.log("raw enemy damage: " + d)
+        var m = this.calcMitigation(target); //the percentage of damage that the target can mitigate
+        console.log("percentage of player mitigation: " + m)
+        d *= 1-m;
+        d = Math.round(d);
+        console.log("final damage: " + d)
+
+        return d;
+    }
+
     /*
     formula to calculate raw damage an attacker does with a move. this is based on attacker and move level, 
     attacker ATK stat, move baseATK stat, and a random number
     */
     calcDamage(attacker, move){
         var rand = this.getRand(16, 24);
-        console.log("random coef: " + rand)
         var d = (Math.pow(attacker.getATK(), 1.18) / 1.5) + (rand * move.getBaseAttack()) + (10 * move.getLevel()) - 900
 
         return d;
     }
 
+    /*
+    formula to calculate raw damage for an enemy attacker based on attacker ATK and level and a random number
+    */
+    calcEnemyDamage(attacker, move){
+        var rand = this.getRand(0, 5);
+        console.log("random number:", rand)
+        var d = (0.5 * Math.pow(attacker.getATK() * rand, 0.8)) + (5 * attacker.getLevel()) + move.getBaseAttack();
+
+        return d;
+    }
     /*
     formula to calculate the percentage of damage that a target mitigates. this is based on the target's
     DEF stat and a random number
@@ -785,8 +806,10 @@ changeTurn(){
         this.#combatMenu.battleOptionsOff();
         var atkrs = enemies.filter(e => e.getAlive())
         attacker = atkrs[CURR_TURN]; //get the attacker
-        console.log("enemy attacker", attacker.getDetails())
-        this.enemyTurnCont();
+        if(attacker != undefined){
+            console.log("enemy attacker", attacker.getDetails())
+            this.enemyTurnCont();
+        }
     }
 
     enemyTurnCont(){
@@ -802,7 +825,7 @@ changeTurn(){
         console.log(target)
 
         //enemy attack
-        var dmg = 1;
+        var dmg = attacker.enemyAttack();
         var diff = target.getCurrentHP() - dmg;
         if(diff < 0){
             diff = 0;
