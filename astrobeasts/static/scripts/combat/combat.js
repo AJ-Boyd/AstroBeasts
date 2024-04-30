@@ -171,6 +171,29 @@ create() {
     let directions = [[200,310] , [200,200], [100,310], [100,200]];
     let temp = this.registry.get('inventory_astrobeasts');
     let shop_beasts = this.registry.get('shop_astrobeasts');
+    let my_move =  this.registry.get('inventory_moves');
+    let moves_list = []
+    let move_count = 0;
+    for (let i = 0; i < my_move.length && move_count <4; i++){
+        let name  = my_move[i]['name']
+        if (name && my_move[i]["isEquipped"] ){
+
+            let shop_moves = this.registry.get('shop_moves');
+            for (let j = 0; j < shop_beasts.length; j++){
+                if (shop_moves[j].name === name){
+                    let thing = new Move(shop_moves[j].name, shop_moves[j].description, shop_moves[j].damage, shop_moves[j].accuracy, shop_moves[j].level);
+                    moves_list.push(thing);
+                    move_count+=1;
+                }
+            }
+
+
+
+
+
+        }
+        
+    }
     console.log(temp);
     let count = 0;
     for (let i = 0; i < temp.length; i++){
@@ -196,7 +219,7 @@ create() {
                     maxExp: temp[i]['maxExp'],
                     currentExp: temp[i]['currentExp'],
                     stats: temp[i]['stats'], //ATK, DEF, SPD, DEX, LUK
-                    moves: [punch, slash, bite],
+                    moves: moves_list,
                     level: temp[i]['level'],
                     isAlive: temp[i]['isAlive'],
                 }
