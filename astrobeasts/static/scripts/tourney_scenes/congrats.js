@@ -5,7 +5,7 @@ export class CongratsScene extends Phaser.Scene {
     }
     preload() {
         // Load all possible inventory images even if user doesn't have them at the moment
-        this.load.image('bgCongrats', '/static/assets/Backgrounds/bSimpleComet.jpg');
+        this.load.image('bgCongrats', '/static/assets/Backgrounds/bTourney.png');
         this.load.image('trophy', '/static/assets/Objects/trophy.png')
     }
 
