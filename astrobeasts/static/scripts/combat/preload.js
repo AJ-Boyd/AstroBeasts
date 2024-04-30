@@ -37,10 +37,10 @@ export class Preload extends Phaser.Scene {
 
         //Music
 
-        //this.load.audio(
-        //    'fight1',
-        //    '../static/assets/Music/OrbitalColossus.mp3'
-        //);
+        this.load.audio(
+           'fight1',
+           '../static/assets/Music/OrbitalColossus.mp3'
+        );
 
 
         //random assets
