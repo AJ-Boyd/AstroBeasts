@@ -19,9 +19,10 @@ export class TourneyScene extends Phaser.Scene {
         // Enter
         let EnterText = this.add.text(300, 400, 'ENTER')
             .setInteractive({ useHandCursor: true }).setPadding(16)
-            .on('pointerdown', () => {if (this.registry.get("Player").getLevel() == 1){this.scene.start('LoadQuarter')};
-                                      if (this.registry.get("Player").getLevel() == 2){this.scene.start('LoadSemi')};
-                                      if (this.registry.get("Player").getLevel() == 2){this.scene.start('LoadFinal')};
+            .on('pointerdown', () => {
+                if (this.registry.get("player").getLevel() == 1){this.scene.start('LoadQuarter')}
+                if (this.registry.get("player").getLevel() == 2){this.scene.start('LoadSemi')}
+                if (this.registry.get("player").getLevel() == 2){this.scene.start('LoadFinal')}
                 }
             ); 
             //.on('pointerdown', () => {this.registry.set("isTournament", true); this.scene.start('Preload')}); 
