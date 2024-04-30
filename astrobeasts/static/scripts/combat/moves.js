@@ -5,7 +5,7 @@ export class Move {
       /** @protected @type {string} */
       this._description = desc;
       /** @protected @type {number} */
-      this._baseAttack = base; //this is a number bewteen 30 and 100
+      this._baseAttack = base; //this is a number bewteen 30 and 110
       /**@protacted @type {number} */
       this._accuracy = acc; //this is a number between 50 and 100
       /** @protected @type {number} */

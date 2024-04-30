@@ -20,7 +20,7 @@ export class DojoScene extends Phaser.Scene {
         // Enter
         let EnterText = this.add.text(310, 450, 'TRAIN')
             .setInteractive({ useHandCursor: true }).setPadding(16)
-            .on('pointerdown', () => this.scene.start('LoadFinal'));                            // CHANGE THIS LINE
+            .on('pointerdown', () => this.scene.start('Preload'));//this.scene.start('LoadFinal'));                            // CHANGE THIS LINE
             EnterText.setBackgroundColor('black').setFontSize(32);
             // EnterText.on('pointerdown', () => Title.setVisible(false).setVisible(false));
             EnterText.on('pointerover', () => {

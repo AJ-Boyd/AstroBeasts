@@ -27,7 +27,7 @@ const config = {
     parent: 'gameContainer',
     scene: [MainMenuScene, NewGameScene, NameInputScene, PickYourStarterScene, TutorialScene, LoadGameScene, OptionsScene, 
             HubScene, InventoryScene, DojoScene, ShopScene, TourneyScene, SaveScene, HighScoreScene, CreditsScene, FleeScene,
-            QuarterScene, SemiScene, FinalScene, CongratsScene],
+            QuarterScene, SemiScene, FinalScene, CongratsScene,  Preload, CombatScene],
     dom: {
         createContainer: true
     },

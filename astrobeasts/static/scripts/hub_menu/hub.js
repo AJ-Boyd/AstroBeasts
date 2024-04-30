@@ -84,13 +84,39 @@ export class HubScene extends Phaser.Scene {
         let SaveText = this.add.text(startXSecondRow + gap, secondRowY, '  > Save ', { font: '15px', color: 'white' })
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5, 0.5)
-            .on('pointerdown', () => this.saveGame()); //add a function to save and a pop-up saying save successful
-            SaveText.on('pointerover', () => {
-                SaveText.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
+            .on('pointerdown', async () => {
+                const wasSuccessful = await this.saveGame();  // Wait for the saveGame to complete and capture the result
+                if (wasSuccessful) {
+                    SaveText.setStyle({ fill: 'green' });  // Set the color to green if successful
+                } else {
+                    SaveText.setStyle({ fill: 'red' });  // Set the color to red if there was a failure
+                }
+
+                // Schedule a tween to fade the color back to white after two seconds
+                this.time.delayedCall(500, () => {
+                    this.add.tween({
+                        targets: SaveText,
+                        ease: 'Sine.easeInOut',
+                        duration: 500,  // Duration of the fade effect in milliseconds
+                        delay: 0,
+                        props: {
+                            color: { getStart: () => SaveText.style.color, getEnd: () => '#ffffff' }
+                        },
+                        onComplete: () => {
+                            SaveText.setStyle({ fill: 'white' });
+                        }
+                    });
+                }, [], this);
             });
-            SaveText.on('pointerout', () => {
-                SaveText.setStyle({ fill: 'white'}); 
-            });
+        SaveText.on('pointerover', () => {
+            SaveText.setStyle({ fill: '#13b2f3' }); // Temporarily change color when hover
+        });
+        SaveText.on('pointerout', () => {
+            // Only change the color back if it's not currently in a success/failure state
+            if (['#ff0000', '#00ff00'].indexOf(SaveText.style.color) != -1) {
+                SaveText.setStyle({ fill: 'white' });
+            }
+        });
 
         let SaveAndQuitText = this.add.text(startXSecondRow + 2 * gap, secondRowY, '  > Save & Quit', { font: '15px', color: 'DodgerBlue' })
             .setInteractive({ useHandCursor: true })
@@ -127,10 +153,10 @@ export class HubScene extends Phaser.Scene {
         const gameState = {
             inventory_items: this.registry.get('inventory_items'),
             inventory_astrobeasts: this.registry.get('inventory_astrobeasts'),
-            playerName: this.registry.get('playerName'),
+            playerName: this.registry.get('player').getName(),
             inventory_moves: this.registry.get('inventory_moves'),
-            walletTotal: this.registry.get('walletTotal'),
-            Score: this.registry.get('Score')
+            walletTotal: this.registry.get('player').getCredits(),
+            Score: 0
             // will need to include other registry variables
         };
         try {
@@ -145,14 +171,16 @@ export class HubScene extends Phaser.Scene {
             if (data.status === 'success') {
                 console.log('Game saved:', data.message);
                 // update to show feedback
-                this.add.text(this.cameras.main.width / 2, 380, 'Save successful!', { font: '24px', color: 'green' }).setOrigin(0.5, 0);
-            } else {
+                //this.add.text(this.cameras.main.width / 2, 380, 'Save successful!', { font: '24px', color: 'green' }).setOrigin(0.5, 0);
+                return true;
+                 } else {
+                return true;
                 console.error('Save failed:', data.message);
                 this.add.text(this.cameras.main.width / 2, 380, 'Save failed!', { font: '24px', color: 'red' }).setOrigin(0.5, 0);
             }
         } catch (error) {
             console.error('Error saving game:', error);
-            this.add.text(this.cameras.main.width / 2, 380, 'Error saving game.', { font: '24px', color: 'red' }).setOrigin(0.5, 0);
+            //this.add.text(this.cameras.main.width / 2, 380, 'Error saving game.', { font: '24px', color: 'red' }).setOrigin(0.5, 0);
         }
     }
 }

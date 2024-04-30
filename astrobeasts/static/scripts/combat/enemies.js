@@ -15,6 +15,7 @@ import { Move } from "./moves.js";
  * @typedef EnemyDetails
  * @type {Object}
  * @property {string} name
+ * @property {string} rarity
  * @property {string} assets
  * @property {string} assetAnim
  * @property {number} maxHP
@@ -65,104 +66,106 @@ export class Enemy {
         this.EnemyGuy.anims.play(this._enemyDetails.assetAnim)
     }
 
-
+    //getters
+    getDetails(){
+        return this._enemyDetails;
+    }
     getAlive(){
         return this._enemyDetails.isAlive;
     }
+    getName(){
+        return this._enemyDetails.name;
+    }
+    getCurrentHP(){
+        return this._enemyDetails.currentHP;
+    }
+    getRarity(){
+        return this._enemyDetails.rarity;
+    }
+    getMaxHP(){
+        return this._enemyDetails.maxHP;
+    }
 
+    getLevel(){
+        return this._enemyDetails.level;
+    }
+
+    getMoves(){
+        return this._enemyDetails.moves;
+    }
+    getStats()
+    {
+        return this._enemyDetails.stats;
+    }
+    getATK(){
+        return this._enemyDetails.stats[0];
+    }
+    getDEF(){
+        return this._enemyDetails.stats[1];
+    }
+    getSPD(){
+        return this._enemyDetails.stats[2];
+    }
+
+    //setters
     setAlive(v)
     {
         this._enemyDetails.isAlive = v;
     }
-
-
-    getName(){
-        return this._enemyDetails.name;
+    setName(n){
+        this._enemyDetails.name = n;
     }
 
-getCurrentHP(){
-    return this._enemyDetails.currentHP;
-}
 
-getMaxHP(){
-    return this._enemyDetails.maxHP;
-}
-
-getLevel(){
-    return this._enemyDetails.level;
-}
-
-getMoves(){
-    return this._enemyDetails.moves;
-}
-
-getStats()
-{
-    return this._enemyDetails.stats;
-}
-getATK(){
-    return this._enemyDetails.stats[0];
-}
-getDEF(){
-    return this._enemyDetails.stats[1];
-}
-getSPD(){
-    return this._enemyDetails.stats[2];
-}
-takeDamage(damage, callback)
-{
-    console.log("It is", this._enemyDetails.currentHP)
-    console.log("you are subtracting", damage)
-    var dam = this._enemyDetails.currentHP -= damage;
-    if (dam < 0){
-        dam =0;
-        this._enemyDetails.isAlive = false;
-    }
-    this._HPBar.animateHP(dam/this._enemyDetails.maxHP, {callback});
-   
-
-}
-
-
-#createHPBar()
-{
-    this._HPBar = new HPBar(this._scene, 10, 22);
-
-    const enemyAlienName = this._scene.add.text(40,0, this._enemyDetails.name, 
+    takeDamage(damage, callback)
     {
-        color: '#31b1e0',
-        fontSize: '28px',
-        fontStyle: 'bold italic',
+        console.log("It is", this._enemyDetails.currentHP)
+        console.log("you are subtracting", damage)
+        var dam = this._enemyDetails.currentHP -= damage;
+        if (dam < 0){
+            dam =0;
+            this._enemyDetails.isAlive = false;
+        }
+        this._HPBar.animateHP(dam/this._enemyDetails.maxHP, {callback});
+    
+
     }
-    );
 
 
-const hpImg = this._scene.add.image(0, 0,"healthback").setOrigin(0)
+    #createHPBar()
+    {
+        this._HPBar = new HPBar(this._scene, 10, 22);
+
+        const enemyAlienName = this._scene.add.text(40,0, this._enemyDetails.name, 
+        {
+            color: '#31b1e0',
+            fontSize: '28px',
+            fontStyle: 'bold italic',
+        }
+        );
 
 
-this._HPContainer = this._scene.add.container(550, 440, [
-
-    hpImg,
-    enemyAlienName,
-    this._HPBar.container,
-   
-   
-]                        
+    const hpImg = this._scene.add.image(0, 0,"healthback").setOrigin(0)
 
 
-).setAlpha(0);
+    this._HPContainer = this._scene.add.container(550, 440, [
 
-}
+        hpImg,
+        enemyAlienName,
+        this._HPBar.container,
+    
+    
+    ]                        
+    ).setAlpha(0);
+    }
 
-NameandHPon()
-{
+    NameandHPon()
+    {
+        this._HPContainer.setAlpha(1);
+    }
 
-    this._HPContainer.setAlpha(1);
-}
-
-NameandHPoff()
-{
-
-    this._HPContainer.setAlpha(0);
-}
+    NameandHPoff()
+    {
+        this._HPContainer.setAlpha(0);
+    }
 }
