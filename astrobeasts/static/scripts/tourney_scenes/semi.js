@@ -26,7 +26,7 @@ export class SemiScene extends Phaser.Scene {
         // Enter
         let EnterText = this.add.text(300, 430, 'FIGHT')
             .setInteractive({ useHandCursor: true }).setPadding(16)
-            .on('pointerdown', () => this.scene.start('LoadFinal'));
+            .on('pointerdown', () => {this.registry.set("isTournament", true); this.scene.start('Preload')});
             EnterText.setBackgroundColor('black').setFontSize(32);
             // EnterText.on('pointerdown', () => Title.setVisible(false).setVisible(false));
             EnterText.on('pointerover', () => {
