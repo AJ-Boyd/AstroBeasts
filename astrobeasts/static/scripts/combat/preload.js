@@ -182,7 +182,6 @@ export class Preload extends Phaser.Scene {
             repeat: -1,
 
         });
-
         this.anims.create({
             key: 'died_AllWrath',
             frames: this.anims.generateFrameNumbers('AllWrath', { frames: [5,6,7,8,10,11,12,13] } ),
@@ -192,10 +191,6 @@ export class Preload extends Phaser.Scene {
 
 
         ///Aesun
-
-
-
-
         this.anims.create({
             key: 'idle_Aesun',
             frames: this.anims.generateFrameNumbers('Aesun',  { frames: [ 0,5,10,15,10,5] } ),
@@ -203,7 +198,6 @@ export class Preload extends Phaser.Scene {
             repeat: -1,
 
         });
-
         this.anims.create({
             key: 'died_Aesun',
             frames: this.anims.generateFrameNumbers('Aesun',  { frames: [ 6,11,12,16,14,17] } ),
@@ -211,7 +205,6 @@ export class Preload extends Phaser.Scene {
             repeat: 0,
 
         });
-
 
 
         //Arquam
@@ -228,8 +221,6 @@ export class Preload extends Phaser.Scene {
             frameRate: 5,
             repeat: -1
         });
-
-
         this.anims.create({
             key: 'died_Arquam',
             frames: this.anims.generateFrameNumbers('Arquam', { start: 18, end: 23}),
@@ -292,8 +283,6 @@ export class Preload extends Phaser.Scene {
             repeat: 0,
         });
 
-
-
         //Ragnex
         this.anims.create({
             key: 'idle_Ragnex',
@@ -301,8 +290,6 @@ export class Preload extends Phaser.Scene {
             frameRate: 3,
             repeat: -1
         });
-
-
         this.anims.create({
             key: 'died_Ragnex',
             frames: this.anims.generateFrameNumbers('Ragnex',  { frames: [ 18,19,20,21,22,23] } ),
@@ -317,16 +304,13 @@ export class Preload extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('Ruinn',  { frames: [ 0,1,3,2] } ),
             frameRate: 3,
             repeat: -1
-        });
-        
+        });        
         this.anims.create({
             key: 'died_Ruinn',
             frames: this.anims.generateFrameNumbers('Ruinn',  { frames: [ 54,55,56,57,58,59,60,61,62] } ),
             frameRate: 3,
             repeat: 0,
         });
-
-
 
         //Scourge
         this.anims.create({
@@ -449,7 +433,6 @@ export class Preload extends Phaser.Scene {
             frameRate: 6,
             repeat: 0,
         });
-
 
         //Zallo
         this.anims.create({
