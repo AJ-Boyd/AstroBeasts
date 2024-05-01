@@ -59,12 +59,12 @@ export class Preload extends Phaser.Scene {
 
         this.load.spritesheet('Aesun',
             '../static/assets/Sprites/Aesun.png',
-            { frameWidth: 64, frameHeight: 90 }
+            { frameWidth: 80, frameHeight: 95 }
         ); 
 
         this.load.spritesheet('AllWrath',
             '../static/assets/Sprites/aAll Wrath.png',
-            { frameWidth: 41, frameHeight:70 }
+            { frameWidth: 73, frameHeight:92 }
         ); 
 
         this.load.spritesheet('Arquam',
@@ -84,17 +84,17 @@ export class Preload extends Phaser.Scene {
 
         this.load.spritesheet('Malgrun',
         '../static/assets/Sprites/Malgrun.png',
-        { frameWidth: 65, frameHeight: 85 }
+        { frameWidth: 65, frameHeight: 75 }
         );
 
         this.load.spritesheet('Ragnex',
         '../static/assets/Sprites/Ragnex.png',
-        { frameWidth: 68, frameHeight: 88 }
+        { frameWidth: 65, frameHeight: 80 }
         );
 
         this.load.spritesheet('Ruinn',
         '../static/assets/Sprites/Ruinn.png',
-        { frameWidth: 72, frameHeight: 113 }
+        { frameWidth: 72, frameHeight: 100 }
         );
         
         this.load.spritesheet('Scourge',
@@ -125,7 +125,7 @@ export class Preload extends Phaser.Scene {
     
         this.load.spritesheet('Tyboar',
         '../static/assets/Sprites/Tyboar.png',
-        { frameWidth: 64, frameHeight: 67 }
+        { frameWidth: 64, frameHeight: 74 }
         ); 
 
         this.load.spritesheet('Zallo',
@@ -152,6 +152,18 @@ export class Preload extends Phaser.Scene {
 
     create() {
         console.log('create - preload');  
+
+
+        // //Music Section for Leann - this will play.
+        // //Need to mute/stop bg music
+        // //nee to be able to invoke the setMute (gives me an error that setMute does not exist on type 'BaseSound')
+        // let ftMusic = this.sound.add('fight1', {loop: true });
+        // ftMusic.play();     
+
+        // let isMuted = this.game.registry.get('isMuted');
+        // ftMusic.setMute(isMuted)
+        
+
         // Animations
         //Items:
         this.anims.create({
@@ -165,18 +177,42 @@ export class Preload extends Phaser.Scene {
         //All Wrath
         this.anims.create({
             key: 'idle_AllWrath',
-            frames: this.anims.generateFrameNumbers('AllWrath',  { frames: [ 0,1 ] } ),
+            frames: this.anims.generateFrameNumbers('AllWrath',  { frames: [ 0,1,2,3,2,1 ] } ),
             frameRate: 3,
             repeat: -1,
 
         });
+
+        this.anims.create({
+            key: 'died_AllWrath',
+            frames: this.anims.generateFrameNumbers('AllWrath', { frames: [5,6,7,8,10,11,12,13] } ),
+            frameRate: 5,
+            repeat: 0,
+        });
+
+
+        ///Aesun
+
+
+
+
         this.anims.create({
             key: 'idle_Aesun',
-            frames: this.anims.generateFrameNumbers('Aesun',  { frames: [ 0,6] } ),
+            frames: this.anims.generateFrameNumbers('Aesun',  { frames: [ 0,5,10,15,10,5] } ),
             frameRate: 3,
             repeat: -1,
 
         });
+
+        this.anims.create({
+            key: 'died_Aesun',
+            frames: this.anims.generateFrameNumbers('Aesun',  { frames: [ 6,11,12,16,14,17] } ),
+            frameRate: 3,
+            repeat: 0,
+
+        });
+
+
 
         //Arquam
         this.anims.create({
@@ -249,6 +285,15 @@ export class Preload extends Phaser.Scene {
             repeat: -1
         });
 
+        this.anims.create({
+            key: 'died_Malgrun',
+            frames: this.anims.generateFrameNumbers('Malgrun',  { frames: [ 56,56,57,58,59,60,61] } ),
+            frameRate: 5,
+            repeat: 0,
+        });
+
+
+
         //Ragnex
         this.anims.create({
             key: 'idle_Ragnex',
@@ -257,6 +302,15 @@ export class Preload extends Phaser.Scene {
             repeat: -1
         });
 
+
+        this.anims.create({
+            key: 'died_Ragnex',
+            frames: this.anims.generateFrameNumbers('Ragnex',  { frames: [ 18,19,20,21,22,23] } ),
+            frameRate: 3,
+            repeat: 0,
+        });
+
+
         //Ruinn
         this.anims.create({
             key: 'idle_Ruinn',
@@ -264,6 +318,15 @@ export class Preload extends Phaser.Scene {
             frameRate: 3,
             repeat: -1
         });
+        
+        this.anims.create({
+            key: 'died_Ruinn',
+            frames: this.anims.generateFrameNumbers('Ruinn',  { frames: [ 54,55,56,57,58,59,60,61,62] } ),
+            frameRate: 3,
+            repeat: 0,
+        });
+
+
 
         //Scourge
         this.anims.create({
@@ -376,8 +439,15 @@ export class Preload extends Phaser.Scene {
         this.anims.create({
             key: 'idle_Tyboar',
             frames: this.anims.generateFrameNumbers('Tyboar',  { frames: [ 4,5,6,7 ] } ),
-            frameRate: 10,
+            frameRate: 7,
             repeat: -1
+        });
+
+        this.anims.create({
+            key: 'died_Tyboar',
+            frames: this.anims.generateFrameNumbers('Tyboar',  { frames: [ 16,17,18,19] } ),
+            frameRate: 6,
+            repeat: 0,
         });
 
 
