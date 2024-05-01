@@ -119,7 +119,7 @@ export class HubScene extends Phaser.Scene {
         });
         SaveText.on('pointerout', () => {
             // Only change the color back if it's not currently in a success/failure state
-            if (['#ff0000', '#00ff00'].indexOf(SaveText.style.color) != -1) {
+            if (['#ff0000', '#00ff00'].indexOf(SaveText.style.color) === -1) {
                 SaveText.setStyle({ fill: 'white' });
             }
         });
@@ -148,7 +148,7 @@ export class HubScene extends Phaser.Scene {
                 ShopText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
                 DojoText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
                 TournamentText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
-                SaveText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                SaveText.setFontFamily('"Press Start 2P"')
                 SaveAndQuitText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
                 statusText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
             }
