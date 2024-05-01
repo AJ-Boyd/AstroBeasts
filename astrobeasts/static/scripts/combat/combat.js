@@ -27,7 +27,7 @@ var STATUS_STATE = 'default'
 var CURR_TURN = 0;
 var CURR_PARTY = 'player';
 var flag = 0;
-const FLEE_CHANCE = 1;
+const FLEE_CHANCE = 50;
 
 export class CombatScene extends Phaser.Scene {
     #combatMenu;
@@ -98,8 +98,8 @@ create() {
         rarity: "Galactic",
         assets: 'AllWrath',
         assetAnim: "idle_AllWrath",
-        maxHP: 10000,
-        currentHP: 1,
+        maxHP: 600,
+        currentHP: 600,
         stats: [600, 650, 600], //ATK, DEF, SPD
         moves: [punch, strike, kick, slash],
         level: 10,
@@ -111,8 +111,8 @@ create() {
             rarity: "Legendary",
             assets: 'Malgrun',
             assetAnim: "idle_Malgrun",
-            maxHP: 5,
-            currentHP: 5,
+            maxHP: 500,
+            currentHP: 500,
             stats: [1980, 1380, 1692], //ATK, DEF, SPD
             moves: [punch, strike,],
             level: 7,
@@ -124,8 +124,8 @@ create() {
             assets: 'Ruinn',
             rarity: "Galactic",
             assetAnim: "idle_Ruinn",
-            maxHP: 50000,
-            currentHP: 50000,
+            maxHP: 900,
+            currentHP: 900,
             stats: [1114, 1988, 1556], //ATK, DEF, SPD
             moves: [punch, strike],
             level: 10,
