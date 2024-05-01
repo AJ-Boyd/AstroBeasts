@@ -84,6 +84,7 @@ export class Preload extends Phaser.Scene {
 
         this.load.spritesheet('Malgrun',
         '../static/assets/Sprites/Malgrun.png',
+        { frameWidth: 65, frameHeight: 74.3 }
         { frameWidth: 65.125, frameHeight: 74.5 }
         );
 
@@ -278,9 +279,9 @@ export class Preload extends Phaser.Scene {
 
         this.anims.create({
             key: 'died_Malgrun',
-            frames: this.anims.generateFrameNumbers('Malgrun',  { frames: [ 56,56,57,58,59,60,61] } ),
-            frameRate: 5,
-            repeat: 0,
+            frames: this.anims.generateFrameNumbers('Malgrun',  { frames: [ 56, 57,58,59,60,61] } ),
+            frameRate: 4,
+            repeat: -1,
         });
 
         //Ragnex
