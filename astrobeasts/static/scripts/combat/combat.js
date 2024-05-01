@@ -111,8 +111,8 @@ create() {
             rarity: "Legendary",
             assets: 'Malgrun',
             assetAnim: "idle_Malgrun",
-            maxHP: 25000,
-            currentHP: 25000,
+            maxHP: 5,
+            currentHP: 5,
             stats: [1980, 1380, 1692], //ATK, DEF, SPD
             moves: [punch, strike,],
             level: 7,

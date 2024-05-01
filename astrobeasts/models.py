@@ -37,6 +37,7 @@ class Player(Base):
     name = Column(String)
     walletTotal = Column(Integer, default=0)
     Score = Column(Integer, default=0)
+    Level = Column(Integer, default=1)
     inventoryItems = relationship(
         "InventoryItem",
         secondary=player_inventory_association,

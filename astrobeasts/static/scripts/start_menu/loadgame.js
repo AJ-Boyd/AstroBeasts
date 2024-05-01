@@ -109,6 +109,7 @@ export class LoadGameScene extends Phaser.Scene {
                 this.registry.get("player").setName(playerData.playerName)
                 this.registry.get('player').setCredits(playerData.walletTotal)
                 this.registry.set('Score', 0);
+                this.registry.set("Level", 1);
                 this.scene.start('LoadHub');
             } else {
                 console.error('User does not exist in DB:', data.message);
