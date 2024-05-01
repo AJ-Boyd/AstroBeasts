@@ -414,7 +414,7 @@ else if(STATUS_STATE == 'fight'){
             this.battlestuff();
         }        
     }else if(STATUS_STATE == "enemy"){
-        var x = [2000, 4016, 6100, 8200]
+        var x = [2000, 4100, 6200, 8300]
         var livingE = enemies.filter(e => e.getAlive());
         for(var i = 0; i < livingE.length; i++){
             this.time.delayedCall(x[i]-5, this.enemyTurn, null, this);
@@ -481,7 +481,7 @@ else if(STATUS_STATE == 'fight'){
         for(var i = 0; i < partySize; i++){
             const rand = this.getRand(0, rabs.length- 1)
             const randEnemyDict = rabs[rand];
-            const HP = randEnemyDict['maxHP'] + this.getRand(-500, 1000)
+            const HP = randEnemyDict['maxHP'] + this.getRand(-500, 200)
 
             let enemy = new Enemy({
                 scene: this,
@@ -796,7 +796,7 @@ changeTurn(){
             //you earn 1/10 exp for each point of damage you did
             expGain = Math.round(damageDone / 10);
             //and lose 1000 credits
-            moneyGain = -1000;
+            moneyGain = -100;
             this.time.delayedCall(2000, this.#combatMenu.showEndMsg, ["DEFEAT\nYou earned " + expGain + " EXP and " + moneyGain + " credits.\nPress Spacebar to exit."], this.#combatMenu);
             this.checkLevelUp(expGain);
             STATUS_STATE = "conclusion";
