@@ -62,7 +62,7 @@ export class Enemy {
 
         this.#createHPBar();
 
-        this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(3);
+        this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(2);
         this.EnemyGuy.anims.play(this._enemyDetails.assetAnim)
     }
 

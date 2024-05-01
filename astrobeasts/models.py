@@ -37,6 +37,7 @@ class Player(Base):
     name = Column(String)
     walletTotal = Column(Integer, default=0)
     Score = Column(Integer, default=0)
+    Level = Column(Integer, default=1)
     inventoryItems = relationship(
         "InventoryItem",
         secondary=player_inventory_association,
@@ -48,6 +49,8 @@ class Player(Base):
     leaderboard = relationship("LeaderBoard", back_populates="player")
     inventory = relationship("PlayerInventory", back_populates="player")
     alien_inventory = relationship("AlienInventory", back_populates="player")
+
+
 
 
 # Define the PlayerInventory table
@@ -116,6 +119,8 @@ class AstroBeast(
     )  # Storing stats as a comma-separated string or JSON could be an option
     level = Column(Integer)
     isAlive = Column(Boolean)
+    rarity = Column(String, default='Common')
+    currentExp = Column(Integer, default=0)
 
     players = relationship(
         "Player",

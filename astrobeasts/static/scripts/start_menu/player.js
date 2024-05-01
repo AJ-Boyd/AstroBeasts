@@ -28,9 +28,11 @@ export class Player{
     }
     updateCreditsGained(c){
         this.creditsGained += c;
+        this.updateScore();
     }
     updateExpGained(xp){
         this.expGained += xp;
+        this.updateScore();
     }
     updateCredits(c){
         this.credits += c
@@ -38,6 +40,7 @@ export class Player{
     }
     setCredits(c){
         this.credits = c;
+        this.updateScore();
     }
     incrementLevel(){
         this.level++;
@@ -51,7 +54,13 @@ export class Player{
         return this.name;
     }
     getScore(){
-        return this.getExpGained() + this.getCreditsEarned();
+        return this.score;
+    }
+    updateScore() {
+        this.score = this.expGained + this.creditsGained;
+    }
+    getFinalScore() {
+        return this.score;
     }
     getCreditsEarned(){
         return this.creditsGained;
@@ -65,4 +74,11 @@ export class Player{
     getCredits(){
         return this.credits;
     }
+    setScore(s) {
+        this.score = s;
+    }
+    setLevel(lvl) {
+       this.level = lvl;
+    }
+    
 }

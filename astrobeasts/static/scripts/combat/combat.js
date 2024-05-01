@@ -99,8 +99,8 @@ create() {
         rarity: "Galactic",
         assets: 'AllWrath',
         assetAnim: "idle_AllWrath",
-        maxHP: 10000,
-        currentHP: 1,
+        maxHP: 600,
+        currentHP: 600,
         stats: [600, 650, 600], //ATK, DEF, SPD
         moves: [torrentus, hkai, msurge],
         level: 10,
@@ -189,18 +189,21 @@ create() {
             }
         }
     }
-    console.log(temp);
+    console.log("this is temp",temp);
     let count = 0;
     for (let i = 0; i < temp.length; i++){
         if (temp[i]['isEquipped'] && count < directions.length){
-            let assetAnime = temp[i]['assetAnim'];
+            let assetAnime = "";
+            let rare = "";
+            let MAXEXP = 0;
 
             console.log("shop beasts:", shop_beasts)
             for (let j = 0; j < shop_beasts.length; j++) {
                 console.log(shop_beasts[j].name, "vs", temp[i].name);
                 if (shop_beasts[j].name === temp[i].name) {
                     assetAnime = shop_beasts[j].assetAnim; 
-                    console.log("animation found:", assetAnime)
+                    rare = shop_beasts[j].rarity;
+                    MAXEXP = shop_beasts[j].maxExp;
                     break; 
                 }
             }
@@ -209,12 +212,12 @@ create() {
                 scene:this,
                 AlienDetails: {
                     name: temp[i]['name'],
-                    rarity: temp[i]['rarity'],
+                    rarity: rare,
                     assets: temp[i]['assets'],
                     assetAnim: assetAnime,
                     maxHP: temp[i]['maxHP'],
                     currentHP: temp[i]['currentHP'],
-                    maxExp: temp[i]['maxExp'],
+                    maxExp: MAXEXP,
                     currentExp: temp[i]['currentExp'],
                     stats: temp[i]['stats'], //ATK, DEF, SPD, DEX, LUK
                     moves: moves_list,

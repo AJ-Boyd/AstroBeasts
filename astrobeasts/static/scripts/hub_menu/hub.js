@@ -11,6 +11,9 @@ export class HubScene extends Phaser.Scene {
     }
 
     create() {
+        const score = this.registry.get('player').getScore();
+        const level = this.registry.get('player').getLevel();
+        //alert(`score: ${score}, level: ${level}`);
         const bg = this.add.image(0, 0, 'hub').setOrigin(0.5, 0.5).setScale(1.2);
         bg.setPosition(this.cameras.main.width / 2, this.cameras.main.height / 2);
 
@@ -28,6 +31,9 @@ export class HubScene extends Phaser.Scene {
         // Y positions for two rows
         const firstRowY = this.cameras.main.height - 110;
         const secondRowY = this.cameras.main.height - 60;
+        const thirdRowY = this.cameras.main.height - 30; 
+
+        let statusText = this.add.text(startXFirstRow + 75, thirdRowY, `Score: ${score}, Level: ${level}`, { font: '15px', color: 'white' }).setOrigin(0, 0.5);
 
         // first row of options
         let InventoryText = this.add.text(startXFirstRow, firstRowY, ' > Inventory', { font: '15px', color: 'DodgerBlue' })
@@ -113,7 +119,7 @@ export class HubScene extends Phaser.Scene {
         });
         SaveText.on('pointerout', () => {
             // Only change the color back if it's not currently in a success/failure state
-            if (['#ff0000', '#00ff00'].indexOf(SaveText.style.color) != -1) {
+            if (['#ff0000', '#00ff00'].indexOf(SaveText.style.color) === -1) {
                 SaveText.setStyle({ fill: 'white' });
             }
         });
@@ -142,8 +148,9 @@ export class HubScene extends Phaser.Scene {
                 ShopText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
                 DojoText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
                 TournamentText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
-                SaveText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                SaveText.setFontFamily('"Press Start 2P"')
                 SaveAndQuitText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
+                statusText.setFontFamily('"Press Start 2P"').setColor('#ffffff')
             }
         }) 
 
@@ -156,9 +163,11 @@ export class HubScene extends Phaser.Scene {
             playerName: this.registry.get('player').getName(),
             inventory_moves: this.registry.get('inventory_moves'),
             walletTotal: this.registry.get('player').getCredits(),
-            Score: this.registry.get("player").getScore()
+            Score: this.registry.get('player').getScore(),
+            Level: this.registry.get('player').getLevel()
             // will need to include other registry variables
         };
+        console.log("Saving game with score:", gameState.Score); 
         try {
             const response = await fetch('/save_game', {
                 method: 'POST',
