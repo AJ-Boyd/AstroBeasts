@@ -170,7 +170,6 @@ create() {
     //create our alien and idle
     let directions = [[200,310] , [200,200], [100,310], [100,200]];
     let temp = this.registry.get('inventory_astrobeasts');
-    let shop_beasts = this.registry.get('shop_astrobeasts');
     let my_move =  this.registry.get('inventory_moves');
     let moves_list = []
     let move_count = 0;
@@ -179,7 +178,7 @@ create() {
         if (name && my_move[i]["isEquipped"] ){
 
             let shop_moves = this.registry.get('shop_moves');
-            for (let j = 0; j < shop_beasts.length; j++){
+            for (let j = 0; j <shop_moves.length; j++){
                 if (shop_moves[j].name === name){
                     let thing = new Move(shop_moves[j].name, shop_moves[j].description, shop_moves[j].damage, shop_moves[j].accuracy, shop_moves[j].level);
                     moves_list.push(thing);
@@ -188,26 +187,30 @@ create() {
             }
 
 
-
-
-
         }
         
     }
+
+   
     console.log("this is temp",temp);
+    // console.log("this is shop of strobeats: ",shop_beasts )
     let count = 0;
     for (let i = 0; i < temp.length; i++){
         if (temp[i]['isEquipped'] && count < directions.length){
             let assetAnime = "";
             let rare = "";
             let MAXEXP = 0;
+            let ass = ""
 
+    
+            let shop_beasts = this.registry.get('shop_astrobeasts');
             for (let j = 0; j < shop_beasts.length; j++) {
                 if (shop_beasts[j].name === temp[i].name) {
                     assetAnime = shop_beasts[j].assetAnim; 
                     rare = shop_beasts[j].rarity;
                     MAXEXP = shop_beasts[j].maxExp;
-                    break; 
+                    ass = shop_beasts[j].assets;
+                    break;
                 }
             }
 
@@ -216,7 +219,7 @@ create() {
                 AlienDetails: {
                     name: temp[i]['name'],
                     rarity: rare,
-                    assets: temp[i]['assets'],
+                    assets: ass,
                     assetAnim: assetAnime,
                     maxHP: temp[i]['maxHP'],
                     currentHP: temp[i]['currentHP'],
