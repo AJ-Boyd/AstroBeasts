@@ -84,7 +84,6 @@ export class LoadGameScene extends Phaser.Scene {
         
     }
     async check_name(my_name) {
-        alert(my_name)
         try {
             const response = await fetch('/check_name', {
                 method: 'POST',
@@ -96,6 +95,7 @@ export class LoadGameScene extends Phaser.Scene {
             const data = await response.json();
             if (data.exists) {
                 console.log('user exists inside of DB:', data.message);
+                console.log("Loaded score:", data.playerData.Score); 
                 // update to show feedback
                 const playerData = data.playerData;
 
@@ -106,10 +106,10 @@ export class LoadGameScene extends Phaser.Scene {
                 this.registry.set('inventory_astrobeasts', playerData['inventory_astrobeasts']);
                 this.registry.set('inventory_moves', playerData['inventory_moves']);
                 //this.registry.set('playerName', playerData.playerName)
-                this.registry.get("player").setName(playerData.playerName)
-                this.registry.get('player').setCredits(playerData.walletTotal)
-                this.registry.set('Score', 0);
-                this.registry.set("Level", 1);
+                this.registry.get("player").setName(data.playerData.playerName)
+                this.registry.get('player').setCredits(data.playerData.walletTotal)
+                this.registry.get('player').setScore(data.playerData.Score);
+                this.registry.get('player').setLevel(data.playerData.Level);
                 this.scene.start('LoadHub');
             } else {
                 console.error('User does not exist in DB:', data.message);

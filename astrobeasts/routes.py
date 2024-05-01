@@ -41,7 +41,7 @@ def save_game():
     playerName = gameState.get('playerName')  # Safely get playerName, returns None if not found
     if not playerName:
         return jsonify({'status': 'error', 'message': 'Player name is required.'}), 400
-
+    print("Saving game for:", playerName, "with score:", gameState.get('Score'))
 
     # Connect to the copied save slot database
     session = Session()
@@ -51,17 +51,18 @@ def save_game():
         player = Player(name=playerName)
         session.add(player)
     else:
-        # If player exists, update their details but leave their unique inventory as is
-        player.walletTotal = gameState.get('walletTotal', 0)
-        player.Score = gameState.get('Score', 0)
+        # if player exists, get info
+        if 'walletTotal' in gameState:
+            player.walletTotal = gameState['walletTotal']
+        if 'Score' in gameState:
+            player.Score = gameState['Score']
+        if 'Level' in gameState:
+            player.Level = gameState['Level']
 
         # Clear existing items but only for this player to avoid duplicates
         player.inventoryItems = []
         player.astroBeasts = []
         #player.inventoryMoves = []
-
-    player.walletTotal = gameState.get('walletTotal', 0)
-    player.Score = gameState.get('Score', 0)
 
     # Clear existing items and replace them
     session.query(InventoryItem).filter(InventoryItem.Player_Name == playerName).delete()
