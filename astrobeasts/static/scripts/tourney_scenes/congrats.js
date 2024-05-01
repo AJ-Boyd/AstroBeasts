@@ -15,7 +15,7 @@ export class CongratsScene extends Phaser.Scene {
         const trophy = this.add.image(575, 330, 'trophy'); trophy.setScale(.85);
 
         // Title
-        let Title = this.add.text(70, 90, "Congratulations!!!\nYou're the\nGalaxy Champion!").setPadding(14);
+        let Title = this.add.text(70, 90, "Congratulations!!!\nYou're the\nGalactic Champion!").setPadding(14);
         Title.setBackgroundColor('black').setFontSize(34).setAlign('center'); 
 
         // Enter
