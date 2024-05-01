@@ -13,7 +13,7 @@ export class MainMenuScene extends Phaser.Scene {
     init() {
         this.registry.set('playerName', '');
         this.registry.set('Score', 0);
-        this.registry.set('player', new Player("", [], 1000,  0, 1, 0, 0));
+        this.registry.set('player', new Player("", [], 1500,  0, 1, 0, 0));
         // Inventory contains dictionary items, where each dictionary represents an item. it has the following variables:
         // 1. key (image name), 2. name (item's name), 3. description, 4. quantity, 5. isEquipped (has the player equipped this item for battle?)
         this.registry.set('inventory_items', []); // should be list of dicts with the item name and its key that cooresponds to it's png path
@@ -95,7 +95,7 @@ export class MainMenuScene extends Phaser.Scene {
         ]);
 
         this.registry.set('shop_items', [
-        { key: 'cookies', name: 'CosmoCookies', description: 'Restores 250 HP', quantity: 1, HP: 250, cost: 20, isSelected: false },
+        { key: 'cookies', name: 'CosmoCookies', description: 'Restores 250 HP', quantity: 1, HP: 250, cost: 200, isSelected: false },
         { key: 'ade', name: 'AstroAde', description: 'Restores 700 HP', quantity: 1, HP: 30, cost: 700, isSelected: false },
         { key: 'sequid', name: 'SequidSando', description: 'Restores 1000 HP', quantity: 1, HP: 60, cost: 1000, isSelected: false },
         { key: 'claws', name: 'Titanium Claws', description: '+50 ATK for the fight duration', quantity: 1, ATK: 50, cost: 250, isSelected: false },
