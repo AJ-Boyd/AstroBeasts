@@ -194,15 +194,19 @@ create() {
         }
         
     }
-    console.log(temp);
+    console.log("this is temp",temp);
     let count = 0;
     for (let i = 0; i < temp.length; i++){
         if (temp[i]['isEquipped'] && count < directions.length){
-            let assetAnime = temp[i]['assetAnim'];
+            let assetAnime = "";
+            let rare = "";
+            let MAXEXP = 0;
 
             for (let j = 0; j < shop_beasts.length; j++) {
                 if (shop_beasts[j].name === temp[i].name) {
                     assetAnime = shop_beasts[j].assetAnim; 
+                    rare = shop_beasts[j].rarity;
+                    MAXEXP = shop_beasts[j].maxExp;
                     break; 
                 }
             }
@@ -211,12 +215,12 @@ create() {
                 scene:this,
                 AlienDetails: {
                     name: temp[i]['name'],
-                    rarity: temp[i]['rarity'],
+                    rarity: rare,
                     assets: temp[i]['assets'],
                     assetAnim: assetAnime,
                     maxHP: temp[i]['maxHP'],
                     currentHP: temp[i]['currentHP'],
-                    maxExp: temp[i]['maxExp'],
+                    maxExp: MAXEXP,
                     currentExp: temp[i]['currentExp'],
                     stats: temp[i]['stats'], //ATK, DEF, SPD, DEX, LUK
                     moves: moves_list,

@@ -51,6 +51,8 @@ class Player(Base):
     alien_inventory = relationship("AlienInventory", back_populates="player")
 
 
+
+
 # Define the PlayerInventory table
 class PlayerInventory(Base):
     __tablename__ = "PlayerInventory"
@@ -117,6 +119,8 @@ class AstroBeast(
     )  # Storing stats as a comma-separated string or JSON could be an option
     level = Column(Integer)
     isAlive = Column(Boolean)
+    rarity = Column(String, default='Common')
+    currentExp = Column(Integer, default=0)
 
     players = relationship(
         "Player",

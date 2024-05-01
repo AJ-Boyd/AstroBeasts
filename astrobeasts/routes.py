@@ -96,6 +96,8 @@ def save_game():
             new_beast = AstroBeast(
                 Player_Name=playerName,
                 name=beast_data['name'],
+                rarity = beast_data.get('rarity', 'Common'),
+                currentExp =  beast_data.get('currentExp', 0),
                 key=beast_data['key'],
                 description=beast_data['description'],
                 isEquipped=beast_data.get('isEquipped', False),
@@ -170,6 +172,8 @@ def check_name():
                     "key": beast.key,
                     "maxHP": beast.maxHP,
                     "currentHP": beast.currentHP,
+                    "rarity" : beast.rarity,
+                    "currentExp" :  beast.currentExp,
                     "stats": list(map(int, beast.stats.split(","))),
                     "level": beast.level,
                     "quantity": beast.quantity,
