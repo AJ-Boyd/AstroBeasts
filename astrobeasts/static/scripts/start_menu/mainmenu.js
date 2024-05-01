@@ -60,27 +60,27 @@ export class MainMenuScene extends Phaser.Scene {
         // Moves contain dictionaries, where each dictionary represents a move. it has the following variables:
         // 1. key (image name), 2. name (move name), 3. description (what it does), 4. quantity, 5. isEquipped (has the player equipped this  for battle?)
         this.registry.set('inventory_moves', [
-        { key: 'slash', name: 'Slash', description: 'Deals damage to enemy', quantity: 1, cost: 30, isEquipped: false },
-        { key: 'headbutt', name: 'Headbutt', description: 'Deals damage to enemy', quantity: 1, cost:25, isEquipped: false }]); 
+        { key: 'slash', name: 'Slash', description: 'Very low damage, high accuracy attack', quantity: 1, cost: 30, isEquipped: true, damage:30, accuracy:90, level:1 },
+        { key: 'headbutt', name: 'Headbutt', description: 'Meduium damage, medium accuracy attack', quantity: 1, cost:25, isEquipped: true, damage:60, accuracy:75, level:1}]); 
        
        
         // SHOP Registry
        this.registry.set('shop_moves', [
-        { key: 'slash', name: 'Slash', description: 'Deals damage to enemy', quantity: 1, cost:100, isSelected: false},
-        { key: 'headbutt', name: 'Headbutt', description: 'Deals damage to enemy', quantity: 1, cost:100, isSelected: false },
-        { key: 'chomp', name: 'Chomp', description: 'Deals damage to enemy', quantity: 1, cost:100, isSelected: false },
-        { key: 'tackle', name: 'Tackle', description: 'Deals damage to enemy', quantity: 1, cost:100, isSelected: false },
-        { key: 'strike', name: 'Strike', description: 'Deals damage to enemy', quantity: 1, cost:100, isSelected: false },
-        { key: 'fireball', name: 'Fireball', description: 'Deals Fire damage to enemy', quantity: 1, cost:150, isSelected: false },
-        { key: 'hydrojet', name: 'Hydrojet', description: 'Deals Water damage to enemy', quantity: 1, cost:150, isSelected: false },
-        { key: 'seismictoss', name: 'Seismic Toss', description: 'Deals Rock damage to enemy', quantity: 1, cost:150, isSelected: false },
-        { key: 'lightjolt', name: 'Lightning Jolt', description: 'Deals Electric damage to enemy', quantity: 1, cost:150, isSelected: false },
-        { key: 'gravpulse', name: 'Gravitic Pulse', description: 'Deals Gravity damage to enemy', quantity: 1, cost:150, isSelected: false }
+        { key: 'slash', name: 'Scratch', description: 'Low damage, medium accuracy', quantity: 1, cost:100, isSelected: false, damage:50, accuracy:50, level:1},
+        { key: 'headbutt', name: 'Pounce', description: 'Medium damage, low accuracy', quantity: 1, cost:100, isSelected: false, damage:60, accuracy:50, level:1},
+        { key: 'chomp', name: 'Chomp', description: 'Medium damage, medium acuuracy', quantity: 1, cost:400, isSelected: false , damage:55, accuracy:75, level:1},
+        { key: 'tackle', name: 'Tackle', description: 'High damage, low accuracy', quantity: 1, cost:400, isSelected: false , damage:65, accuracy:75, level:1},
+        { key: 'strike', name: 'Strike', description: 'Medium damage, very high acurracy', quantity: 1, cost:700, isSelected: false, damage:60, accuracy:100, level:1 },
+        { key: 'fireball', name: 'Fireball', description: 'Very high damage, low accuracy', quantity: 1, cost:700, isSelected: false , damage:95, accuracy:65, level:1},
+        { key: 'hydrojet', name: 'Hydrojet', description: 'High damage, medium accuracy', quantity: 1, cost:1000, isSelected: false , damage:75, accuracy:70, level:1},
+        { key: 'seismictoss', name: 'Seismic Toss', description: 'Very high damage, very low accuracy', quantity: 1, cost:2000, isSelected: false, damage:105, accuracy:55, level:1 },
+        { key: 'lightjolt', name: 'Lightning Jolt', description: 'High damage, high accuracy', quantity: 1, cost:4000, isSelected: false, damage:85, accuracy:90, level:1 },
+        { key: 'gravpulse', name: 'Gravitic Pulse', description: 'Very high damage, high accuracy', quantity: 1, cost:5000, isSelected: false, damage:110, accuracy:85, level:1}
         ]); 
        
         this.registry.set('shop_astrobeasts', [
-        //{ key: 'skol',assetAnim: "idle_Skol", name: 'Skol', description: 'Fire AstroBeast', quantity: 1, cost: 350, isSelected: false },
-        //{ key: 'tarkeel',assetAnim: "idle_Tarkeel", name: 'Tarkeel', description: 'Electric AstroBeast', quantity: 1, cost: 350, isSelected: false },
+        { key: 'skol',assetAnim: "idle_Skol", name: 'Skol', description: 'Balanced AstroBeast', quantity: 1, cost: 350, isSelected: false, maxHP: 1000, currentHP: 1000, currentExp: 0, maxExp: 1000, stats: [300, 250, 300, 300, 250], level: 1,isAlive: true },
+        { key: 'tarkeel',assetAnim: "idle_Tarkeel", name: 'Tarkeel', description: 'Electric AstroBeast', quantity: 1, cost: 350, isSelected: false, maxHP: 1000, currentHP: 1000, currentExp: 0, maxExp: 1000, stats: [194, 128, 448, 500, 130], level: 1,isAlive: true  },
         { key: 'arquam', assets: 'arquam', assetAnim: "idle_Arquam", name: 'Arquam', rarity: 'Common', description: 'Water AstroBeast', quantity: 1, cost: 1000, isSelected: false, maxHP: 2000, currentHP: 2000, maxExp: 1000, currentExp: 0, stats: [266, 470, 198, 312, 154], level: 1, isAlive: true },
         { key: 'shamrock',assets: 'shamrock', assetAnim: "idle_Shamrock", name: 'Shamrock', rarity: 'Common', description: 'Lucky AstroBeast', quantity: 1, cost: 1000, isSelected: false, maxHP: 1000, currentHP: 1000, maxExp: 1000, currentExp: 0, stats: [358, 120, 218, 246, 458], level: 1, isAlive: true  },
         { key: 'zallo', assets: 'zallo', assetAnim: "idle_Zallo", name: 'Zallo', rarity: 'Common', description: 'Gravity AstroBeast', quantity: 1, cost: 1000, isSelected: false, maxHP: 1000, currentHP: 1000, maxExp: 1000, currentExp: 0, stats: [434, 470, 122, 102, 272], level: 1, isAlive: true  },
@@ -90,8 +90,8 @@ export class MainMenuScene extends Phaser.Scene {
         { key: 'strikoh', assets: 'strikoh', assetAnim: "idle_Strikoh", name: 'Strikoh', rarity: 'Rare', description: 'The Tempest\'s Last Stand', quantity: 1, cost: 2500, isSelected: false, maxHP: 3000, currentHP: 3000, maxExp: 1000, currentExp: 0, stats: [632, 408, 474, 468, 418], level: 1, isAlive: true  },
         { key: 'scourge', assets: 'scourge', assetAnim: "idle_Scourge", name: 'Scourge', rarity: 'Rare', description: 'The Doom of the Red Quesar', quantity: 1, cost: 2500, isSelected: false, maxHP: 3000, currentHP: 3000, maxExp: 1000, currentExp: 0, stats: [550, 498, 396, 416, 540], level: 1, isAlive: true  },
         
-        { key: 'aesun', assets: 'aesun', assetAnim: "idle_Aesun", name: 'Aesun', rarity: 'Legendary', description: 'Aesun the Divine and Arcane Light', quantity: 1, cost: 5000, isSelected: false, maxHP: 8500, currentHP: 8500, maxExp: 1000, currentExp: 0, stats: [864, 820, 1086, 1018, 612], level: 1, isAlive: true  },
-        { key: 'tyboar', assets: 'tyboar', assetAnim: "idle_Tyboar", name: 'Tyboar', rarity: 'Legendary', description: 'Tyboar the Ancient Titan of Thunder', quantity: 1, cost: 5000, isSelected: false, maxHP: 10000, currentHP: 10000, maxExp: 1000, currentExp: 0, stats: [832, 1088, 656, 1046, 808], level: 1, isAlive: true  }
+        { key: 'aesun', assets: 'aesun', assetAnim: "idle_Aesun", name: 'Aesun', rarity: 'Legendary', description: 'Aesun the Divine and Arcane Light', quantity: 1, cost: 5000, isSelected: false, maxHP: 8500, currentHP: 8500, maxExp: 1000, currentExp: 0, stats: [964, 820, 1086, 1018, 612], level: 1, isAlive: true  },
+        { key: 'tyboar', assets: 'tyboar', assetAnim: "idle_Tyboar", name: 'Tyboar', rarity: 'Legendary', description: 'Tyboar the Ancient Titan of Thunder', quantity: 1, cost: 5000, isSelected: false, maxHP: 10000, currentHP: 10000, maxExp: 1000, currentExp: 0, stats: [832, 1188, 656, 1046, 808], level: 1, isAlive: true  }
         ]);
 
         this.registry.set('shop_items', [

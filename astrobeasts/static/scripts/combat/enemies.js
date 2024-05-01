@@ -115,8 +115,10 @@ export class Enemy {
     setName(n){
         this._enemyDetails.name = n;
     }
-
-
+    setAnimation(a){
+        this._enemyDetails.assetAnim = a;
+        this.EnemyGuy.anims.play(this._enemyDetails.assetAnim)
+    }
     takeDamage(damage, callback)
     {
         console.log("It is", this._enemyDetails.currentHP)

@@ -79,18 +79,19 @@ create() {
     const kick = new Move("Kick", "", 45, 90, 5); //low damage, high acc
 
     //enemy-only moves
-    const dspiral = new Move("Death Spiral", "", 110, 50, this.getRand(1,5));
+    const dspiral = new Move("Death Spiral", "", 130, 50, this.getRand(1,5));
     const fireball = new Move("Fireball", "", 60, 80, this.getRand(1,5));
-    const sflare = new Move("Solar Flare", "", 100, 90, this.getRand(1,5));
+    const sflare = new Move("Solar Flare", "", 100, 90, 5);
     const hkai = new Move("Hydro Kai", "", 80, 50, this.getRand(1,5));
     const torrentus = new Move("Torrentus", "", 100, 60, this.getRand(1,5));
     const quake = new Move("Quake", "", 50, 95, this.getRand(1,5));
     const spark = new Move("Spark", "", 35, 100, this.getRand(1,5));
     const msurge = new Move("Mass Surge", "", 85, 55, this.getRand(1,5));
-    const mrise = new Move("Meteor Riser", "", 90, 45, this.getRand(1,5));
+    const mrise = new Move("Meteor Riser", "", 90, 45, 5);
+    const widow = new Move("Widowmaker", "", 100, 90, 5);
 
     this.#globalMoves = [punch, strike, bite, sleep, slash, kick, dspiral, fireball, sflare, hkai,
-        torrentus, quake, spark, msurge, mrise];
+        torrentus, quake, spark, mrise];
 
     //details for tourney enemies
     const allwrath = {
@@ -101,7 +102,7 @@ create() {
         maxHP: 10000,
         currentHP: 1,
         stats: [600, 650, 600], //ATK, DEF, SPD
-        moves: [punch, strike, kick, slash],
+        moves: [torrentus, hkai, msurge],
         level: 10,
         isAlive: true,
     }
@@ -111,10 +112,10 @@ create() {
             rarity: "Legendary",
             assets: 'Malgrun',
             assetAnim: "idle_Malgrun",
-            maxHP: 25000,
-            currentHP: 25000,
+            maxHP: 20000,
+            currentHP: 20000,
             stats: [1980, 1380, 1692], //ATK, DEF, SPD
-            moves: [punch, strike,],
+            moves: [fireball, widow, quake],
             level: 7,
             isAlive: true,
         }
@@ -124,10 +125,10 @@ create() {
             assets: 'Ruinn',
             rarity: "Galactic",
             assetAnim: "idle_Ruinn",
-            maxHP: 50000,
-            currentHP: 50000,
-            stats: [1114, 1988, 1556], //ATK, DEF, SPD
-            moves: [punch, strike],
+            maxHP:30000,
+            currentHP: 30000,
+            stats: [2614, 1988, 1556], //ATK, DEF, SPD
+            moves: [dspiral, mrise, sflare, bite],
             level: 10,
             isAlive: true,
         }
@@ -171,15 +172,35 @@ create() {
     let directions = [[200,310] , [200,200], [100,310], [100,200]];
     let temp = this.registry.get('inventory_astrobeasts');
     let shop_beasts = this.registry.get('shop_astrobeasts');
-    console.log("temp:", temp);
+    let my_move =  this.registry.get('inventory_moves');
+    let moves_list = []
+    let move_count = 0;
+    for (let i = 0; i < my_move.length && move_count <4; i++){
+        let name  = my_move[i]['key']
+        if (name && my_move[i]["isEquipped"] ){
+
+            let shop_moves = this.registry.get('shop_moves');
+            for (var j = 0; j < shop_moves.length; j++){
+                if (shop_moves[j].key === name){
+                    let thing = new Move(shop_moves[j].name, shop_moves[j].description, shop_moves[j].damage, shop_moves[j].accuracy, shop_moves[j].level);
+                    moves_list.push(thing);
+                    move_count+=1;
+                }
+            }
+        }
+    }
+    console.log(temp);
     let count = 0;
     for (let i = 0; i < temp.length; i++){
         if (temp[i]['isEquipped'] && count < directions.length){
             let assetAnime = temp[i]['assetAnim'];
 
+            console.log("shop beasts:", shop_beasts)
             for (let j = 0; j < shop_beasts.length; j++) {
+                console.log(shop_beasts[j].name, "vs", temp[i].name);
                 if (shop_beasts[j].name === temp[i].name) {
                     assetAnime = shop_beasts[j].assetAnim; 
+                    console.log("animation found:", assetAnime)
                     break; 
                 }
             }
@@ -196,7 +217,7 @@ create() {
                     maxExp: temp[i]['maxExp'],
                     currentExp: temp[i]['currentExp'],
                     stats: temp[i]['stats'], //ATK, DEF, SPD, DEX, LUK
-                    moves: [punch, slash, bite],
+                    moves: moves_list,
                     level: temp[i]['level'],
                     isAlive: temp[i]['isAlive'],
                 }
@@ -226,7 +247,7 @@ if(STATUS_STATE == 'use_item'){
     const equippedItems = items.filter(items => items.isEquipped);
     const equippedItemsCount = items.filter(items => items.isEquipped);
     
-    if(equippedItemsCount ==0)
+    if(equippedItemsCount == 0)
     {
         this.#combatMenu.attackerError('You have no items');
         STATUS_STATE = 'default'
@@ -308,7 +329,6 @@ else if(STATUS_STATE == 'fight'){
 
     console.log("it's " + attacker.getName() + "'s turn!")
     
-
     strList = attacker.getMoves();
 
         if(Phaser.Input.Keyboard.JustDown(cursors.up)) { //Option Up
@@ -343,21 +363,21 @@ else if(STATUS_STATE == 'fight'){
         if(Phaser.Input.Keyboard.JustDown(cursors.up)){
             target = livE[0]; //For now
             target.NameandHPon();
-                target.takeDamage(0) //renders correct HPBat
+            target.takeDamage(0) //renders correct HPBat
         }else if(Phaser.Input.Keyboard.JustDown(cursors.left)){
-            if(enemies.length >= 2){
+            if(livE.length >= 2){
                 target = livE[1]; //For now
                 target.NameandHPon();
                 target.takeDamage(0) //renders correct HPBat
             }
-        }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
-            if(enemies.length >= 3){
+        }else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
+            if(livE.length >= 3){
                 target = livE[2]; //For now
                 target.NameandHPon();
                 target.takeDamage(0) //renders correct HPBat
             }
-        }else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
-            if(enemies.length >= 4){
+        }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
+            if(livE.length >= 4){
                 target = livE[3]; //For now
                 target.NameandHPon();
                 target.takeDamage(0) //renders correct HPBat
@@ -433,7 +453,7 @@ else if(STATUS_STATE == 'fight'){
     //randomly generates a party of 2-4 enemy Astrobeasts 
     genEnemies(){
         const rabs = this.registry.get("shop_astrobeasts")
-        const partySize = 4;//this.getRand(2,4); //size of enemy party
+        const partySize = this.getRand(2,4); //size of enemy party
         const directions = [[500,310] , [500,150], [650,310], [650,150]];
         var [indexes, enemies] = [[], []];
 
@@ -441,7 +461,7 @@ else if(STATUS_STATE == 'fight'){
         for(var i = 0; i < partySize; i++){
             const rand = this.getRand(0, rabs.length- 1)
             const randEnemyDict = rabs[rand];
-            const HP = randEnemyDict['maxHP'] + this.getRand(-500, 2000)
+            const HP = randEnemyDict['maxHP'] + this.getRand(-500, 1000)
 
             let enemy = new Enemy({
                 scene: this,
@@ -451,7 +471,7 @@ else if(STATUS_STATE == 'fight'){
                     assets: randEnemyDict['assets'],
                     assetAnim: randEnemyDict['assetAnim'],
                     maxHP: HP,
-                    currentHP: HP,
+                    currentHP: 3,
                     stats: randEnemyDict['stats'],
                     moves: this.genMoves(),
                     level: this.getRand(1, 7),
@@ -628,7 +648,8 @@ else if(STATUS_STATE == 'fight'){
             if(target.getCurrentHP() <= 0){
                 console.log("Someone Died")
                 target.setAlive(false);
-                this.#combatMenu.deathnotice(target.getName())   
+                target.setAnimation("died_"+target.getName());
+                this.#combatMenu.deathnotice(target.getName());   
             }
         }else{
             //if the attack misses
@@ -680,8 +701,10 @@ changeTurn(){
             //if finished with player party, change to enemy's turn
             // alert("enemy turn")
             console.log("enemy's turn")
-            attacker.NameandHPoff();
-            console.log("Turn off", attacker.getName())
+            if(attacker != undefined){
+                attacker.NameandHPoff();
+                console.log("Turn off", attacker.getName())
+            }
             if(target != undefined){
                 target.NameandHPoff();
             }
@@ -825,7 +848,7 @@ changeTurn(){
         console.log(target)
 
         //enemy attack
-        var dmg = attacker.enemyAttack();
+        var dmg = this.enemyAttack(attacker, target, move);
         var diff = target.getCurrentHP() - dmg;
         if(diff < 0){
             diff = 0;

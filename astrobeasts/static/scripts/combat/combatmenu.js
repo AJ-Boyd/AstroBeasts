@@ -167,20 +167,18 @@ createTargetOptions(targets = []){
     this.targetOptionsOff();
 }
 setTargetOptions(targets){
-   
-
     var j = 0;
     for(var i = 0; i < this.#targetOpt.list.length; i++){
         var elem = this.#targetOpt.getAt(i);
        
-        if(elem.type == "Text"){    
-           
-            elem.setText(targets[j].getName())
-         
-            j++;
-            if(j == targets.length)
-                return;
-            
+        if(elem.type == "Text"){      
+            if(j < targets.length){
+                elem.setText(targets[j].getName())
+            }else{
+                //if number of target's is less than 4
+                elem.setText("");
+            }  
+            j++;          
         }
     }
 }
