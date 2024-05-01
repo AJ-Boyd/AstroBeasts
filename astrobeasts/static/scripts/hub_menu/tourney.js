@@ -22,7 +22,7 @@ export class TourneyScene extends Phaser.Scene {
             .on('pointerdown', () => {
                 if (this.registry.get("player").getLevel() == 1){this.scene.start('LoadQuarter')}
                 if (this.registry.get("player").getLevel() == 2){this.scene.start('LoadSemi')}
-                if (this.registry.get("player").getLevel() == 2){this.scene.start('LoadFinal')}
+                if (this.registry.get("player").getLevel() == 3){this.scene.start('LoadFinal')}
                 }
             ); 
             //.on('pointerdown', () => {this.registry.set("isTournament", true); this.scene.start('Preload')}); 
