@@ -395,17 +395,17 @@ enemyAttacks(attackerName, attackerMove, friendlyName, damage, friendlyHP)
         this.fightOptionsOff(),
         
        
-        this.#RenderMessage.setText(`It's ${attackerName}'s turn`); 
-        this.RenderMessageOn();
-        this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
-        this.#RenderMessage.setText(`${attackerName} performed ${attackerMove} on \t ${friendlyName} and did ${damage} damage!`); 
+        //this.#RenderMessage.setText(`It's ${attackerName}'s turn`); 
+        //this.RenderMessageOn();
+        //this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+        this.#RenderMessage.setText(`${attackerName} performed ${attackerMove} on ${friendlyName} and did ${damage} damage!\n${friendlyName} now has ${friendlyHP} remaining!`); 
         this.RenderMessageOn();
         this.#scene.time.delayedCall(2000, this.RenderMessageOff, null, this )
-        this.#RenderMessage.setText(`${friendlyName} now has ${friendlyHP} remaining!`); 
-        this.RenderMessageOn();
-        this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
+        //this.#RenderMessage.setText(``); 
+        //this.RenderMessageOn();
+        //this.#scene.time.delayedCall(1500, this.RenderMessageOff, null, this )
 
-        this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
+        //this.#scene.time.delayedCall(2000, this.battleOptionsOn, null, this )
 }
 
 missRender(name)

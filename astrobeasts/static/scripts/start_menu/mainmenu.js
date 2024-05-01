@@ -75,35 +75,35 @@ export class MainMenuScene extends Phaser.Scene {
         { key: 'hydrojet', name: 'Hydrojet', description: 'High damage, medium accuracy', quantity: 1, cost:1000, isSelected: false , damage:75, accuracy:70, level:1},
         { key: 'seismictoss', name: 'Seismic Toss', description: 'Very high damage, very low accuracy', quantity: 1, cost:2000, isSelected: false, damage:105, accuracy:55, level:1 },
         { key: 'lightjolt', name: 'Lightning Jolt', description: 'High damage, high accuracy', quantity: 1, cost:4000, isSelected: false, damage:85, accuracy:90, level:1 },
-        { key: 'gravpulse', name: 'Gravitic Pulse', description: 'Very high damage, high accuracy', quantity: 1, cost:5000, isSelected: false, damage:110, accuracy:85, level:1}
+        { key: 'gravpulse', name: 'Gravitic Pulse', description: 'Very high damage, high accuracy', quantity: 1, cost:5000, isSelected: false, damage:170, accuracy:85, level:1}
         ]); 
        
         this.registry.set('shop_astrobeasts', [
-        { key: 'skol',assetAnim: "idle_Skol", name: 'Skol', description: 'Balanced AstroBeast', quantity: 1, cost: 350, isSelected: false, maxHP: 1000, currentHP: 1000, currentExp: 0, maxExp: 1000, stats: [300, 250, 300, 300, 250], level: 1,isAlive: true },
-        { key: 'tarkeel',assetAnim: "idle_Tarkeel", name: 'Tarkeel', description: 'Electric AstroBeast', quantity: 1, cost: 350, isSelected: false, maxHP: 1000, currentHP: 1000, currentExp: 0, maxExp: 1000, stats: [194, 128, 448, 500, 130], level: 1,isAlive: true  },
-        { key: 'arquam', assets: 'arquam', assetAnim: "idle_Arquam", name: 'Arquam', rarity: 'Common', description: 'Water AstroBeast', quantity: 1, cost: 1000, isSelected: false, maxHP: 2000, currentHP: 2000, maxExp: 1000, currentExp: 0, stats: [266, 470, 198, 312, 154], level: 1, isAlive: true },
-        { key: 'shamrock',assets: 'shamrock', assetAnim: "idle_Shamrock", name: 'Shamrock', rarity: 'Common', description: 'Lucky AstroBeast', quantity: 1, cost: 1000, isSelected: false, maxHP: 1000, currentHP: 1000, maxExp: 1000, currentExp: 0, stats: [358, 120, 218, 246, 458], level: 1, isAlive: true  },
-        { key: 'zallo', assets: 'zallo', assetAnim: "idle_Zallo", name: 'Zallo', rarity: 'Common', description: 'Gravity AstroBeast', quantity: 1, cost: 1000, isSelected: false, maxHP: 1000, currentHP: 1000, maxExp: 1000, currentExp: 0, stats: [434, 470, 122, 102, 272], level: 1, isAlive: true  },
+        { key: 'skol', assets: 'Skol', assetAnim: "idle_Skol", name: 'Skol', description: 'Balanced AstroBeast', quantity: 1, cost: 350, isSelected: false, maxHP: 1000, currentHP: 1000, currentExp: 0, maxExp: 1000, stats: [300, 250, 300, 300, 250], level: 1,isAlive: true },
+        { key: 'tarkeel',assets: 'Tarkeel', assetAnim: "idle_Tarkeel", name: 'Tarkeel', description: 'Electric AstroBeast', quantity: 1, cost: 350, isSelected: false, maxHP: 1000, currentHP: 1000, currentExp: 0, maxExp: 1000, stats: [194, 128, 448, 500, 130], level: 1,isAlive: true  },
+        { key: 'arquam', assets: 'Arquam', assetAnim: "idle_Arquam", name: 'Arquam', rarity: 'Common', description: 'Water AstroBeast', quantity: 1, cost: 1000, isSelected: false, maxHP: 2000, currentHP: 2000, maxExp: 1000, currentExp: 0, stats: [266, 470, 198, 312, 154], level: 1, isAlive: true },
+        { key: 'shamrock',assets: 'Shamrock', assetAnim: "idle_Shamrock", name: 'Shamrock', rarity: 'Common', description: 'Lucky AstroBeast', quantity: 1, cost: 1000, isSelected: false, maxHP: 1000, currentHP: 1000, maxExp: 1000, currentExp: 0, stats: [358, 120, 218, 246, 458], level: 1, isAlive: true  },
+        { key: 'zallo', assets: 'Zallo', assetAnim: "idle_Zallo", name: 'Zallo', rarity: 'Common', description: 'Gravity AstroBeast', quantity: 1, cost: 1000, isSelected: false, maxHP: 1000, currentHP: 1000, maxExp: 1000, currentExp: 0, stats: [434, 470, 122, 102, 272], level: 1, isAlive: true  },
         
-        { key: 'icell', assets: 'icell', assetAnim: "idle_Icell", name: 'Icell', rarity: 'Rare', description: 'The Harbinger of Winter', quantity: 1, cost: 2500, isSelected: false, maxHP: 4000, currentHP: 4000, maxExp: 1000, currentExp: 0, stats: [410, 648, 442, 510, 310], level: 1, isAlive: true  },
-        { key: 'ragnex', assets: 'ragnex', assetAnim: "idle_Ragnex", name: 'Ragnex', rarity: 'Rare', description: 'The Eternal Dread of the Cosmos', quantity: 1, cost: 2500, isSelected: false, maxHP: 3500, currentHP: 3500, maxExp: 1000, currentExp: 0, stats: [520, 514, 450, 478, 438], level: 1, isAlive: true  },
-        { key: 'strikoh', assets: 'strikoh', assetAnim: "idle_Strikoh", name: 'Strikoh', rarity: 'Rare', description: 'The Tempest\'s Last Stand', quantity: 1, cost: 2500, isSelected: false, maxHP: 3000, currentHP: 3000, maxExp: 1000, currentExp: 0, stats: [632, 408, 474, 468, 418], level: 1, isAlive: true  },
-        { key: 'scourge', assets: 'scourge', assetAnim: "idle_Scourge", name: 'Scourge', rarity: 'Rare', description: 'The Doom of the Red Quesar', quantity: 1, cost: 2500, isSelected: false, maxHP: 3000, currentHP: 3000, maxExp: 1000, currentExp: 0, stats: [550, 498, 396, 416, 540], level: 1, isAlive: true  },
+        { key: 'icell', assets: 'Icell', assetAnim: "idle_Icell", name: 'Icell', rarity: 'Rare', description: 'The Harbinger of Winter', quantity: 1, cost: 2500, isSelected: false, maxHP: 4000, currentHP: 4000, maxExp: 1000, currentExp: 0, stats: [410, 648, 442, 510, 310], level: 1, isAlive: true  },
+        { key: 'ragnex', assets: 'Ragnex', assetAnim: "idle_Ragnex", name: 'Ragnex', rarity: 'Rare', description: 'The Eternal Dread of the Cosmos', quantity: 1, cost: 2500, isSelected: false, maxHP: 3500, currentHP: 3500, maxExp: 1000, currentExp: 0, stats: [520, 514, 450, 478, 438], level: 1, isAlive: true  },
+        { key: 'strikoh', assets: 'Strikoh', assetAnim: "idle_Strikoh", name: 'Strikoh', rarity: 'Rare', description: 'The Tempest\'s Last Stand', quantity: 1, cost: 2500, isSelected: false, maxHP: 3000, currentHP: 3000, maxExp: 1000, currentExp: 0, stats: [632, 408, 474, 468, 418], level: 1, isAlive: true  },
+        { key: 'scourge', assets: 'Scourge', assetAnim: "idle_Scourge", name: 'Scourge', rarity: 'Rare', description: 'The Doom of the Red Quesar', quantity: 1, cost: 2500, isSelected: false, maxHP: 3000, currentHP: 3000, maxExp: 1000, currentExp: 0, stats: [550, 498, 396, 416, 540], level: 1, isAlive: true  },
         
-        { key: 'aesun', assets: 'aesun', assetAnim: "idle_Aesun", name: 'Aesun', rarity: 'Legendary', description: 'Aesun the Divine and Arcane Light', quantity: 1, cost: 5000, isSelected: false, maxHP: 8500, currentHP: 8500, maxExp: 1000, currentExp: 0, stats: [964, 820, 1086, 1018, 612], level: 1, isAlive: true  },
-        { key: 'tyboar', assets: 'tyboar', assetAnim: "idle_Tyboar", name: 'Tyboar', rarity: 'Legendary', description: 'Tyboar the Ancient Titan of Thunder', quantity: 1, cost: 5000, isSelected: false, maxHP: 10000, currentHP: 10000, maxExp: 1000, currentExp: 0, stats: [832, 1188, 656, 1046, 808], level: 1, isAlive: true  }
+        { key: 'aesun', assets: 'Aesun', assetAnim: "idle_Aesun", name: 'Aesun', rarity: 'Legendary', description: 'Aesun the Divine and Arcane Light', quantity: 1, cost: 5000, isSelected: false, maxHP: 8500, currentHP: 8500, maxExp: 1000, currentExp: 0, stats: [964, 820, 1086, 1018, 612], level: 1, isAlive: true  },
+        { key: 'tyboar', assets: 'Tyboar', assetAnim: "idle_Tyboar", name: 'Tyboar', rarity: 'Legendary', description: 'Tyboar the Ancient Titan of Thunder', quantity: 1, cost: 5000, isSelected: false, maxHP: 10000, currentHP: 10000, maxExp: 1000, currentExp: 0, stats: [832, 1188, 656, 1046, 808], level: 1, isAlive: true  }
         ]);
 
         this.registry.set('shop_items', [
-        { key: 'cookies', name: 'CosmoCookies', description: 'Restores 15 HP', quantity: 1, HP: 15, cost: 20, isSelected: false },
-        { key: 'ade', name: 'AstroAde', description: 'Restores 30 HP', quantity: 1, HP: 30, cost: 35, isSelected: false },
-        { key: 'sequid', name: 'SequidSando', description: 'Restores 60 HP', quantity: 1, HP: 60, cost: 60, isSelected: false },
-        { key: 'claws', name: 'Titanium Claws', description: '+10 ATK for the fight duration', quantity: 1, ATK: 10, cost: 60, isSelected: false },
-        { key: 'boosters', name: 'Sonic Boosters', description: '+10 SPD for fight duration', quantity: 1, SPD: 10, cost: 60, isSelected: false },
-        { key: 'shell', name: 'Hardlight Shell', description: '+10 DEF for fight duration', quantity: 1, DEF: 10, cost: 60, isSelected: false },
-        { key: 'stim', name: 'Stim Beacon', description: '+10 DEX, LUK for fight duration', quantity: 1, DEX: 10, cost: 60, isSelected: false },
-        { key: 'shield', name: 'Photon Shield', description: '+10 DEX, LUK for fight duration', quantity: 1, DEX: 10, cost: 60, isSelected: false },
-        { key: 'gravnet', name: 'Grav Net', description: '+10 DEX, LUK for fight duration', quantity: 1, DEX: 10, cost: 80, isSelected: false }
+        { key: 'cookies', name: 'CosmoCookies', description: 'Restores 250 HP', quantity: 1, HP: 250, cost: 20, isSelected: false },
+        { key: 'ade', name: 'AstroAde', description: 'Restores 700 HP', quantity: 1, HP: 30, cost: 700, isSelected: false },
+        { key: 'sequid', name: 'SequidSando', description: 'Restores 1000 HP', quantity: 1, HP: 60, cost: 1000, isSelected: false },
+        { key: 'claws', name: 'Titanium Claws', description: '+50 ATK for the fight duration', quantity: 1, ATK: 50, cost: 250, isSelected: false },
+        { key: 'boosters', name: 'Sonic Boosters', description: '+50 SPD for fight duration', quantity: 1, SPD: 50, cost: 250, isSelected: false },
+        { key: 'shell', name: 'Hardlight Shell', description: '+50 DEF for fight duration', quantity: 1, DEF: 50, cost: 250, isSelected: false },
+        { key: 'stim', name: 'Stim Beacon', description: '+50 DEX, LUK for fight duration', quantity: 1, DEX: 50, cost: 250, isSelected: false },
+        { key: 'shield', name: 'Photon Shield', description: '+50 DEX, LUK for fight duration', quantity: 1, DEX: 50, cost: 250, isSelected: false },
+        { key: 'gravnet', name: 'Grav Net', description: '+50 DEX, LUK for fight duration', quantity: 1, DEX: 50, cost: 250, isSelected: false }
         ]); 
        
        

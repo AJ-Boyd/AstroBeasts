@@ -85,11 +85,9 @@ export class Enemy {
     getMaxHP(){
         return this._enemyDetails.maxHP;
     }
-
     getLevel(){
         return this._enemyDetails.level;
     }
-
     getMoves(){
         return this._enemyDetails.moves;
     }
@@ -106,6 +104,9 @@ export class Enemy {
     getSPD(){
         return this._enemyDetails.stats[2];
     }
+    getAssets(){
+        return this._enemyDetails.assets;
+    }
 
     //setters
     setAlive(v)
@@ -116,6 +117,8 @@ export class Enemy {
         this._enemyDetails.name = n;
     }
     setAnimation(a){
+        console.log("new animation", a)
+        console.log(this.EnemyGuy.anims)
         this._enemyDetails.assetAnim = a;
         this.EnemyGuy.anims.play(this._enemyDetails.assetAnim)
     }

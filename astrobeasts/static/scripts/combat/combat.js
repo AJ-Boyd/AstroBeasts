@@ -7,18 +7,11 @@ import { Move } from './moves.js';
 
 /*
     STILL TODO:
-    -consolidate registry variables
-    -randomly generate enemies
-    -implement enemy attack damage
-    -add descriptions for moves
-    -change item and move limit to 4
-    -animations
+    -boss size
+    -Screens
+    -item buffs
 */
 
-/*
-    BUGS:
-    -when defeating an enemy when there are multiple, the target options should be properly updated
-*/
 
 var cursors, attacker, move, target, spacebar, strList =[];
 var party = [];
@@ -27,6 +20,8 @@ var STATUS_STATE = 'default'
 var CURR_TURN = 0;
 var CURR_PARTY = 'player';
 var flag = 0;
+var check = true;
+
 const FLEE_CHANCE = 40;
 
 export class CombatScene extends Phaser.Scene {
@@ -99,9 +94,9 @@ create() {
         rarity: "Galactic",
         assets: 'AllWrath',
         assetAnim: "idle_AllWrath",
-        maxHP: 600,
-        currentHP: 600,
-        stats: [600, 650, 600], //ATK, DEF, SPD
+        maxHP: 10000,
+        currentHP: 10000,
+        stats: [2500, 2650, 2600], //ATK, DEF, SPD
         moves: [torrentus, hkai, msurge],
         level: 10,
         isAlive: true,
@@ -127,7 +122,7 @@ create() {
             assetAnim: "idle_Ruinn",
             maxHP:30000,
             currentHP: 30000,
-            stats: [2614, 1988, 1556], //ATK, DEF, SPD
+            stats: [3014, 2988, 3556], //ATK, DEF, SPD
             moves: [dspiral, mrise, sflare, bite],
             level: 10,
             isAlive: true,
@@ -189,7 +184,7 @@ create() {
             }
         }
     }
-    console.log("this is temp",temp);
+    console.log("our moves", moves_list);
     let count = 0;
     for (let i = 0; i < temp.length; i++){
         if (temp[i]['isEquipped'] && count < directions.length){
@@ -197,9 +192,7 @@ create() {
             let rare = "";
             let MAXEXP = 0;
 
-            console.log("shop beasts:", shop_beasts)
             for (let j = 0; j < shop_beasts.length; j++) {
-                console.log(shop_beasts[j].name, "vs", temp[i].name);
                 if (shop_beasts[j].name === temp[i].name) {
                     assetAnime = shop_beasts[j].assetAnim; 
                     rare = shop_beasts[j].rarity;
@@ -231,19 +224,43 @@ create() {
             count++;
         }
     }
-    for(var i = 0; i < party.length; i++){
-        console.log(party[i].getName() )
+
+    console.log("our party", party)
+    if(party.length == 0){
+        alert("You must equip at least one AstroBeast before entering combat!");
+        check = false;
     }
-    //Create box on the bottom
-    attacker = party[0];
-    this.#combatMenu = new CombatMenu(this, attacker, this.#items);// this.#PlayerAlien);
-    this.#combatMenu.initialize(attacker)
-    //this.#combatMenu.battleOptionsOn()
+    if(moves_list.length == 0){
+        alert("You must equip at least one Move before entering combat!");
+        check = false;
+    }
+
+    console.log("check =",check)
+    if(check == true){
+        console.log("party:", party)
+        //Create box on the bottom
+        attacker = party[0];
+        this.#combatMenu = new CombatMenu(this, attacker, this.#items);// this.#PlayerAlien);
+        //this.#combatMenu.initialize(attacker)
+        this.#combatMenu.battleOptionsOn()
+    }
 }
 
 
 update() {
 console.log('update - Combat');
+    if(check == false){
+        //reset key variables
+        party = [];
+        enemies = [];
+        CURR_TURN = 0;
+        CURR_PARTY = 'player';
+        attacker = undefined;
+        target = undefined;
+        move = undefined;
+        check = true;
+        this.scene.start("LoadHub");
+    }
   
 if(STATUS_STATE == 'use_item'){
     const items = this.registry.get('inventory_items');
@@ -474,7 +491,7 @@ else if(STATUS_STATE == 'fight'){
                     assets: randEnemyDict['assets'],
                     assetAnim: randEnemyDict['assetAnim'],
                     maxHP: HP,
-                    currentHP: 3,
+                    currentHP: HP,
                     stats: randEnemyDict['stats'],
                     moves: this.genMoves(),
                     level: this.getRand(1, 7),
@@ -482,6 +499,7 @@ else if(STATUS_STATE == 'fight'){
                 }
             }, {x: directions[i][0], y: directions[i][1]});
 
+            console.log(enemy.getDetails())
             //if this index has already been selected, update enemy name
             if(indexes.includes(rand)){
                 var n = 0;
@@ -628,7 +646,7 @@ else if(STATUS_STATE == 'fight'){
             //attack target
             console.log("move:",move)
             
-            //this will have a fully fleshed out formula but for now this should always return 95
+            //get the total damage of an attack
             var d = this.attack(attacker, target, move);
             
             //check critical
@@ -637,11 +655,9 @@ else if(STATUS_STATE == 'fight'){
             if(crit <= 5){
                 d *= 2; //if there's a critical hit, double the damage
             }
-            var strhit
             var remains
 
             //reduce health
-            //strhit = hit.toString();
             target.takeDamage(d)
             var remains = target.getCurrentHP();
 
@@ -651,7 +667,7 @@ else if(STATUS_STATE == 'fight'){
             if(target.getCurrentHP() <= 0){
                 console.log("Someone Died")
                 target.setAlive(false);
-                target.setAnimation("died_"+target.getName());
+                target.setAnimation("died_" + target.getAssets());
                 this.#combatMenu.deathnotice(target.getName());   
             }
         }else{
@@ -736,6 +752,7 @@ changeTurn(){
             CURR_TURN = 0;
             STATUS_STATE = "nothing";
             this.#combatMenu.setAlien(party.filter(ab => ab.getAlive())[0]);
+            this.#combatMenu.battleOptionsOn();
         }
     }
     move = undefined;
@@ -857,7 +874,7 @@ changeTurn(){
             diff = 0;
         }
         this.#combatMenu.setAlien(attacker);
-        this.#combatMenu.playerFightInputSelect(move, target, dmg, diff)
+        this.#combatMenu.enemyAttacks(attacker.getName(), move.getName(), target.getName(), dmg, diff);//playerFightInputSelect(move, target, dmg, diff)
         target.takeDamage(dmg);
         this.#combatMenu.setAlien(attacker);
 

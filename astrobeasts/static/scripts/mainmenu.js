@@ -1,7 +1,7 @@
 // first scene - start menu
 // calls newgame, loadgame, and options scenes
 import * as WebFontLoader from '../webfontloader.js'
-import { Player } from './player.js';
+import { Player } from './start_menu/player.js';
 export class MainMenuScene extends Phaser.Scene {
     constructor() {
         super('MainMenu');
