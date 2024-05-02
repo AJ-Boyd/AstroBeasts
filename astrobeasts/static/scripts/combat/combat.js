@@ -1018,7 +1018,11 @@ itemHandler(selected)
     if(flag ==1)
     {
         var flag = 1;
-        selected.isEquipped = false;
+        selected.quantity--
+        if(selected.quantity == 0)
+            {
+                selected.isEquipped = false;
+            }
         flag = 0;
     }
     
