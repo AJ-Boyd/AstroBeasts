@@ -5,15 +5,15 @@ This project is called AstroBeasts. It is a web-RPG built and designed as a soft
 Creators: AJ Boyd, Joshua Joo, Casey Hanley, Leann Alhashishi, and Aamil Vahora
 
 To run the game:
-    * The conda environment should be created. That can be done by the following commands:
+* The conda environment should be created. That can be done by the following commands:
         * `conda env create -f environment.yml`
         * `conda activate proj1`
 
-    * Then run the main.py to begin the game by the following commands:
+* Then run the main.py to begin the game by the following commands:
         * `python3 main.py`
         or
         * `python main.py`
-    * Make sure you are in the correct directory where main.py is (cmsc447-sp2024-Russian-Blue)
+* Make sure you are in the correct directory where main.py is (cmsc447-sp2024-Russian-Blue)
 
 Extra Features: 
     * "Dojo," an extra level area where the player can practice before going into the Tournament in order to level up and gather resources.
