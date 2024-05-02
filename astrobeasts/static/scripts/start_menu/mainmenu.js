@@ -90,8 +90,8 @@ export class MainMenuScene extends Phaser.Scene {
         { key: 'strikoh', assets: 'Strikoh', assetAnim: "idle_Strikoh", name: 'Strikoh', rarity: 'Rare', description: 'The Tempest\'s Last Stand', quantity: 1, cost: 2500, isSelected: false, maxHP: 3000, currentHP: 3000, maxExp: 1000, currentExp: 0, stats: [632, 408, 474, 468, 418], level: 1, isAlive: true  },
         { key: 'scourge', assets: 'Scourge', assetAnim: "idle_Scourge", name: 'Scourge', rarity: 'Rare', description: 'The Doom of the Red Quesar', quantity: 1, cost: 2500, isSelected: false, maxHP: 3000, currentHP: 3000, maxExp: 1000, currentExp: 0, stats: [550, 498, 396, 416, 540], level: 1, isAlive: true  },
         
-        { key: 'aesun', assets: 'Aesun', assetAnim: "idle_Aesun", name: 'Aesun', rarity: 'Legendary', description: 'Aesun the Divine and Arcane Light', quantity: 1, cost: 5000, isSelected: false, maxHP: 8500, currentHP: 8500, maxExp: 1000, currentExp: 0, stats: [964, 820, 1086, 1018, 612], level: 1, isAlive: true  },
-        { key: 'tyboar', assets: 'Tyboar', assetAnim: "idle_Tyboar", name: 'Tyboar', rarity: 'Legendary', description: 'Tyboar the Ancient Titan of Thunder', quantity: 1, cost: 5000, isSelected: false, maxHP: 10000, currentHP: 10000, maxExp: 1000, currentExp: 0, stats: [832, 1188, 656, 1046, 808], level: 1, isAlive: true  }
+        { key: 'aesun', assets: 'Aesun', assetAnim: "idle_Aesun", name: 'Aesun', rarity: 'Legendary', description: 'Aesun the Divine and Arcane Light', quantity: 1, cost: 5000, isSelected: false, maxHP: 6000, currentHP: 6000, maxExp: 1000, currentExp: 0, stats: [964, 820, 1086, 1018, 612], level: 1, isAlive: true  },
+        { key: 'tyboar', assets: 'Tyboar', assetAnim: "idle_Tyboar", name: 'Tyboar', rarity: 'Legendary', description: 'Tyboar the Ancient Titan of Thunder', quantity: 1, cost: 5000, isSelected: false, maxHP: 6000, currentHP: 6000, maxExp: 1000, currentExp: 0, stats: [832, 1188, 656, 1046, 808], level: 1, isAlive: true  }
         ]);
 
         this.registry.set('shop_items', [

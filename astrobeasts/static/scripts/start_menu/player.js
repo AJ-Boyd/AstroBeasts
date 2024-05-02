@@ -36,6 +36,9 @@ export class Player{
     }
     updateCredits(c){
         this.credits += c
+        if(this.credits < 0){
+            this.credits = 0;
+        }
         this.updateCreditsGained(c)
     }
     setCredits(c){
