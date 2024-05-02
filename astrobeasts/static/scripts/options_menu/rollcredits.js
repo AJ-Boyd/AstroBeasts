@@ -9,7 +9,7 @@ export class CreditsScene extends Phaser.Scene {
         let Title = this.add.text(100, 90, 'Astrobeasts', {font: '34px', color: 'yellow', stroke: 'yellow', strokeThickness: 1 }); 
         let line1 = this.add.text(100, 150, 'Made by Russian Blue Studios ©', {font: '22px', color: 'yellow'});           // Retrive data from database on high scores
         let line2 = this.add.text(100, 200, 'Leann Alhashishi ', {font: '22px', color: 'yellow'}); 
-        let line3 = this.add.text(100, 250, 'AJ Alano', {font: '22px', color: 'yellow'}); 
+        let line3 = this.add.text(100, 250, 'AJ Boyd', {font: '22px', color: 'yellow'}); 
         let line4 = this.add.text(100, 300, 'Casey Hanley', {font: '22px', color: 'yellow'}); 
         let line5 = this.add.text(100, 350, 'Aamil Vahora', {font: '22px', color: 'yellow'}); 
         let line6 = this.add.text(100, 400, 'Josh Joo', {font: '22px', color: 'yellow'}); 

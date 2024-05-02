@@ -21,7 +21,7 @@ export class CongratsScene extends Phaser.Scene {
         // Enter
         let EnterText = this.add.text(300, 400, 'CLAIM')
             .setInteractive({ useHandCursor: true }).setPadding(16)
-            .on('pointerdown', () => this.scene.start('LoadHub'));
+            .on('pointerdown', () => this.scene.start('RollCredits2'));
             EnterText.setBackgroundColor('black').setFontSize(32);
             EnterText.on('pointerover', () => {
                 EnterText.setStyle({ fill: '#13b2f3'}); // when you hover, changes to white
@@ -33,15 +33,15 @@ export class CongratsScene extends Phaser.Scene {
         
 
         // Back
-        let GoBackText = this.add.text(100, 550, '< Back', { color: 'white' })
-            .setInteractive({ useHandCursor: true }).setBackgroundColor('black')
-            .on('pointerdown', () => this.scene.start('LoadHub'));
-            GoBackText.on('pointerover', () => {
-                GoBackText.setStyle({ fill: '#0f0'}); // when you hover, changes to white
-            });
-            GoBackText.on('pointerout', () => {
-                GoBackText.setStyle({ fill: 'white'}); 
-            });
+        // let GoBackText = this.add.text(100, 550, '< Back', { color: 'white' })
+        //     .setInteractive({ useHandCursor: true }).setBackgroundColor('black')
+        //     .on('pointerdown', () => this.scene.start('LoadHub'));
+        //     GoBackText.on('pointerover', () => {
+        //         GoBackText.setStyle({ fill: '#0f0'}); // when you hover, changes to white
+        //     });
+        //     GoBackText.on('pointerout', () => {
+        //         GoBackText.setStyle({ fill: 'white'}); 
+        //     });
 
         // Below is using the webfontloader module to use external fonts for the scene
         WebFontLoader.default.load({
@@ -50,7 +50,7 @@ export class CongratsScene extends Phaser.Scene {
             },
             active: () => {
                 Title.setFontFamily('"Press Start 2P"')
-                GoBackText.setFontFamily('"Press Start 2P"')
+                //GoBackText.setFontFamily('"Press Start 2P"')
                 EnterText.setFontFamily('"Press Start 2P"')
             }
         }) 
