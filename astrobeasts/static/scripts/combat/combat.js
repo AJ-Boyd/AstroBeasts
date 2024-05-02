@@ -5,13 +5,6 @@ import { HPBar } from './healthbar.js';
 import { RenderBackground } from './renderbackground.js';
 import { Move } from './moves.js';
 
-/*
-    STILL TODO:
-    -boss size
-    -Screens
-    -item buffs
-*/
-
 
 var cursors, attacker, move, target, spacebar, strList =[];
 var party = [];
@@ -492,7 +485,7 @@ else if(STATUS_STATE == 'fight'){
         for(var i = 0; i < partySize; i++){
             const rand = this.getRand(0, rabs.length- 1)
             const randEnemyDict = rabs[rand];
-            const HP = randEnemyDict['maxHP'] + this.getRand(-500, 200)
+            const HP = randEnemyDict['maxHP'] + this.getRand(-500, 100)
 
             let enemy = new Enemy({
                 scene: this,

@@ -79,8 +79,8 @@ export class MainMenuScene extends Phaser.Scene {
         ]); 
        
         this.registry.set('shop_astrobeasts', [
-        { key: 'skol', assets: 'Skol', assetAnim: "idle_Skol", name: 'Skol', description: 'Balanced AstroBeast', quantity: 1, cost: 350, isSelected: false, maxHP: 1000, currentHP: 1000, currentExp: 0, maxExp: 1000, stats: [300, 250, 300, 300, 250], level: 1,isAlive: true },
-        { key: 'tarkeel',assets: 'Tarkeel', assetAnim: "idle_Tarkeel", name: 'Tarkeel', description: 'Electric AstroBeast', quantity: 1, cost: 350, isSelected: false, maxHP: 1000, currentHP: 1000, currentExp: 0, maxExp: 1000, stats: [194, 128, 448, 500, 130], level: 1,isAlive: true  },
+        { key: 'skol', assets: 'Skol', assetAnim: "idle_Skol", name: 'Skol', rarity: 'common', description: 'Balanced AstroBeast', quantity: 1, cost: 350, isSelected: false, maxHP: 1000, currentHP: 1000, currentExp: 0, maxExp: 1000, stats: [300, 250, 300, 300, 250], level: 1,isAlive: true },
+        { key: 'tarkeel',assets: 'Tarkeel', assetAnim: "idle_Tarkeel", name: 'Tarkeel', rarity: 'common', description: 'Electric AstroBeast', quantity: 1, cost: 350, isSelected: false, maxHP: 1000, currentHP: 1000, currentExp: 0, maxExp: 1000, stats: [194, 128, 448, 500, 130], level: 1,isAlive: true  },
         { key: 'arquam', assets: 'Arquam', assetAnim: "idle_Arquam", name: 'Arquam', rarity: 'Common', description: 'Water AstroBeast', quantity: 1, cost: 1000, isSelected: false, maxHP: 2000, currentHP: 2000, maxExp: 1000, currentExp: 0, stats: [266, 470, 198, 312, 154], level: 1, isAlive: true },
         { key: 'shamrock',assets: 'Shamrock', assetAnim: "idle_Shamrock", name: 'Shamrock', rarity: 'Common', description: 'Lucky AstroBeast', quantity: 1, cost: 1000, isSelected: false, maxHP: 1000, currentHP: 1000, maxExp: 1000, currentExp: 0, stats: [358, 120, 218, 246, 458], level: 1, isAlive: true  },
         { key: 'zallo', assets: 'Zallo', assetAnim: "idle_Zallo", name: 'Zallo', rarity: 'Common', description: 'Gravity AstroBeast', quantity: 1, cost: 1000, isSelected: false, maxHP: 1000, currentHP: 1000, maxExp: 1000, currentExp: 0, stats: [434, 470, 122, 102, 272], level: 1, isAlive: true  },
@@ -95,9 +95,9 @@ export class MainMenuScene extends Phaser.Scene {
         ]);
 
         this.registry.set('shop_items', [
-        { key: 'cookies', name: 'CosmoCookies', description: 'Restores 250 HP', quantity: 1, HP: 250, cost: 200, isSelected: false },
-        { key: 'ade', name: 'AstroAde', description: 'Restores 700 HP', quantity: 1, HP: 30, cost: 700, isSelected: false },
-        { key: 'sequid', name: 'SequidSando', description: 'Restores 1000 HP', quantity: 1, HP: 60, cost: 1000, isSelected: false },
+        { key: 'cookies', name: 'CosmoCookies', description: 'Restores 250 HP', quantity: 1, HP: 250, cost: 250, isSelected: false },
+        { key: 'ade', name: 'AstroAde', description: 'Restores 700 HP', quantity: 1, HP: 700, cost: 700, isSelected: false },
+        { key: 'sequid', name: 'SequidSando', description: 'Restores 1000 HP', quantity: 1, HP: 1000, cost: 1000, isSelected: false },
         { key: 'claws', name: 'Titanium Claws', description: '+50 ATK for the fight duration', quantity: 1, ATK: 50, cost: 250, isSelected: false },
         { key: 'boosters', name: 'Sonic Boosters', description: '+50 SPD for fight duration', quantity: 1, SPD: 50, cost: 250, isSelected: false },
         { key: 'shell', name: 'Hardlight Shell', description: '+50 DEF for fight duration', quantity: 1, DEF: 50, cost: 250, isSelected: false },
