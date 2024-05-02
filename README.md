@@ -4,6 +4,9 @@ This project is called AstroBeasts. It is a web-RPG built and designed as a soft
 
 Creators: AJ Boyd, Joshua Joo, Casey Hanley, Leann Alhashishi, and Aamil Vahora
 
+Extra Features: 
+    * "Dojo," an area where the player can practice before going into the levels.
+    * Music that plays during the game with an option to mute it in the start menu.
 
 in order to run activate conda environment just run: 
 
