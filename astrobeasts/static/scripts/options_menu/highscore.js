@@ -42,7 +42,7 @@ export class HighScoreScene extends Phaser.Scene {
           .on('pointerdown', () => this.scene.start('Options'));
 
           backButton.on('pointerover', () => {
-            backButton.setStyle({ fill: '0f0'}); // when you hover, changes to white
+            backButton.setStyle({ fill: '#0f0'}); // when you hover, changes to white
         });
         backButton.on('pointerout', () => {
             backButton.setStyle({ fill: 'white'}); 
