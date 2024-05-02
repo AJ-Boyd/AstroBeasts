@@ -314,16 +314,16 @@ else if(STATUS_STATE =='scanning'){
 
     //get input for choosing target
     if(Phaser.Input.Keyboard.JustDown(cursors.up)){
-        target = enemies[0]; //For now
+        target = livE[0]; //For now
     }else if(Phaser.Input.Keyboard.JustDown(cursors.left)){
         if(enemies.length >= 2)
-            target = enemies[1]; //For now      
+            target = livE[1]; //For now      
     }else if(Phaser.Input.Keyboard.JustDown(cursors.right)){
         if(enemies.length >= 3)
-            target = enemies[2]; //For now        
+            target = livE[2]; //For now        
     }else if(Phaser.Input.Keyboard.JustDown(cursors.down)){
         if(enemies.length >= 4)
-            target = enemies[3]; //For now      
+            target = livE[3]; //For now      
     }
 
     //check if selected target is alive
@@ -485,7 +485,7 @@ else if(STATUS_STATE == 'fight'){
         for(var i = 0; i < partySize; i++){
             const rand = this.getRand(0, rabs.length- 1)
             const randEnemyDict = rabs[rand];
-            const HP = randEnemyDict['maxHP'] + this.getRand(-500, 100)
+            const HP = 1//randEnemyDict['maxHP'] + this.getRand(-500, 100)
 
             let enemy = new Enemy({
                 scene: this,
