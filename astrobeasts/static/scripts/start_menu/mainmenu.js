@@ -145,14 +145,32 @@ export class MainMenuScene extends Phaser.Scene {
         let startGameText= this.add.text(100, 220, 'Start New Game', {font: '24px', color: '#ffff' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () =>  this.scene.start('NewGame'));
+            startGameText.on('pointerover', () => {
+                startGameText.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
+            });
+            startGameText.on('pointerout', () => {
+                startGameText.setStyle({ fill: 'white'}); 
+            });
         
         let loadGameText = this.add.text(100, 320, 'Load Game', {font: '24px', color: '#ffff' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('LoadGame'));
+            loadGameText.on('pointerover', () => {
+                loadGameText.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
+            });
+            loadGameText.on('pointerout', () => {
+                loadGameText.setStyle({ fill: 'white'}); 
+            });
 
         let optionsText = this.add.text(100, 420, 'Options', {font: '24px', color: '#ffff' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.scene.start('Options'));
+            optionsText.on('pointerover', () => {
+                optionsText.setStyle({ fill: '#13b2f3'}); // when you hover changes color; alt: #41f3fd
+            });
+            optionsText.on('pointerout', () => {
+                optionsText.setStyle({ fill: 'white'}); 
+            });
 
             // below is using the webfontloader module to use external fonts for the scene
             WebFontLoader.default.load({
