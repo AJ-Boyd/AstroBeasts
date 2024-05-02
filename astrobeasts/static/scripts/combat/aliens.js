@@ -124,6 +124,9 @@ export class Aliens {
     }
 
     //key setters
+    setMaxHP(hp){
+        this._alienDetails.maxHP = hp;
+    }
     setCurrentExp(e){
         this._alienDetails.currentExp = e
     }
@@ -291,7 +294,8 @@ export class Aliens {
                 this.getStats()[i] = 2500;
             }
         }
-        alert(this.getName() + "'s new stats: " + this.getStats());
+        this.setMaxHP(this.getMaxHP() + this.getRand(100, 500)) //increase Max HP by 100-500 HP
+        alert(this.getName() + "'s new stats: " + this.getStats() + "\n" + this.getName() + "'s new max HP: " + this.getMaxHP());
     }
 
     //returns a random number between min and max, both inclusinve

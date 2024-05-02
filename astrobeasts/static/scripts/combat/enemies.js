@@ -24,7 +24,7 @@ import { Move } from "./moves.js";
  * @property {Move[]} moves // moves
  * @property {number} level
  * @property {boolean} isAlive
- * 
+ * @property {boolean} isBoss
  * */
 
 /**Define Object "coord" which is the coordinates of the alien 
@@ -62,7 +62,11 @@ export class Enemy {
 
         this.#createHPBar();
 
-        this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(2);
+        if(this._enemyDetails.isBoss == true){
+            this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(4);
+        }else{
+            this.EnemyGuy = this._scene.add.sprite(position.x, position.y, this._enemyDetails.assets).setScale(2);
+        }
         this.EnemyGuy.anims.play(this._enemyDetails.assetAnim)
     }
 

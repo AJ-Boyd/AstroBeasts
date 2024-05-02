@@ -94,12 +94,13 @@ create() {
         rarity: "Galactic",
         assets: 'AllWrath',
         assetAnim: "idle_AllWrath",
-        maxHP: 10000,
-        currentHP: 10000,
+        maxHP: 20000,
+        currentHP: 20000,
         stats: [2500, 2650, 2600], //ATK, DEF, SPD
         moves: [torrentus, hkai, msurge],
         level: 10,
         isAlive: true,
+        isBoss: true
     }
     
     const malgrun = {
@@ -107,12 +108,13 @@ create() {
             rarity: "Legendary",
             assets: 'Malgrun',
             assetAnim: "idle_Malgrun",
-            maxHP: 20000,
-            currentHP: 20000,
+            maxHP: 10000,
+            currentHP: 1,
             stats: [1980, 1380, 1692], //ATK, DEF, SPD
             moves: [fireball, widow, quake],
             level: 7,
             isAlive: true,
+            isBoss: true
         }
 
     const ruinn = {
@@ -126,19 +128,20 @@ create() {
             moves: [dspiral, mrise, sflare, bite],
             level: 10,
             isAlive: true,
+            isBoss: true
         }
     const tourneyEnemies = [allwrath, malgrun, ruinn];
 
     //if entering for tourney, get alien based off of level
     if(this.registry.get("isTournament") == true){
         if(this.#player.getLevel() == 1){
-            //first boss is ALLWRATH
+            //first boss is ||MALGRUN||
             this.#EnemyAlien = new Enemy({
                 scene: this,
                 EnemyDetails: malgrun,
-            }, {x: 600, y: 260});
+            }, {x: 600, y: 200});
         }else if(this.#player.getLevel() == 2){
-            //second boss is ||MALGRUN||
+            //second boss is ALLWRATH
             this.#EnemyAlien = new Enemy({
                 scene: this,
                 EnemyDetails: allwrath,
@@ -186,6 +189,9 @@ create() {
     }
     console.log("our moves", moves_list);
     let count = 0;
+
+    console.log("temp:", temp)
+
     for (let i = 0; i < temp.length; i++){
         if (temp[i]['isEquipped'] && count < directions.length){
             let assetAnime = "";
@@ -196,7 +202,7 @@ create() {
                 if (shop_beasts[j].name === temp[i].name) {
                     assetAnime = shop_beasts[j].assetAnim; 
                     rare = shop_beasts[j].rarity;
-                    MAXEXP = shop_beasts[j].maxExp;
+                    //MAXEXP = shop_beasts[j].maxExp;
                     break; 
                 }
             }
@@ -210,7 +216,7 @@ create() {
                     assetAnim: assetAnime,
                     maxHP: temp[i]['maxHP'],
                     currentHP: temp[i]['currentHP'],
-                    maxExp: MAXEXP,
+                    maxExp: temp[i]['maxExp'],
                     currentExp: temp[i]['currentExp'],
                     stats: temp[i]['stats'], //ATK, DEF, SPD, DEX, LUK
                     moves: moves_list,
@@ -425,8 +431,13 @@ else if(STATUS_STATE == 'fight'){
         if(spacebar.isDown){
             STATUS_STATE = "nothing";
             this.registry.set("player", this.#player); //update player object
-            this.registry.set("isTournament", false); //isTourney object
-            this.scene.start("LoadHub");
+            if(this.registry.get("isTournament") == true && this.#player.getLevel() >= 4){
+                this.registry.set("isTournament", false); //isTourney object
+                this.scene.start("LoadCongrats");
+            }else{
+                this.registry.set("isTournament", false); //isTourney object
+                this.scene.start("LoadHub");
+            }
         }
         //reset important variables regardless
         party = [];
@@ -495,7 +506,8 @@ else if(STATUS_STATE == 'fight'){
                     stats: randEnemyDict['stats'],
                     moves: this.genMoves(),
                     level: this.getRand(1, 7),
-                    isAlive: true
+                    isAlive: true,
+                    isBoss: false
                 }
             }, {x: directions[i][0], y: directions[i][1]});
 
