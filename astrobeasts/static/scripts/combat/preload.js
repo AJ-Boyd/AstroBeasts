@@ -84,7 +84,6 @@ export class Preload extends Phaser.Scene {
 
         this.load.spritesheet('Malgrun',
         '../static/assets/Sprites/Malgrun.png',
-        { frameWidth: 65, frameHeight: 74.3 }
         { frameWidth: 65.125, frameHeight: 74.5 }
         );
 
