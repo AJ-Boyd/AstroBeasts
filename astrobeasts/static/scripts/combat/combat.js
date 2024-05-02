@@ -102,7 +102,7 @@ create() {
             assets: 'Malgrun',
             assetAnim: "idle_Malgrun",
             maxHP: 10000,
-            currentHP: 1,
+            currentHP: 10000,
             stats: [1980, 1380, 1692], //ATK, DEF, SPD
             moves: [fireball, widow, quake],
             level: 7,
