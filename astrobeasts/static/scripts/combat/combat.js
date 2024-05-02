@@ -15,7 +15,7 @@ var CURR_PARTY = 'player';
 var flag = 0;
 var check = true;
 
-const FLEE_CHANCE = 40;
+const FLEE_CHANCE = 60;
 
 export class CombatScene extends Phaser.Scene {
     #combatMenu;
@@ -87,8 +87,8 @@ create() {
         rarity: "Galactic",
         assets: 'AllWrath',
         assetAnim: "idle_AllWrath",
-        maxHP: 20000,
-        currentHP: 20000,
+        maxHP: 15000,
+        currentHP: 15000,
         stats: [2500, 2650, 2600], //ATK, DEF, SPD
         moves: [torrentus, hkai, msurge],
         level: 10,
@@ -115,8 +115,8 @@ create() {
             assets: 'Ruinn',
             rarity: "Galactic",
             assetAnim: "idle_Ruinn",
-            maxHP:30000,
-            currentHP: 30000,
+            maxHP:20000,
+            currentHP: 20000,
             stats: [3014, 2988, 3556], //ATK, DEF, SPD
             moves: [dspiral, mrise, sflare, bite],
             level: 10,
@@ -485,8 +485,12 @@ else if(STATUS_STATE == 'fight'){
         for(var i = 0; i < partySize; i++){
             const rand = this.getRand(0, rabs.length- 1)
             const randEnemyDict = rabs[rand];
-            const HP = randEnemyDict['maxHP'] + this.getRand(-500, 100)
-
+            var percent = this.getRand(40, 60) / 100; //enemies HP are reduced by 40-60%
+            console.log(randEnemyDict['name'], "health reduction", percent)
+            
+            const HP = Math.round(randEnemyDict['maxHP'] * (1-percent))
+            console.log(randEnemyDict['name'], "health is:" + HP)
+            
             let enemy = new Enemy({
                 scene: this,
                 EnemyDetails:{
