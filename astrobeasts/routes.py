@@ -216,29 +216,27 @@ def get_high_scores():
     return jsonify(scores)
 
 
-@router.route("/submit_scores", methods=["POST"])
+@router.route('/submit_scores', methods=['POST'])
 def submit_scores():
     session = Session()
     top_players = session.query(Player).order_by(Player.Score.desc()).limit(5).all()
+    # Initialize a dictionary with placeholders for names and scores
     data = {
-        "data": [
-            {
-                "Group": "Russian-Blue",
-                "Title": "Top 5 Scores",
-            }
-        ]
+        "Group": "Russian-Blue",
+        "Title": "Top 5 Scores"
     }
-    for idx, player in enumerate(top_players, 1):
-        ordinal = {1: "1st", 2: "2nd", 3: "3rd", 4: "4th", 5: "5th"}.get(
-            idx, f"{idx}th"
-        )
-        data["data"][0][f"{ordinal} Name"] = player.name
-        data["data"][0][f"{ordinal} Score"] = player.Score
+    
+    for player in top_players:
+        data[player.name] = player.Score
 
-    response = requests.post("https://eope3o6d7z7e2cc.m.pipedream.net", json=data)
+
+    # Ensure the data is wrapped in a list as required
+    response_data = {
+        "data": [data]
+    }
+
+    response = requests.post("https://eope3o6d7z7e2cc.m.pipedream.net", json=response_data)
     if response.status_code == 200:
-        return jsonify(
-            {"status": "success", "message": "Scores submitted successfully!"}
-        )
+        return jsonify({"here is what is being sent": response_data})
     else:
         return jsonify({"status": "error", "message": "Failed to submit scores."}), 400

@@ -162,7 +162,7 @@ export class PickYourStarterScene extends Phaser.Scene {
         this.add.image(0, 0, 'sky').setOrigin(0, 0);
 
         // player name from registery
-        const playerName = this.registry.get('playerName');
+        const playerName = this.registry.get("player").getName()
 
         const centerX = this.cameras.main.width / 2;
         const left = centerX / 2;
