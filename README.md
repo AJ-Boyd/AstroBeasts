@@ -16,8 +16,9 @@ To run the game:
     * Make sure you are in the correct directory where main.py is (cmsc447-sp2024-Russian-Blue)
 
 Extra Features: 
-    * "Dojo," an area where the player can practice before going into the levels.
+    * "Dojo," an extra level area where the player can practice before going into the Tournament in order to level up and gather resources.
     * Music that plays during the game with an option to mute it in the start menu.
+    * Shop and Inventory adds multiple layers of customizability to gameplay. Astrobeasts, moves, and items can be bought and equipped to enhance your experience.
 
 
 If the environment is not working, the packages needed to run the game are located
